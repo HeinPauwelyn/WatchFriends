@@ -1,4 +1,4 @@
-  Project voor het vak Android Development :movie_camera:
+# Project voor het vak Android Development :movie_camera:
 
 We ontwikkelen een platform waar personen bekeken series en/of films kunnen opvolgen en bekijken.
  
