@@ -6,3 +6,4 @@ Deze opdracht wordt gemaakt voor het vak Android development (3de jaar [NMCT][2]
 
  [1]: https://github.com/HeinPauwelyn/AndroidDev/wiki
  [2]: http://www.nmct.be
+TEST
