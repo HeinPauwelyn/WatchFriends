@@ -10,8 +10,9 @@ var gulp = require("gulp"),
     jshint = require("gulp-jshint"),
     jsStylish = require("jshint-stylish"),
     uglify = require("gulp-uglify"),
-    notify = require("gulp-notify");
-    concat = require("gulp-concat");
+    notify = require("gulp-notify"),
+    concat = require("gulp-concat"),
+    sass = require('gulp-sass');
 
 
 const PATHS = {
@@ -36,6 +37,7 @@ const PATHS = {
 gulp.task("default", function(){
     var htmlWatcher = gulp.watch(PATHS.HTML.SRC, ['html-validate']);
     var cssWatcher = gulp.watch(PATHS.CSS.SRC, ['css']);
+    var scssWatcher = gulp.watch("./app/sass/**/*.sass", ["sass"]);
     cssWatcher.on('change', function(event){
         console.log("File: " + event.path + " was " + event.type);
     });
@@ -98,4 +100,10 @@ gulp.task("copy-externals", function(){
     // dist folder van bower_components nr lib in wwwroot kopieren
     gulp.src(PATHS.EXTERNALS.SRC + "bootstrap/dist/**")
         .pipe(gulp.dest(PATHS.EXTERNALS.DEST + "/bootstrap"))
+});
+
+gulp.task('sass', function () {
+    return gulp.src('./app/sass/**/*.scss')
+        .pipe(sass().on('error', sass.logError))
+        .pipe(gulp.dest('./app/css'));
 });
