@@ -1,9 +1,0 @@
-{
-  "name": "watch-friends-server.api",
-  "version": "0.0.0",
-  "description": "WatchFriendsServer.Api",
-  "main": "server.js",
-  "author": {
-    "name": "hein_"
-  }
-}
