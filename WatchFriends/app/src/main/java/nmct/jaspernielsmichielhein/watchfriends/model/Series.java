@@ -3,7 +3,7 @@ package nmct.jaspernielsmichielhein.watchfriends.model;
 import android.databinding.BaseObservable;
 import android.databinding.ObservableArrayList;
 
-public class Serie extends BaseObservable {
+public class Series extends BaseObservable {
     private String backdrop_path = "";
     private ObservableArrayList<Creator> created_by = new ObservableArrayList<Creator>();
     private int[] episode_run_time = new int[0];
