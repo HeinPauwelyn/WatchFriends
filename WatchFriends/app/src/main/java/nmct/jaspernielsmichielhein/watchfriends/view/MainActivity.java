@@ -1,5 +1,7 @@
 package nmct.jaspernielsmichielhein.watchfriends.view;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,8 +17,7 @@ import android.view.MenuItem;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,11 +94,19 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
-
+            showEpisodeFragment();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void showEpisodeFragment() {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        EpisodeFragment episodeFragment = new EpisodeFragment();
+        fragmentTransaction.replace(R.id.flMain, episodeFragment, "episodeFragment");
+        fragmentTransaction.commit();
     }
 }

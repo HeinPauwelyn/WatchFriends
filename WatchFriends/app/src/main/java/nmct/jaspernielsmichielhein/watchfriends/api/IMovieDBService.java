@@ -1,0 +1,15 @@
+package nmct.jaspernielsmichielhein.watchfriends.api;
+
+import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
+import rx.Observable;
+
+public interface IMovieDBService {
+    static final String API_KEY = "1447c9e70c5784fbe8a492a4d5f37c8b";
+
+    //EPISODE
+    //https://api.themoviedb.org/3/tv/63174/season/2/episode/2?api_key=1447c9e70c5784fbe8a492a4d5f37c8b&language=en-US
+    @GET("tv/{serie}/season/{season}/episode/{episode}?api_key=" + API_KEY + "&language=en-US")
+    public Observable<Episode> getEpisode(@Path("serie") int serieId, @Path("season") int season, @Path("episode") int episode);
+}
