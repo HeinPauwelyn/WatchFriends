@@ -14,7 +14,7 @@ import rx.schedulers.Schedulers;
 public class EpisodeFragmentViewModel extends BaseObservable {
     private FragmentEpisodeBinding fragmentEpisodeBinding;
 
-    private int serieId;
+    private int seriesId;
     private int seasonNumber;
     private int episodeNumber;
 
@@ -29,15 +29,15 @@ public class EpisodeFragmentViewModel extends BaseObservable {
         this.episode = episode;
     }
 
-    public EpisodeFragmentViewModel(FragmentEpisodeBinding fragmentEpisodeBinding, int serieId, int seasonNumber, int episodeNumber) {
+    public EpisodeFragmentViewModel(FragmentEpisodeBinding fragmentEpisodeBinding, int seriesId, int seasonNumber, int episodeNumber) {
         this.fragmentEpisodeBinding = fragmentEpisodeBinding;
-        this.serieId = serieId;
+        this.seriesId = seriesId;
         this.seasonNumber = seasonNumber;
         this.episodeNumber = episodeNumber;
     }
 
     public void loadEpisode() {
-        ApiHelper.getMoviedbServiceInstance().getEpisode(serieId, seasonNumber, episodeNumber).subscribeOn(Schedulers.io())
+        ApiHelper.getMoviedbServiceInstance().getEpisode(seriesId, seasonNumber, episodeNumber).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Episode>() {
                     @Override

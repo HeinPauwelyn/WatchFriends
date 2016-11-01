@@ -2,7 +2,7 @@
     <!-- API KEY -->
     <string name="moviedb_api_key">1447c9e70c5784fbe8a492a4d5f37c8b</string>
 
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">WatchFriends</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
