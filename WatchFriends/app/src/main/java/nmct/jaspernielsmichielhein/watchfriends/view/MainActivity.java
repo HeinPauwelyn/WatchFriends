@@ -80,10 +80,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        if (id == R.id.nav_about) {
-            navigate(new EpisodeFragment(), "episodeFragment");
+        // Handle navigation view item clicks here
+        switch (item.getItemId()){
+            case R.id.nav_watching:
+                break;
+            case R.id.nav_watchlist:
+                break;
+            case R.id.nav_watched:
+                break;
+
+            case R.id.nav_settings:
+                break;
+            case R.id.nav_logout:
+                break;
+            case R.id.nav_upgrade:
+                break;
+
+            case R.id.nav_help:
+                break;
+            case R.id.nav_about:
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
