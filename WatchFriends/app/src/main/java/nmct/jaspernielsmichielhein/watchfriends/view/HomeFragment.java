@@ -2,6 +2,7 @@ package nmct.jaspernielsmichielhein.watchfriends.view;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -10,8 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
+import nmct.jaspernielsmichielhein.watchfriends.viewmodel.HomeFragmentViewModel;
 
 public class HomeFragment extends Fragment {
+
+    private HomeFragmentViewModel homeFragmentViewModel;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -22,22 +26,16 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
+
+        FragmentHomeBinding fragmentHomeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_episode, container, false);
+        homeFragmentViewModel = new HomeFragmentViewModel(fragmentHomeBinding, 63174, 2, 2);
+        return fragmentHomeBinding.getRoot();
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
+    public void onStart() {
+        super.onStart();
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 }

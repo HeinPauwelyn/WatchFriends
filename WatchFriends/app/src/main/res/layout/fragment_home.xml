@@ -6,6 +6,12 @@
     tools:context=".view.HomeFragment"
     android:scrollbars="vertical">
 
+    <data>
+        <variable
+            name="home"
+            type="nmct.jaspernielsmichielhein.watchfriends.model.Home" />
+    </data>
+
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
