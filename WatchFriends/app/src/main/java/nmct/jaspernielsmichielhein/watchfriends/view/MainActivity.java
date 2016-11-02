@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         //todo searchbar ipv. menu
         //getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -80,7 +79,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here
         switch (item.getItemId()){
             case R.id.nav_watching:
                 break;
@@ -90,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_settings:
+                //navigate(new SettingsFragment());
                 break;
             case R.id.nav_logout:
                 break;
