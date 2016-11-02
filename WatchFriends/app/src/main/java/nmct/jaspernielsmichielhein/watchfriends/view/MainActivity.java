@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.app.Fragment;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -43,6 +44,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        HomeFragment homeFragment = new HomeFragment();
+        showFragment(homeFragment, "homeFragment");
     }
 
     @Override
@@ -94,7 +98,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
-            showEpisodeFragment();
+            EpisodeFragment episodeFragment = new EpisodeFragment();
+
+            showFragment(episodeFragment, "episodeFragment");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -102,11 +108,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private void showEpisodeFragment() {
+    private void showFragment(Fragment fragment, String name) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        EpisodeFragment episodeFragment = new EpisodeFragment();
-        fragmentTransaction.replace(R.id.flMain, episodeFragment, "episodeFragment");
+
+        fragmentTransaction.replace(R.id.flMain, fragment, name);
         fragmentTransaction.commit();
     }
 }

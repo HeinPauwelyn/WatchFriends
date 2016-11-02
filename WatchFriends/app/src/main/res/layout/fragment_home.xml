@@ -1,13 +1,177 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.HomeFragment">
+    tools:context=".view.HomeFragment"
+    android:scrollbars="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:text="My watchlist"/>
 
-</FrameLayout>
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="400px"
+        android:layout_gravity="top"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/id_gallery"
+            android:layout_width="wrap_content"
+            android:layout_height="400px"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/serie1"
+                android:layout_width="250px"
+                android:layout_height="400px"
+                android:src="@android:mipmap/sym_def_app_icon"/>
+
+            <ImageView
+                android:id="@+id/serie2"
+                android:layout_width="250px"
+                android:layout_height="400px"
+                android:src="@android:mipmap/sym_def_app_icon"/>
+
+            <ImageView
+                android:id="@+id/serie3"
+                android:layout_width="250px"
+                android:layout_height="400px"
+                android:src="@android:mipmap/sym_def_app_icon"/>
+
+            <ImageView
+                android:id="@+id/serie4"
+                android:layout_width="250px"
+                android:layout_height="400px"
+                android:src="@android:mipmap/sym_def_app_icon"/>
+
+            <ImageView
+                android:id="@+id/serie5"
+                android:layout_width="250px"
+                android:layout_height="400px"
+                android:src="@android:mipmap/sym_def_app_icon"/>
+
+            <ImageView
+                android:id="@+id/serie6"
+                android:layout_width="250px"
+                android:layout_height="400px"
+                android:src="@android:mipmap/sym_def_app_icon"/>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Recommerd by friends"/>
+
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="400px"
+        android:layout_gravity="top"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/id_gallery1"
+            android:layout_width="wrap_content"
+            android:layout_height="400px"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/serie7"
+                android:layout_width="250px"
+                android:layout_height="400px"
+                android:src="@android:mipmap/sym_def_app_icon"/>
+
+            <ImageView
+                android:id="@+id/serie8"
+                android:layout_width="250px"
+                android:layout_height="400px"
+                android:src="@android:mipmap/sym_def_app_icon"/>
+
+            <ImageView
+                android:id="@+id/serie9"
+                android:layout_width="250px"
+                android:layout_height="400px"
+                android:src="@android:mipmap/sym_def_app_icon"/>
+
+            <ImageView
+                android:id="@+id/serie10"
+                android:layout_width="250px"
+                android:layout_height="400px"
+                android:src="@android:mipmap/sym_def_app_icon"/>
+
+            <ImageView
+                android:id="@+id/serie11"
+                android:layout_width="250px"
+                android:layout_height="400px"
+                android:src="@android:mipmap/sym_def_app_icon"/>
+
+            <ImageView
+                android:id="@+id/serie12"
+                android:layout_width="250px"
+                android:layout_height="400px"
+                android:src="@android:mipmap/sym_def_app_icon"/>
+        </LinearLayout>
+    </HorizontalScrollView>
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="New"/>
+
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="400px"
+        android:layout_gravity="top"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/id_gallery3"
+            android:layout_width="wrap_content"
+            android:layout_height="400px"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/serie13"
+                android:layout_width="250px"
+                android:layout_height="400px"
+                android:src="@android:mipmap/sym_def_app_icon"/>
+
+            <ImageView
+                android:id="@+id/serie14"
+                android:layout_width="250px"
+                android:layout_height="400px"
+                android:src="@android:mipmap/sym_def_app_icon"/>
+
+            <ImageView
+                android:id="@+id/serie15"
+                android:layout_width="250px"
+                android:layout_height="400px"
+                android:src="@android:mipmap/sym_def_app_icon"/>
+
+            <ImageView
+                android:id="@+id/serie16"
+                android:layout_width="250px"
+                android:layout_height="400px"
+                android:src="@android:mipmap/sym_def_app_icon"/>
+
+            <ImageView
+                android:id="@+id/serie17"
+                android:layout_width="250px"
+                android:layout_height="400px"
+                android:src="@android:mipmap/sym_def_app_icon"/>
+
+            <ImageView
+                android:id="@+id/serie18"
+                android:layout_width="250px"
+                android:layout_height="400px"
+                android:src="@android:mipmap/sym_def_app_icon"/>
+        </LinearLayout>
+    </HorizontalScrollView>
+</LinearLayout>
