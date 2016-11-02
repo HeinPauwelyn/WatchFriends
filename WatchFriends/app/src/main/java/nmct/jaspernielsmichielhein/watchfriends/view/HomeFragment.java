@@ -18,7 +18,6 @@ public class HomeFragment extends Fragment {
     private HomeFragmentViewModel homeFragmentViewModel;
 
     public HomeFragment() {
-        // Required empty public constructor
     }
 
     public static HomeFragment newInstance() {
@@ -28,7 +27,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        FragmentHomeBinding fragmentHomeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_episode, container, false);
+        FragmentHomeBinding fragmentHomeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
         homeFragmentViewModel = new HomeFragmentViewModel(fragmentHomeBinding, 63174, 2, 2);
         return fragmentHomeBinding.getRoot();
     }
