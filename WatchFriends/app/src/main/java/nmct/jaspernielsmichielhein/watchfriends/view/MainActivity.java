@@ -1,5 +1,6 @@
 package nmct.jaspernielsmichielhein.watchfriends.view;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+/*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,18 +36,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .setAction("Action", null).show();
             }
         });
-
+*/
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        //drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        HomeFragment homeFragment = new HomeFragment();
-        showFragment(homeFragment, "homeFragment");
+        navigate(new HomeFragment(), "homeFragment");
     }
 
     @Override
@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        //todo searchbar ipv. menu
+        //getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -72,11 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        //todo
 
         return super.onOptionsItemSelected(item);
     }
@@ -84,23 +80,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        switch (item.getItemId()){
+            case R.id.nav_watching:
+                break;
+            case R.id.nav_watchlist:
+                break;
+            case R.id.nav_watched:
+                break;
 
-        } else if (id == R.id.nav_slideshow) {
+            case R.id.nav_settings:
+                //navigate(new SettingsFragment());
+                break;
+            case R.id.nav_logout:
+                break;
+            case R.id.nav_upgrade:
+                break;
 
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-            EpisodeFragment episodeFragment = new EpisodeFragment();
-
-            showFragment(episodeFragment, "episodeFragment");
+            case R.id.nav_help:
+                break;
+            case R.id.nav_about:
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -108,11 +108,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private void showFragment(Fragment fragment, String name) {
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        fragmentTransaction.replace(R.id.flMain, fragment, name);
+    private void navigate(Fragment fragment, String name){
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_frame, fragment, name);
         fragmentTransaction.commit();
     }
 }
