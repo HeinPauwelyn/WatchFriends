@@ -1,4 +1,4 @@
-    package nmct.jaspernielsmichielhein.watchfriends.view;
+package nmct.jaspernielsmichielhein.watchfriends.view;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
