@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
+import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentHomeBinding;
 import nmct.jaspernielsmichielhein.watchfriends.viewmodel.HomeFragmentViewModel;
 
 public class HomeFragment extends Fragment {
@@ -28,13 +29,12 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         FragmentHomeBinding fragmentHomeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
-        homeFragmentViewModel = new HomeFragmentViewModel(fragmentHomeBinding, 63174, 2, 2);
+        homeFragmentViewModel = new HomeFragmentViewModel();
         return fragmentHomeBinding.getRoot();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
     }
 }
