@@ -130,14 +130,16 @@
 
                     <RatingBar
                         android:id="@+id/ratingBarEpisode"
-                        android:layout_below="@id/llOverview"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
                         android:scaleX="0.8"
                         android:scaleY="0.8"
                         android:rating="@{episode.vote_average}"
-                        style="@style/customRatingBar"/>
+                        android:numStars="5"
+                        android:stepSize="1.0"
+                        style="@style/customRatingBar"
+                        android:layout_below="@+id/llOverview"
+                        android:layout_centerHorizontal="true" />
 
                     <TextView
                         android:id="@+id/txtFriends"
@@ -178,6 +180,7 @@
                             android:src="@mipmap/ic_launcher"/>
 
                     </LinearLayout>
+
 
                 </RelativeLayout>
 
