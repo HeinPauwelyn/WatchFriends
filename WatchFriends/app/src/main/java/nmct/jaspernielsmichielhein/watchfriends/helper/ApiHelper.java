@@ -9,7 +9,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiHelper {
     private static Retrofit RETROFIT_INSTANCE;
     private static IMovieDBService MOVIEDB_SERVICE_INSTANCE;
-    private static final String BASE_URL = "https://api.themoviedb.org/3/";
 
     private static Object lock_retrofit = new Object();
     private static Object lock_service = new Object();
@@ -20,7 +19,7 @@ public class ApiHelper {
                 if (RETROFIT_INSTANCE == null) {
                     OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(new LoggingInterceptor()).build();
 
-                    RETROFIT_INSTANCE = new Retrofit.Builder().baseUrl(BASE_URL).addCallAdapterFactory(RxJavaCallAdapterFactory.create()).client(okHttpClient).addConverterFactory(GsonConverterFactory.create()).build();
+                    RETROFIT_INSTANCE = new Retrofit.Builder().baseUrl(Contract.MOVIEDB_BASE_URL).addCallAdapterFactory(RxJavaCallAdapterFactory.create()).client(okHttpClient).addConverterFactory(GsonConverterFactory.create()).build();
                 }
             }
         }
