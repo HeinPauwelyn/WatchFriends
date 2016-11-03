@@ -22,7 +22,7 @@ public class EpisodeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         FragmentEpisodeBinding fragmentEpisodeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_episode, container, false);
-        episodeFragmentViewModel = new EpisodeFragmentViewModel(fragmentEpisodeBinding, 63174, 2, 2);
+        episodeFragmentViewModel = new EpisodeFragmentViewModel(getActivity(), fragmentEpisodeBinding, 63174, 1, 10);
         return fragmentEpisodeBinding.getRoot();
     }
 

@@ -1,6 +1,13 @@
 package nmct.jaspernielsmichielhein.watchfriends.model;
 
 import android.databinding.BaseObservable;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
+import android.net.Uri;
+
+import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;
+import nmct.jaspernielsmichielhein.watchfriends.helper.SeriesHelper;
 
 public class Episode extends BaseObservable {
     private String air_date = "";
@@ -8,8 +15,10 @@ public class Episode extends BaseObservable {
     private String name = "";
     private String overview = "";
     private int id = 0;
+    private Uri image_uri;
     private String production_code = "";
     private int season_number = 0;
+    private String shortcode = "";
     private String still_path = "";
     private double vote_average = 0;
     private int vote_count = 0;
@@ -54,6 +63,14 @@ public class Episode extends BaseObservable {
         this.id = id;
     }
 
+    public Uri getImage_uri() {
+        return Uri.parse(Contract.MOVIEDB_IMAGE_BASE_URL + getStill_path());
+    }
+
+    public void setImage_uri() {
+        this.image_uri = getImage_uri();
+    }
+
     public String getProduction_code() {
         return production_code;
     }
@@ -70,6 +87,14 @@ public class Episode extends BaseObservable {
         this.season_number = season_number;
     }
 
+    public String getShortcode() {
+        return SeriesHelper.getShortcode(this.getSeason_number(), this.getEpisode_number());
+    }
+
+    public void setShortcode() {
+        this.shortcode = getShortcode();
+    }
+
     public String getStill_path() {
         return still_path;
     }
@@ -78,8 +103,8 @@ public class Episode extends BaseObservable {
         this.still_path = still_path;
     }
 
-    public double getVote_average() {
-        return vote_average;
+    public float getVote_average() {
+        return (float) (vote_average / 2);
     }
 
     public void setVote_average(double vote_average) {
@@ -92,5 +117,10 @@ public class Episode extends BaseObservable {
 
     public void setVote_count(int vote_count) {
         this.vote_count = vote_count;
+    }
+
+    public void initExtraFields() {
+        this.setImage_uri();
+        this.setShortcode();
     }
 }

@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.nav_watching:
+                navigate(new EpisodeFragment(), "episodeFragment");
                 break;
             case R.id.nav_watchlist:
                 break;
