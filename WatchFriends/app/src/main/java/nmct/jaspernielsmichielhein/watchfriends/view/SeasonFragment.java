@@ -12,17 +12,35 @@ import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentSeasonBindin
 import nmct.jaspernielsmichielhein.watchfriends.viewmodel.SeasonFragmentViewModel;
 
 public class SeasonFragment extends Fragment {
+    private static final String ARG_series = "nmct.jaspernielsmichielhein.watchfriends.series";
+    private static final String ARG_season = "nmct.jaspernielsmichielhein.watchfriends.season";
+
     private SeasonFragmentViewModel seasonFragmentViewModel;
 
     public SeasonFragment() {
         // Required empty public constructor
     }
 
+    public static SeriesFragment newInstance(int seriesId, int seasonNumber) {
+        Bundle args = new Bundle();
+        args.putInt(ARG_series, seriesId);
+        args.putInt(ARG_season, seasonNumber);
+
+        SeriesFragment fragment = new SeriesFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        int series = 0, season = 0;
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            series = arguments.getInt(ARG_series);
+            season = arguments.getInt(ARG_season);
+        }
         FragmentSeasonBinding fragmentSeasonBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_season, container, false);
-        seasonFragmentViewModel = new SeasonFragmentViewModel(getActivity(), fragmentSeasonBinding, 63174, 1);
+        seasonFragmentViewModel = new SeasonFragmentViewModel(getActivity(), fragmentSeasonBinding, series, season);
         return fragmentSeasonBinding.getRoot();
     }
 
