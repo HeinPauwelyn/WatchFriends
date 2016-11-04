@@ -27,11 +27,12 @@ import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
 import nmct.jaspernielsmichielhein.watchfriends.model.Season;
+import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener
-        , SearchView.OnQueryTextListener
-        , Interfaces.onItemSelectedListener<Episode> {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        SearchView.OnQueryTextListener,
+        Interfaces.onSeriesSelectedListener<Series>,
+        Interfaces.onEpisodeSelectedListener<Episode> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +42,14 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        navigate(HomeFragment.newInstance(), "homeFragment");
     }
 
     @Override
@@ -69,8 +71,7 @@ public class MainActivity extends AppCompatActivity
         searchView.setOnQueryTextListener(this);
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(
-                new ComponentName(this, MainActivity.class)));
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(this, MainActivity.class)));
         searchView.setIconifiedByDefault(false);
 
         return true;
@@ -152,7 +153,11 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
-    public void onSelected(Episode obj) {
-       navigate(EpisodeFragment.newInstance(obj), "episodeFragment");
+    public void onSeriesSelected(Series series) {
+
+    }
+
+    public void onEpisodeSelected(Episode episode) {
+       navigate(EpisodeFragment.newInstance(episode), "episodeFragment");
     }
 }

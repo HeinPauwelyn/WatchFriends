@@ -15,17 +15,17 @@ import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
 
 public class EpisodesAdapter extends ArrayAdapter<Episode> {
-    private Interfaces.onItemSelectedListener<Episode> mListener;
+    private Interfaces.onEpisodeSelectedListener<Episode> mListener;
 
     public EpisodesAdapter(Context context, ListView listView) {
         super(context, R.layout.row_episode);
-        mListener = (Interfaces.onItemSelectedListener<Episode>) context;
+        mListener = (Interfaces.onEpisodeSelectedListener<Episode>) context;
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Episode selectedEpisode = getItem(position);
                 if (selectedEpisode != null) {
-                    mListener.onSelected(selectedEpisode);
+                    mListener.onEpisodeSelected(selectedEpisode);
                 }
             }
         });

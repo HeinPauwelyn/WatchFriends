@@ -17,6 +17,8 @@ public class EpisodeFragment extends Fragment {
 
     private EpisodeFragmentViewModel episodeFragmentViewModel;
 
+    private Episode episode = null;
+
     public EpisodeFragment() { }
 
     public static EpisodeFragment newInstance(Episode episode) {
@@ -28,31 +30,21 @@ public class EpisodeFragment extends Fragment {
         return fragment;
     }
 
-    /* todo gebruik onCreate voor argument-waarden
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int series = 0, season = 0, episode = 0;
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            series = arguments.getInt(ARG_series);
-            season = arguments.getInt(ARG_season);
-            episode = arguments.getInt(ARG_episode);
-        }
-    }
-    */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Episode episode = null;
         Bundle arguments = getArguments();
         if (arguments != null) {
             episode = arguments.getParcelable(ARG_episode);
             episode.makeImage_uri();
             episode.makeShortcode();
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragmentEpisodeBinding fragmentEpisodeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_episode, container, false);
         episodeFragmentViewModel = new EpisodeFragmentViewModel(getActivity(), fragmentEpisodeBinding, episode);
-        //episodeFragmentViewModel = new EpisodeFragmentViewModel(getActivity(), fragmentEpisodeBinding, 63174, 1, 10);
         return fragmentEpisodeBinding.getRoot();
     }
 
