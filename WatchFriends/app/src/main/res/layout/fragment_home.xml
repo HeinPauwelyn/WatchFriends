@@ -4,14 +4,10 @@
     tools:context=".view.HomeFragment">
 
     <data>
-        <import type="android.databinding.ObservableList" />
         <import type="nmct.jaspernielsmichielhein.watchfriends.model.Series" />
 
-        <variable name="series" type="ObservableList&lt;Series&gt;" />
-
-        <variable
-            name="homeFragmentViewModel"
-            type="nmct.jaspernielsmichielhein.watchfriends.viewmodel.HomeFragmentViewModel" />
+        <variable name="series" type="android.databinding.ObservableList&lt;Series&gt;" />
+        <variable name="homeFragmentViewModel" type="nmct.jaspernielsmichielhein.watchfriends.viewmodel.HomeFragmentViewModel" />
     </data>
 
     <LinearLayout
