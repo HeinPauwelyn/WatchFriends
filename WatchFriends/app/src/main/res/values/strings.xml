@@ -21,4 +21,8 @@
     <string name="air_date_icon_description">airDateIcon</string>
     <string name="overview_icon_description">overviewIcon</string>
     <string name="air_date">Air date: </string>
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="login">Login</string>
+    <string name="create_account_link">No account yet? Create one</string>
 </resources>
