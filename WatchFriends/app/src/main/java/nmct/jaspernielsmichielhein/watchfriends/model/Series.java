@@ -1,11 +1,8 @@
 package nmct.jaspernielsmichielhein.watchfriends.model;
 
-import android.databinding.BaseObservable;
 import android.databinding.ObservableArrayList;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.util.concurrent.Callable;
 
 public class Series implements Parcelable {
     private String backdrop_path = "";

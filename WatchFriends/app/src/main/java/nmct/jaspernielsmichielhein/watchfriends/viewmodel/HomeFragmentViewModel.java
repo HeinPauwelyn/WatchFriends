@@ -40,7 +40,7 @@ public class HomeFragmentViewModel extends BaseObservable {
         final HomeFragmentViewModel that = this;
         fragmentHomeBinding.setViewmodel(that);
 
-        int[] ids = {63174, 63174, 63174, 63174, 63174, 63174, 63174};
+        int[] ids = {16148, 64095, 248936, 1399, 25778, 14506, 33088, 13687};
 
         setRecommendedByFriends(new ObservableArrayList<Series>());
         for(int id : ids) {
@@ -49,9 +49,14 @@ public class HomeFragmentViewModel extends BaseObservable {
     }
 
     private void loadSeries(int id) {
-
         ApiHelper.getMoviedbServiceInstance().getSeries(id).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .onErrorReturn(new Func1<Throwable, Series>() {
+                    @Override
+                    public Series call(Throwable throwable) {
+                        return null;
+                    }
+                })
                 .subscribe(new Action1<Series>() {
                     @Override
                     public void call(Series returnedSeries) {
