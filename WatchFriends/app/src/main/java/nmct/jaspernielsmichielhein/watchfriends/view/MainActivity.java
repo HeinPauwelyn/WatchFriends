@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //todo searchbar ipv. menu
         getMenuInflater().inflate(R.menu.main_search, menu);
 
         MenuItem searchItem = menu.findItem(R.id.search);
@@ -103,7 +102,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.nav_watching:
-                navigate(new EpisodeFragment(), "episodeFragment");
+                navigate(EpisodeFragment.newInstance(63174, 1, 10), "episodeFragment");
                 break;
             case R.id.nav_watchlist:
                 break;
