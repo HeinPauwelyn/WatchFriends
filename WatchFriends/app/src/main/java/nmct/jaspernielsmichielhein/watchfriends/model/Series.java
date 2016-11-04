@@ -2,8 +2,10 @@ package nmct.jaspernielsmichielhein.watchfriends.model;
 
 import android.databinding.BaseObservable;
 import android.databinding.ObservableArrayList;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Series extends BaseObservable {
+public class Series extends BaseObservable implements Parcelable {
     private String backdrop_path = "";
     private ObservableArrayList<Creator> created_by = new ObservableArrayList<Creator>();
     private int[] episode_run_time = new int[0];
@@ -237,5 +239,74 @@ public class Series extends BaseObservable {
 
     public void setVote_count(int vote_count) {
         this.vote_count = vote_count;
+    }
+
+    //PARCELABLE
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.getBackdrop_path());
+        dest.writeIntArray(this.getEpisode_run_time());
+        dest.writeString(this.getFirst_air_date());
+        dest.writeString(this.getHomepage());
+        dest.writeInt(this.getId());
+        dest.writeValue(this.isIn_production());
+        dest.writeStringArray(this.getLanguages());
+        dest.writeString(this.getLast_air_date());
+        dest.writeString(this.getName());
+        dest.writeInt(this.getNumber_of_episodes());
+        dest.writeInt(this.getNumber_of_seasons());
+        dest.writeStringArray(this.getOrigin_country());
+        dest.writeString(this.getOriginal_language());
+        dest.writeString(this.getOriginal_name());
+        dest.writeString(this.getName());
+        dest.writeString(this.getOverview());
+        dest.writeDouble(this.getPopularity());
+        dest.writeString(this.getPoster_path());
+        dest.writeString(this.getStatus());
+        dest.writeString(this.getType());
+        dest.writeDouble(this.getVote_average());
+        dest.writeInt(this.getVote_count());
+    }
+
+    public static final Creator<Series> CREATOR = new Creator<Series>() {
+        @Override
+        public Series createFromParcel(Parcel in) {
+            return new Series(in);
+        }
+
+        @Override
+        public Series[] newArray(int size) {
+            return new Series[size];
+        }
+    };
+
+    protected Series(Parcel in) {
+        setBackdrop_path(in.readString());
+        setEpisode_run_time(in.createIntArray());
+        setFirst_air_date(in.readString());
+        setHomepage(in.readString());
+        setId(in.readInt());
+        setIn_production(in.readByte() != 0);
+        setLanguages(in.createStringArray());
+        setLast_air_date(in.readString());
+        setName(in.readString());
+        setNumber_of_episodes(in.readInt());
+        setNumber_of_seasons(in.readInt());
+        setOrigin_country(in.createStringArray());
+        setOriginal_language(in.readString());
+        setOriginal_name(in.readString());
+        setName(in.readString());
+        setOverview(in.readString());
+        setPopularity(in.readDouble());
+        setPoster_path(in.readString());
+        setStatus(in.readString());
+        setType(in.readString());
+        setVote_average(in.readDouble());
+        setVote_count(in.readInt());
     }
 }

@@ -131,6 +131,7 @@ public class MainActivity extends AppCompatActivity
                 navigate(EpisodeFragment.newInstance(63174, 1, 10), "episodeFragment", true);
                 break;
             case R.id.nav_watchlist:
+                navigate(SeasonFragment.newInstance(63174, 2), "seasonFragment");
                 break;
             case R.id.nav_watched:
                 break;
