@@ -4,16 +4,8 @@
     tools:context=".view.HomeFragment">
 
     <data>
-        <import type="nmct.jaspernielsmichielhein.watchfriends.model.Series" />
-
         <variable name="homeFragmentViewModel" type="nmct.jaspernielsmichielhein.watchfriends.viewmodel.HomeFragmentViewModel" />
     </data>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:scrollbars="vertical">
 
         <ScrollView
             android:layout_width="fill_parent"
@@ -87,5 +79,5 @@
                 </HorizontalScrollView>
             </LinearLayout>
         </ScrollView>
-    </LinearLayout>
+
 </layout>
