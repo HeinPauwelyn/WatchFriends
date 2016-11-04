@@ -37,19 +37,16 @@ public class SeasonFragmentViewModel extends BaseObservable {
         this.seasonNumber = seasonNumber;
     }
 
-    public void loadSeason(final SeasonFragmentViewModel seasonFragmentViewModel) {
+    public void loadSeason() {
+        final SeasonFragmentViewModel that = this;
         ApiHelper.getMoviedbServiceInstance().getSeason(seriesId, seasonNumber).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Season>() {
                     @Override
                     public void call(Season returnedSeason) {
                         setSeason(returnedSeason);
-                        fragmentSeasonBinding.setViewmodel(seasonFragmentViewModel);
+                        fragmentSeasonBinding.setViewmodel(that);
                         notifyPropertyChanged(BR.viewmodel);
-                        /*fragmentSeasonBinding.setSeason(season);
-                        fragmentSeasonBinding.setSeasonEpisodes(season.getEpisodes());
-                        notifyPropertyChanged(BR.season);
-                        notifyPropertyChanged(BR.seasonEpisodes);*/
                     }
                 });
     }
