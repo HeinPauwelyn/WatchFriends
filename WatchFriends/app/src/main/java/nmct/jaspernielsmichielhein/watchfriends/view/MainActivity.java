@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+
         switch (item.getItemId()){
             case R.id.nav_watching:
                 navigate(EpisodeFragment.newInstance(63174, 1, 10), "episodeFragment");
@@ -131,7 +132,6 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
     private void navigate(Fragment fragment, String name){
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();

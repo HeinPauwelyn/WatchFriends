@@ -1,0 +1,84 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.HomeFragment">
+
+    <data>
+        <variable name="viewModel" type="nmct.jaspernielsmichielhein.watchfriends.viewmodel.HomeFragmentViewModel" />
+    </data>
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="My watchlist"/>
+
+                <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="400px"
+                    android:layout_gravity="top"
+                    android:scrollbars="none">
+
+                    <ListView
+                        android:id="@+id/lvEpisodes"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_below="@id/llOverview"
+                        app:items="@{viewmodel.season.episodes}" >
+
+                    </ListView>
+                </HorizontalScrollView>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Recommerd by friends"/>
+
+                <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="400px"
+                    android:layout_gravity="top"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:id="@+id/id_gallery1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="400px"
+                        android:layout_gravity="center_vertical"
+                        android:orientation="horizontal" >
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="New"/>
+
+                <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="400px"
+                    android:layout_gravity="top"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:id="@+id/id_gallery3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="400px"
+                        android:layout_gravity="center_vertical"
+                        android:orientation="horizontal" >
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
+        </ScrollView>
+
+</layout>
