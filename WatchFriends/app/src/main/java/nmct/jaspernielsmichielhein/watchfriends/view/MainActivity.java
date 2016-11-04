@@ -27,13 +27,16 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
+import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
+import nmct.jaspernielsmichielhein.watchfriends.model.Season;
 
 import static nmct.jaspernielsmichielhein.watchfriends.R.id.image;
 import static nmct.jaspernielsmichielhein.watchfriends.R.id.imageView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
-        , SearchView.OnQueryTextListener {
+        , SearchView.OnQueryTextListener
+        , Interfaces.onItemSelectedListener<Season> {
 
     private ImageView headerImage;
     private FloatingActionButton actionButton;
@@ -186,5 +189,12 @@ public class MainActivity extends AppCompatActivity
         //search query changed
         return false;
     }
+<<<<<<< HEAD
     //todo query back -> navigate(HomeFragment)
+=======
+
+    public void onSelected(Season obj) {
+       //navigate(EpisodeFragment.newInstance(obj), "episodeFragment");
+    }
+>>>>>>> refs/remotes/origin/master
 }
