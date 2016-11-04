@@ -34,7 +34,7 @@
                         android:layout_height="400px"
                         android:layout_gravity="center_vertical"
                         android:scrollbars="horizontal"
-                        app:items="@{homeFragmentViewModel.recommendedByFriends()}" />
+                        app:items="@{homeFragmentViewModel.recommendedByFriends}" />
                 </HorizontalScrollView>
 
 
