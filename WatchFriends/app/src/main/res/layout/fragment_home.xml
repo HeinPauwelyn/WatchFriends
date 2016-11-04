@@ -6,7 +6,6 @@
     <data>
         <import type="nmct.jaspernielsmichielhein.watchfriends.model.Series" />
 
-        <variable name="series" type="android.databinding.ObservableList&lt;Series&gt;" />
         <variable name="homeFragmentViewModel" type="nmct.jaspernielsmichielhein.watchfriends.viewmodel.HomeFragmentViewModel" />
     </data>
 
@@ -43,7 +42,7 @@
                         android:layout_height="400px"
                         android:layout_gravity="center_vertical"
                         android:scrollbars="horizontal"
-                        app:items="@{homeFragmentViewModel.getRecommerdByFriends()}" />
+                        app:items="@{homeFragmentViewModel.recommendedByFriends}" />
                 </HorizontalScrollView>
 
 
