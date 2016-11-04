@@ -47,6 +47,6 @@ public class SeasonFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        seasonFragmentViewModel.loadSeason(seasonFragmentViewModel);
+        seasonFragmentViewModel.loadSeason();
     }
 }

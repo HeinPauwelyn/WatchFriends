@@ -24,10 +24,13 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
+import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
+import nmct.jaspernielsmichielhein.watchfriends.model.Season;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
-        , SearchView.OnQueryTextListener {
+        , SearchView.OnQueryTextListener
+        , Interfaces.onItemSelectedListener<Season> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,5 +150,9 @@ public class MainActivity extends AppCompatActivity
     public boolean onQueryTextChange(String newText) {
         //search query changed
         return false;
+    }
+
+    public void onSelected(Season obj) {
+       //navigate(EpisodeFragment.newInstance(obj), "episodeFragment");
     }
 }
