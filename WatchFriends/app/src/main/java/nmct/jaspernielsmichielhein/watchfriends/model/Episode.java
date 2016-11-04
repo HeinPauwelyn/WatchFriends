@@ -1,15 +1,14 @@
 package nmct.jaspernielsmichielhein.watchfriends.model;
 
 import android.databinding.BaseObservable;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;
 import nmct.jaspernielsmichielhein.watchfriends.helper.SeriesHelper;
 
-public class Episode extends BaseObservable {
+public class Episode extends BaseObservable implements Parcelable {
     private String air_date = "";
     private int episode_number = 0;
     private String name = "";
@@ -64,11 +63,11 @@ public class Episode extends BaseObservable {
     }
 
     public Uri getImage_uri() {
-        return Uri.parse(Contract.MOVIEDB_IMAGE_BASE_URL + getStill_path());
+        return image_uri;
     }
 
-    public void setImage_uri() {
-        this.image_uri = getImage_uri();
+    public void setImage_uri(String image_uri) {
+        this.image_uri = Uri.parse(image_uri);
     }
 
     public String getProduction_code() {
@@ -88,11 +87,11 @@ public class Episode extends BaseObservable {
     }
 
     public String getShortcode() {
-        return SeriesHelper.getShortcode(this.getSeason_number(), this.getEpisode_number());
+        return shortcode;
     }
 
-    public void setShortcode() {
-        this.shortcode = getShortcode();
+    public void setShortcode(String shortcode) {
+        this.shortcode = shortcode;
     }
 
     public String getStill_path() {
@@ -119,8 +118,60 @@ public class Episode extends BaseObservable {
         this.vote_count = vote_count;
     }
 
-    public void initExtraFields() {
-        this.setImage_uri();
-        this.setShortcode();
+    public Uri makeImage_uri() {
+        return Uri.parse(Contract.MOVIEDB_IMAGE_BASE_URL + getStill_path());
+    }
+
+    public String makeShortcode() {
+        return SeriesHelper.getShortcode(this.getSeason_number(), this.getEpisode_number());
+    }
+
+    // PARCELABLE
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.getAir_date());
+        dest.writeInt(this.getEpisode_number());
+        dest.writeString(this.getName());
+        dest.writeString(this.getOverview());
+        dest.writeInt(this.getId());
+        dest.writeString(this.makeImage_uri().toString());
+        dest.writeString(this.getProduction_code());
+        dest.writeInt(this.getSeason_number());
+        dest.writeString(this.makeShortcode());
+        dest.writeString(this.getStill_path());
+        dest.writeDouble(this.getVote_average());
+        dest.writeInt(this.getVote_count());
+    }
+
+    public static final Creator<Episode> CREATOR = new Creator<Episode>() {
+        @Override
+        public Episode createFromParcel(Parcel in) {
+            return new Episode(in);
+        }
+
+        @Override
+        public Episode[] newArray(int size) {
+            return new Episode[size];
+        }
+    };
+
+    protected Episode(Parcel in) {
+        setAir_date(in.readString());
+        setEpisode_number(in.readInt());
+        setName(in.readString());
+        setOverview(in.readString());
+        setId(in.readInt());
+        setImage_uri(in.readString());
+        setProduction_code(in.readString());
+        setSeason_number(in.readInt());
+        setShortcode(in.readString());
+        setStill_path(in.readString());
+        setVote_average(in.readDouble());
+        setVote_count(in.readInt());
     }
 }

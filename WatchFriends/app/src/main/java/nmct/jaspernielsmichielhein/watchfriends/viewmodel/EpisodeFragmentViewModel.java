@@ -53,7 +53,6 @@ public class EpisodeFragmentViewModel extends BaseObservable {
                     @Override
                     public void call(Episode returnedEpisode) {
                         setEpisode(returnedEpisode);
-                        episode.initExtraFields();
                         fragmentEpisodeBinding.setEpisode(episode);
                         notifyPropertyChanged(BR.episode);
                         loadImages();
