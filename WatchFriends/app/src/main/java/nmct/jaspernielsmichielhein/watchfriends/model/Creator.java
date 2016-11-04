@@ -50,7 +50,7 @@ public class Creator extends BaseObservable implements Parcelable {
         dest.writeString(this.getProfile_path());
     }
 
-    public static final Creator<nmct.jaspernielsmichielhein.watchfriends.model.Creator> CREATOR = new Creator<nmct.jaspernielsmichielhein.watchfriends.model.Creator>() {
+    public static final Creator CREATOR = new Creator() {
         @Override
         public nmct.jaspernielsmichielhein.watchfriends.model.Creator createFromParcel(Parcel in) {
             return new nmct.jaspernielsmichielhein.watchfriends.model.Creator(in);

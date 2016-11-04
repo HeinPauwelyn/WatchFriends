@@ -13,7 +13,7 @@ public class SeriesBinder {
     public static void setSeries(ListView listView, ObservableList<Series> series) {
         if(series != null) {
             SeriesAdapter seriesAdapter = new SeriesAdapter(listView.getContext(), listView);
-            series.addAll(series);
+            seriesAdapter.addAll(series);
             listView.setAdapter(seriesAdapter);
             //Utils.setListViewHeightBasedOnChildren(listView);
         }

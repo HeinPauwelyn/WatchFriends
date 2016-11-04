@@ -5,9 +5,11 @@ import android.databinding.ObservableArrayList;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Series extends BaseObservable implements Parcelable {
+import java.util.concurrent.Callable;
+
+public class Series implements Parcelable {
     private String backdrop_path = "";
-    private ObservableArrayList<Creator> created_by = new ObservableArrayList<Creator>();
+    private ObservableArrayList<nmct.jaspernielsmichielhein.watchfriends.model.Creator> created_by = new ObservableArrayList<nmct.jaspernielsmichielhein.watchfriends.model.Creator>();
     private int[] episode_run_time = new int[0];
     private String first_air_date = "";
     private ObservableArrayList<Genre> genres = new ObservableArrayList<Genre>();
@@ -41,11 +43,11 @@ public class Series extends BaseObservable implements Parcelable {
         this.backdrop_path = backdrop_path;
     }
 
-    public ObservableArrayList<Creator> getCreated_by() {
+    public ObservableArrayList<nmct.jaspernielsmichielhein.watchfriends.model.Creator> getCreated_by() {
         return created_by;
     }
 
-    public void setCreated_by(ObservableArrayList<Creator> created_by) {
+    public void setCreated_by(ObservableArrayList<nmct.jaspernielsmichielhein.watchfriends.model.Creator> created_by) {
         this.created_by = created_by;
     }
 
@@ -250,14 +252,17 @@ public class Series extends BaseObservable implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.getBackdrop_path());
+        dest.writeTypedList(this.getCreated_by());
         dest.writeIntArray(this.getEpisode_run_time());
         dest.writeString(this.getFirst_air_date());
+        dest.writeTypedList(this.getGenres());
         dest.writeString(this.getHomepage());
         dest.writeInt(this.getId());
         dest.writeValue(this.isIn_production());
         dest.writeStringArray(this.getLanguages());
         dest.writeString(this.getLast_air_date());
         dest.writeString(this.getName());
+        dest.writeTypedList(this.getNetworks());
         dest.writeInt(this.getNumber_of_episodes());
         dest.writeInt(this.getNumber_of_seasons());
         dest.writeStringArray(this.getOrigin_country());
@@ -267,6 +272,8 @@ public class Series extends BaseObservable implements Parcelable {
         dest.writeString(this.getOverview());
         dest.writeDouble(this.getPopularity());
         dest.writeString(this.getPoster_path());
+        dest.writeTypedList(this.getProduction_companies());
+        dest.writeTypedList(this.getSeasons());
         dest.writeString(this.getStatus());
         dest.writeString(this.getType());
         dest.writeDouble(this.getVote_average());
@@ -286,15 +293,24 @@ public class Series extends BaseObservable implements Parcelable {
     };
 
     protected Series(Parcel in) {
+        created_by = new ObservableArrayList<nmct.jaspernielsmichielhein.watchfriends.model.Creator>();
+        genres = new ObservableArrayList<Genre>();
+        networks = new ObservableArrayList<Network>();
+        production_companies = new ObservableArrayList<Company>();
+        seasons = new ObservableArrayList<Season>();
+
         setBackdrop_path(in.readString());
+        in.readTypedList(created_by, nmct.jaspernielsmichielhein.watchfriends.model.Creator.CREATOR);
         setEpisode_run_time(in.createIntArray());
         setFirst_air_date(in.readString());
+        in.readTypedList(genres, Genre.CREATOR);
         setHomepage(in.readString());
         setId(in.readInt());
         setIn_production(in.readByte() != 0);
         setLanguages(in.createStringArray());
         setLast_air_date(in.readString());
         setName(in.readString());
+        in.readTypedList(networks, Network.CREATOR);
         setNumber_of_episodes(in.readInt());
         setNumber_of_seasons(in.readInt());
         setOrigin_country(in.createStringArray());
@@ -304,6 +320,8 @@ public class Series extends BaseObservable implements Parcelable {
         setOverview(in.readString());
         setPopularity(in.readDouble());
         setPoster_path(in.readString());
+        in.readTypedList(production_companies, Company.CREATOR);
+        in.readTypedList(seasons, Season.CREATOR);
         setStatus(in.readString());
         setType(in.readString());
         setVote_average(in.readDouble());
