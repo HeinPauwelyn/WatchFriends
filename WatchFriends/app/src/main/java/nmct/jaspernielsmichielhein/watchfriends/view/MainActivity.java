@@ -8,6 +8,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
@@ -20,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -27,10 +30,30 @@ import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Season;
 
+import static nmct.jaspernielsmichielhein.watchfriends.R.id.image;
+import static nmct.jaspernielsmichielhein.watchfriends.R.id.imageView;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
         , SearchView.OnQueryTextListener
         , Interfaces.onItemSelectedListener<Season> {
+
+    private ImageView headerImage;
+    private FloatingActionButton actionButton;
+    private CollapsingToolbarLayout toolbarLayout;
+    private AppBarLayout appBarLayout;
+
+    public void setTitle(String title){
+        toolbarLayout.setTitle(title);
+    }
+
+    public ImageView getHeaderImage(){
+        return headerImage;
+    }
+
+    public FloatingActionButton getActionButton(){
+        return actionButton;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +70,13 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        headerImage = (ImageView) findViewById(R.id.header_image);
+        actionButton = (FloatingActionButton) findViewById(R.id.fab);
+        toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+        appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
+
+        collapseToolbar();
     }
 
     @Override
@@ -105,10 +135,10 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.nav_watching:
-                navigate(EpisodeFragment.newInstance(63174, 1, 10), "episodeFragment");
+                navigate(EpisodeFragment.newInstance(63174, 1, 10), "episodeFragment", true);
                 break;
             case R.id.nav_watchlist:
-                navigate(SeasonFragment.newInstance(63174, 2), "seasonFragment");
+                navigate(SeasonFragment.newInstance(63174, 2), "seasonFragment", true);
                 break;
             case R.id.nav_watched:
                 break;
@@ -132,17 +162,29 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    private void collapseToolbar(){
+        appBarLayout.setExpanded(false, true);
+        //todo ook disablen
+    }
 
-    private void navigate(Fragment fragment, String name){
+
+    private void navigate(Fragment fragment, String tag, boolean collapsing){
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_frame, fragment, name);
+        fragmentTransaction.replace(R.id.fragment_frame, fragment, tag);
         fragmentTransaction.commit();
+        if(collapsing){
+            appBarLayout.setExpanded(true, true);
+            //todo ook enablen
+        }
+        else{
+            collapseToolbar();
+        }
     }
 
     @Override
     public boolean onQueryTextSubmit(String query) {
         //search button press
-        navigate(SearchFragment.newInstance(query), "searchFragment");
+        navigate(SearchFragment.newInstance(query), "searchFragment", false);
         return false;
     }
 
@@ -152,7 +194,9 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
+    //todo search back button -> navigate(HomeFragment)
+
     public void onSelected(Season obj) {
-       //navigate(EpisodeFragment.newInstance(obj), "episodeFragment");
+       //navigate(EpisodeFragment.newInstance(obj), "episodeFragment", true);
     }
 }
