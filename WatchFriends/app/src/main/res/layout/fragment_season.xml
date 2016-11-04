@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="season"
-            type="nmct.jaspernielsmichielhein.watchfriends.model.Season" />
+            name="viewmodel"
+            type="nmct.jaspernielsmichielhein.watchfriends.viewmodel.SeasonFragmentViewModel" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -15,7 +15,139 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/scrollViewDetailsEpisode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <RelativeLayout
+                    android:id="@+id/rlDetailsEpisode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <LinearLayout
+                        android:id="@+id/llAirDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="10dp"
+                            android:src="@drawable/ic_date_range_white_24dp"
+                            android:contentDescription="@string/air_date_icon_description" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:text="@string/air_date"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{viewmodel.season.air_date}"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txtName"
+                        android:layout_below="@id/llAirDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
+                        android:text="@{viewmodel.season.name}"
+                        style="?android:attr/listSeparatorTextViewStyle" />
+
+                    <LinearLayout
+                        android:id="@+id/llOverview"
+                        android:layout_below="@id/txtName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:src="@drawable/ic_info_outline_white_24dp"
+                            android:contentDescription="@string/overview_icon_description" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@{viewmodel.season.overview}" />
+
+                    </LinearLayout>
+
+                    <ListView
+                        android:id="@+id/lvEpisodes"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_below="@id/llOverview"
+                        app:items="@{viewmodel.season.episodes}" >
+
+                    </ListView>
+
+                    <TextView
+                        android:id="@+id/txtFriends"
+                        android:layout_below="@id/lvEpisodes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
+                        android:text="Friends who watched this episode"
+                        style="?android:attr/listSeparatorTextViewStyle" />
+
+                    <LinearLayout
+                        android:id="@+id/llFriends"
+                        android:layout_below="@id/txtFriends"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/ic_launcher"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/ic_launcher"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/ic_launcher"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/ic_launcher"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </android.support.v4.widget.NestedScrollView>
 
     </android.support.design.widget.CoordinatorLayout>
 
