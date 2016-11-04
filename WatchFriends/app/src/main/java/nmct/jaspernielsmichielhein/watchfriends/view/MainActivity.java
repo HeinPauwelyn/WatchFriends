@@ -25,12 +25,13 @@ import android.widget.Toast;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
+import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
 import nmct.jaspernielsmichielhein.watchfriends.model.Season;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
         , SearchView.OnQueryTextListener
-        , Interfaces.onItemSelectedListener<Season> {
+        , Interfaces.onItemSelectedListener<Episode> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +106,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.nav_watching:
-                navigate(EpisodeFragment.newInstance(63174, 1, 10), "episodeFragment");
                 break;
             case R.id.nav_watchlist:
                 navigate(SeasonFragment.newInstance(63174, 2), "seasonFragment");
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
-    public void onSelected(Season obj) {
-       //navigate(EpisodeFragment.newInstance(obj), "episodeFragment");
+    public void onSelected(Episode obj) {
+       navigate(EpisodeFragment.newInstance(obj), "episodeFragment");
     }
 }

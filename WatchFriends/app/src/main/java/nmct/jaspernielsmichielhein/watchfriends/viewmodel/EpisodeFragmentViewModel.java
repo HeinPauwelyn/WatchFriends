@@ -23,10 +23,6 @@ public class EpisodeFragmentViewModel extends BaseObservable {
     private Context context;
     private FragmentEpisodeBinding fragmentEpisodeBinding;
 
-    private int seriesId;
-    private int seasonNumber;
-    private int episodeNumber;
-
     @Bindable
     private Episode episode = null;
 
@@ -38,16 +34,14 @@ public class EpisodeFragmentViewModel extends BaseObservable {
         this.episode = episode;
     }
 
-    public EpisodeFragmentViewModel(Context context, FragmentEpisodeBinding fragmentEpisodeBinding, int seriesId, int seasonNumber, int episodeNumber) {
+    public EpisodeFragmentViewModel(Context context, FragmentEpisodeBinding fragmentEpisodeBinding, Episode episode) {
         this.context = context;
         this.fragmentEpisodeBinding = fragmentEpisodeBinding;
-        this.seriesId = seriesId;
-        this.seasonNumber = seasonNumber;
-        this.episodeNumber = episodeNumber;
+        this.episode = episode;
     }
 
     public void loadEpisode() {
-        ApiHelper.getMoviedbServiceInstance().getEpisode(seriesId, seasonNumber, episodeNumber).subscribeOn(Schedulers.io())
+        /*ApiHelper.getMoviedbServiceInstance().getEpisode(seriesId, seasonNumber, episodeNumber).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Episode>() {
                     @Override
@@ -57,7 +51,10 @@ public class EpisodeFragmentViewModel extends BaseObservable {
                         notifyPropertyChanged(BR.episode);
                         loadImages();
                     }
-                });
+                });*/
+        fragmentEpisodeBinding.setEpisode(episode);
+        notifyPropertyChanged(BR.episode);
+        loadImages();
     }
 
     private void loadImages() {

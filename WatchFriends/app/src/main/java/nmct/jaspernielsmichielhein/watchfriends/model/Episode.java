@@ -66,8 +66,8 @@ public class Episode extends BaseObservable implements Parcelable {
         return image_uri;
     }
 
-    public void setImage_uri(String image_uri) {
-        this.image_uri = Uri.parse(image_uri);
+    public void setImage_uri(Uri image_uri) {
+        this.image_uri = image_uri;
     }
 
     public String getProduction_code() {
@@ -118,12 +118,12 @@ public class Episode extends BaseObservable implements Parcelable {
         this.vote_count = vote_count;
     }
 
-    public Uri makeImage_uri() {
-        return Uri.parse(Contract.MOVIEDB_IMAGE_BASE_URL + getStill_path());
+    public void makeImage_uri() {
+        setImage_uri(Uri.parse(Contract.MOVIEDB_IMAGE_BASE_URL + getStill_path()));
     }
 
-    public String makeShortcode() {
-        return SeriesHelper.getShortcode(this.getSeason_number(), this.getEpisode_number());
+    public void makeShortcode() {
+        setShortcode(SeriesHelper.getShortcode(this.getSeason_number(), this.getEpisode_number()));
     }
 
     // PARCELABLE
@@ -139,10 +139,8 @@ public class Episode extends BaseObservable implements Parcelable {
         dest.writeString(this.getName());
         dest.writeString(this.getOverview());
         dest.writeInt(this.getId());
-        dest.writeString(this.makeImage_uri().toString());
         dest.writeString(this.getProduction_code());
         dest.writeInt(this.getSeason_number());
-        dest.writeString(this.makeShortcode());
         dest.writeString(this.getStill_path());
         dest.writeDouble(this.getVote_average());
         dest.writeInt(this.getVote_count());
@@ -166,10 +164,8 @@ public class Episode extends BaseObservable implements Parcelable {
         setName(in.readString());
         setOverview(in.readString());
         setId(in.readInt());
-        setImage_uri(in.readString());
         setProduction_code(in.readString());
         setSeason_number(in.readInt());
-        setShortcode(in.readString());
         setStill_path(in.readString());
         setVote_average(in.readDouble());
         setVote_count(in.readInt());

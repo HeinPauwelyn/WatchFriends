@@ -12,7 +12,7 @@ public class EpisodesBinder {
     @BindingAdapter("items")
     public static void setSeasonEpisodes(ListView listView, ObservableList<Episode> episodes) {
         if(episodes != null) {
-            EpisodesAdapter episodesAdapter = new EpisodesAdapter(listView.getContext());
+            EpisodesAdapter episodesAdapter = new EpisodesAdapter(listView.getContext(), listView);
             episodesAdapter.addAll(episodes);
             listView.setAdapter(episodesAdapter);
             Utils.setListViewHeightBasedOnChildren(listView);
