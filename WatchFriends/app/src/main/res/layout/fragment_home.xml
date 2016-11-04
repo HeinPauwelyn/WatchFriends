@@ -4,7 +4,7 @@
     tools:context=".view.HomeFragment">
 
     <data>
-        <variable name="homeFragmentViewModel" type="nmct.jaspernielsmichielhein.watchfriends.viewmodel.HomeFragmentViewModel" />
+        <variable name="viewModel" type="nmct.jaspernielsmichielhein.watchfriends.viewmodel.HomeFragmentViewModel" />
     </data>
 
         <ScrollView
@@ -29,12 +29,13 @@
                     android:scrollbars="none">
 
                     <ListView
-                        android:id="@+id/id_gallery"
-                        android:layout_width="wrap_content"
-                        android:layout_height="400px"
-                        android:layout_gravity="center_vertical"
-                        android:scrollbars="horizontal"
-                        app:items="@{homeFragmentViewModel.recommendedByFriends}" />
+                        android:id="@+id/lvEpisodes"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_below="@id/llOverview"
+                        app:items="@{viewmodel.season.episodes}" >
+
+                    </ListView>
                 </HorizontalScrollView>
 
 

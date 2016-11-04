@@ -1,41 +1,48 @@
 package nmct.jaspernielsmichielhein.watchfriends.viewmodel;
 
+import android.content.Context;
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+
+import com.android.databinding.library.baseAdapters.BR;
+
 import java.util.ArrayList;
+
+import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentHomeBinding;
+import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentSeriesBinding;
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
-public class HomeFragmentViewModel {
+public class HomeFragmentViewModel extends BaseObservable {
 
+    private Context context;
+    private FragmentHomeBinding fragmentHomeBinding;
+
+    @Bindable
     private ArrayList<Series> recommendedByFriends = new ArrayList<>();
     private ArrayList<Series> newSeries = new ArrayList<>();
     private ArrayList<Series> watchList = new ArrayList<>();
     private ArrayList<Series> featured = new ArrayList<>();
 
+    public HomeFragmentViewModel(Context context, FragmentHomeBinding fragmentHomeBinding) {
+        this.context = context;
+        this.fragmentHomeBinding = fragmentHomeBinding;
+    }
+
     public HomeFragmentViewModel() {
 
-        Series familie = new Series();
-        familie.setName("Familie");
-        familie.setPoster_path("http://static1.vtm.vmmacdn.be/sites/vtm.be/files/program/image/2016/08/familie-2016-vierkantlogo.jpg");
-        recommendedByFriends.add(familie);
-
-        Series thuis = new Series();
-        thuis.setName("Thuis");
-        thuis.setPoster_path("http://3.bp.blogspot.com/-TZQezJVPjDs/VmEz3-1TF1I/AAAAAAAACLc/AgkkWuTmNao/s1600/THUIS.jpg");
-        recommendedByFriends.add(thuis);
-
-        Series bevergem = new Series();
-        bevergem.setName("Bevergem");
-        bevergem.setPoster_path("https://s.s-bol.com/imgbase0/imagebase3/large/FC/8/6/4/6/9200000049886468.jpg");
-        recommendedByFriends.add(bevergem);
-
-        Series fcdeKampioenen = new Series();
-        fcdeKampioenen.setName("F.C. De Kampioenen");
-        fcdeKampioenen.setPoster_path("https://images.toychamp.be/highres/00740029/00740029_008.jpg");
-        recommendedByFriends.add(fcdeKampioenen);
-
-        Series eigenkweek = new Series();
-        eigenkweek.setName("Eigen Kweek");
-        eigenkweek.setPoster_path("https://www.standaardboekhandel.be/images/5413952189474.img?img=img/h42/h82/h00/h00/1674039.jpg");
-        recommendedByFriends.add(eigenkweek);
+        ApiHelper.getMoviedbServiceInstance().getSeries(16148).subscribeOn(Schedulers.io())
+                 .observeOn(AndroidSchedulers.mainThread())
+                 .subscribe(new Action1<Series>() {
+                     @Override
+                     public void call(Series returnedSeries) {
+                         recommendedByFriends.add(returnedSeries);
+                         //fragmentHomeBinding.se
+                     }
+                 });
     }
 
     public ArrayList<Series> getRecommendedByFriends() {
