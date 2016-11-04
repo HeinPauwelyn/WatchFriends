@@ -1,8 +1,8 @@
 package nmct.jaspernielsmichielhein.watchfriends.view;
 
+import android.app.Fragment;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +21,12 @@ public class SeasonFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static SeriesFragment newInstance(int seriesId, int seasonNumber) {
+    public static SeasonFragment newInstance(int seriesId, int seasonNumber) {
         Bundle args = new Bundle();
         args.putInt(ARG_series, seriesId);
         args.putInt(ARG_season, seasonNumber);
 
-        SeriesFragment fragment = new SeriesFragment();
+        SeasonFragment fragment = new SeasonFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,6 +47,6 @@ public class SeasonFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        seasonFragmentViewModel.loadSeason();
+        seasonFragmentViewModel.loadSeason(seasonFragmentViewModel);
     }
 }
