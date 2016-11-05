@@ -7,14 +7,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.RowEpisodeBinding;
+import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
 
-public class EpisodesAdapter extends ArrayAdapter<Episode> implements AdapterView.OnItemClickListener {
-    public EpisodesAdapter(Context context) {
+public class EpisodesAdapter extends ArrayAdapter<Episode> {
+    private Interfaces.onEpisodeSelectedListener mListener;
+
+    public EpisodesAdapter(Context context, ListView listView) {
         super(context, R.layout.row_episode);
+        mListener = (Interfaces.onEpisodeSelectedListener) context;
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Episode selectedEpisode = getItem(position);
+                if (selectedEpisode != null) {
+                    mListener.onEpisodeSelected(selectedEpisode);
+                }
+            }
+        });
     }
 
     @Override
@@ -22,11 +36,5 @@ public class EpisodesAdapter extends ArrayAdapter<Episode> implements AdapterVie
         final RowEpisodeBinding rowEpisodeBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.row_episode, parent, false);
         rowEpisodeBinding.setEpisode(getItem(position));
         return rowEpisodeBinding.getRoot();
-    }
-
-    /* todo click op item -> episode ophalen -> navigeren naar fragment via listener op mainacitivity */
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
     }
 }
