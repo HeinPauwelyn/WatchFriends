@@ -43,8 +43,8 @@ public class EpisodeFragmentViewModel extends BaseObservable {
     }
 
     public void loadEpisode() {
-        fragmentEpisodeBinding.setEpisode(episode);
-        notifyPropertyChanged(BR.episode);
+        fragmentEpisodeBinding.setViewmodel(this);
+        notifyPropertyChanged(BR.viewmodel);
         setHeader();
     }
 
@@ -54,7 +54,7 @@ public class EpisodeFragmentViewModel extends BaseObservable {
 
         Picasso.with(context).load(episode.getImage_uri()).into(mainActivity.getHeaderImage());
 
-        final FloatingActionButton fab = (FloatingActionButton) mainActivity.getActionButton();
+        final FloatingActionButton fab = mainActivity.getActionButton();
         initFloatingActionButton(fab);
     }
 
