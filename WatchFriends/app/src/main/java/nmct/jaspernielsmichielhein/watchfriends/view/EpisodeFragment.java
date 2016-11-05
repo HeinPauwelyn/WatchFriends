@@ -36,8 +36,7 @@ public class EpisodeFragment extends Fragment {
         Bundle arguments = getArguments();
         if (arguments != null) {
             episode = arguments.getParcelable(ARG_episode);
-            episode.makeImage_uri();
-            episode.makeShortcode();
+            episode.initExtraFields();
         }
     }
 

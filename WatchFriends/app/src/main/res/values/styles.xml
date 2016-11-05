@@ -20,8 +20,16 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="subtitleTextView" parent="@android:style/TextAppearance.Widget.TextView">
+        <item name="android:textColor">@color/themeAccent</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:paddingLeft">5dp</item>
+    </style>
+
     <style name="customRatingBar" parent="Theme.AppCompat">
-        <item name="colorControlNormal">@color/themeAccent</item>
+        <item name="colorControlNormal">@color/themeWhite</item>
         <item name="colorControlActivated">@color/themeAccent</item>
         <item name="android:stepSize">0.1</item>
         <item name="android:isIndicator">true</item>
