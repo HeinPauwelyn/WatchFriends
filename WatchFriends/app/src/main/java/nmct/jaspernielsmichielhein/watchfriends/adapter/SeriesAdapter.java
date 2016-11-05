@@ -2,6 +2,7 @@ package nmct.jaspernielsmichielhein.watchfriends.adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableArrayList;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,40 +17,50 @@ import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.SeriesViewHolder> {
     public Interfaces.onSeriesSelectedListener mListener;
 
-    public SeriesAdapter(Context context, RecyclerView recyclerView) {
+    private Context context;
+    private ObservableArrayList<Series> series = null;
 
+    public SeriesAdapter(ObservableArrayList<Series> series, Context context) {
+        this.context = context;
+        this.series = series;
         mListener = (Interfaces.onSeriesSelectedListener) context;
     }
 
     @Override
     public SeriesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.poster_series, parent, false);
-        return new SeriesViewHolder(v);
+        PosterSeriesBinding posterSeriesBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.poster_series, parent, false);
+        SeriesAdapter.SeriesViewHolder seriesViewHolder = new SeriesAdapter.SeriesViewHolder(posterSeriesBinding);
+        return seriesViewHolder;
     }
 
     @Override
     public void onBindViewHolder(SeriesViewHolder holder, int position) {
-
+        Series seriesObject = series.get(position);
+        holder.getPosterSeriesBinding().setSeries(seriesObject);
+        holder.getPosterSeriesBinding().executePendingBindings();
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return series.size();
     }
 
-    public class SeriesViewHolder extends RecyclerView.ViewHolder {
+    public class SeriesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        final PosterSeriesBinding posterSeriesBinding;
 
-        public SeriesViewHolder(View itemView) {
-            super(itemView);
+        public SeriesViewHolder(PosterSeriesBinding posterSeriesBinding) {
+            super(posterSeriesBinding.getRoot());
+            this.posterSeriesBinding = posterSeriesBinding;
+            posterSeriesBinding.getRoot().setOnClickListener(this);
+        }
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        public PosterSeriesBinding getPosterSeriesBinding() {
+            return posterSeriesBinding;
+        }
 
-
-                }
-            });
+        @Override
+        public void onClick(View v) {
+            Series selectedSeries = series.get(getAdapterPosition());
         }
     }
 }
