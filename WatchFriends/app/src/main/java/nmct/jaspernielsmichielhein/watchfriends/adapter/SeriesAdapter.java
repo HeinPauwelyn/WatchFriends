@@ -15,11 +15,11 @@ import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 
 public class SeriesAdapter extends ArrayAdapter<Series> {
-    public Interfaces.onSeriesSelectedListener<Series> mListener;
+    public Interfaces.onSeriesSelectedListener mListener;
 
     public SeriesAdapter(Context context, ListView listView) {
         super(context, R.layout.poster_series);
-        mListener = (Interfaces.onSeriesSelectedListener<Series>) context;
+        mListener = (Interfaces.onSeriesSelectedListener) context;
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
