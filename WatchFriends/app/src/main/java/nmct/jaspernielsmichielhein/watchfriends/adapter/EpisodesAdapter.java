@@ -17,7 +17,7 @@ import nmct.jaspernielsmichielhein.watchfriends.databinding.RowEpisodeBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
 
-public class EpisodesAdapter extends ArrayAdapter<Episode> {
+public class EpisodesAdapter extends ArrayAdapter<Episode> implements View.OnClickListener {
     private Interfaces.onEpisodeSelectedListener mListener;
 
     private Context context;
@@ -46,30 +46,27 @@ public class EpisodesAdapter extends ArrayAdapter<Episode> {
         episode.initExtraFields();
         rowEpisodeBinding.setEpisode(episode);
 
-        if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.row_episode, parent, false);
-        }
-
-        final ImageView imgViewed = (ImageView) convertView.findViewById(R.id.imgViewed);
+        ImageButton imgViewed = (ImageButton) rowEpisodeBinding.getRoot().findViewById(R.id.imgViewed);
         if (watched) {
             imgViewed.setImageResource(R.drawable.ic_visibility_off_white_24dp);
         } else {
             imgViewed.setImageResource(R.drawable.ic_visibility_white_24dp);
         }
-        imgViewed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (watched) {
-                    imgViewed.setImageResource(R.drawable.ic_visibility_off_white_24dp);
-                    Snackbar.make(v, "Marked episode as not watched", Snackbar.LENGTH_LONG).show();
-                } else {
-                    imgViewed.setImageResource(R.drawable.ic_visibility_white_24dp);
-                    Snackbar.make(v, "Marked episode as watched", Snackbar.LENGTH_LONG).show();
-                }
-                watched = !watched;
-            }
-        });
+        imgViewed.setOnClickListener(this);
 
         return rowEpisodeBinding.getRoot();
+    }
+
+    @Override
+    public void onClick(View v) {
+        ImageButton imgViewed = (ImageButton) v;
+        if (watched) {
+            imgViewed.setImageResource(R.drawable.ic_visibility_white_24dp);
+            Snackbar.make(v, "Marked episode as not watched", Snackbar.LENGTH_LONG).show();
+        } else {
+            imgViewed.setImageResource(R.drawable.ic_visibility_off_white_24dp);
+            Snackbar.make(v, "Marked episode as watched", Snackbar.LENGTH_LONG).show();
+        }
+        watched = !watched;
     }
 }

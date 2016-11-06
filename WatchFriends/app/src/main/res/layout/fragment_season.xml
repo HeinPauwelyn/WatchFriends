@@ -25,7 +25,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:padding="10dp">
+                android:padding="10dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
 
                 <LinearLayout
                     android:id="@+id/llAirDate"
@@ -128,7 +130,7 @@
                     android:layout_height="0dp"
                     android:layout_below="@id/llEpisodes"
                     android:layout_marginBottom="10dp"
-                    app:items="@{viewmodel.season.episodes}">
+                    app:items="@{viewmodel.season.episodes}" >
 
                 </ListView>
 
