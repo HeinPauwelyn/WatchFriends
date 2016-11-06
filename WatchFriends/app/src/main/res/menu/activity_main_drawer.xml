@@ -1,36 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="single" android:id="@+id/nav_group_1">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_watching"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:title="Watching" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_watchlist"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:title="Watchlist" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_watched"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:title="Watched" />
     </group>
 
-    <item android:title="Communicate">
+    <item
+        android:title="Account"
+        android:icon="@drawable/ic_menu_camera" >
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Settings" />
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Logout" />
+            <item
+                android:id="@+id/nav_upgrade"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="Upgrade to premium" />
         </menu>
     </item>
 
+    <group android:checkableBehavior="single" android:id="@+id/nav_group_2">
+        <item
+            android:id="@+id/nav_help"
+            android:title="Help &amp; feedback" />
+        <item
+            android:id="@+id/nav_about"
+            android:title="Watchlist" />
+    </group>
 </menu>

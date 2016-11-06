@@ -3,9 +3,12 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/themePrimary</item>
+        <item name="colorPrimaryDark">@color/themePrimary</item>
+        <item name="colorAccent">@color/themeAccent</item>
+        <item name="android:textColor">@color/themeWhite</item>
+        <item name="android:textColorPrimary">@color/themeWhite</item>
+        <item name="android:windowBackground">@color/themePrimaryDark</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -16,5 +19,20 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="subtitleTextView" parent="@android:style/TextAppearance.Widget.TextView">
+        <item name="android:textColor">@color/themeAccent</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:paddingLeft">5dp</item>
+    </style>
+
+    <style name="customRatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/themeWhite</item>
+        <item name="colorControlActivated">@color/themeAccent</item>
+        <item name="android:stepSize">0.1</item>
+        <item name="android:isIndicator">true</item>
+    </style>
 
 </resources>

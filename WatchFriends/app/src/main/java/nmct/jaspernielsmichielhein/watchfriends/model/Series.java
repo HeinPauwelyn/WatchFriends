@@ -1,11 +1,19 @@
 package nmct.jaspernielsmichielhein.watchfriends.model;
 
-import android.databinding.BaseObservable;
+import android.app.Activity;
+import android.content.Context;
 import android.databinding.ObservableArrayList;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.widget.ImageView;
 
-public class Series extends BaseObservable {
+import com.squareup.picasso.Picasso;
+
+import nmct.jaspernielsmichielhein.watchfriends.R;
+
+public class Series implements Parcelable {
     private String backdrop_path = "";
-    private ObservableArrayList<Creator> created_by = new ObservableArrayList<Creator>();
+    private ObservableArrayList<nmct.jaspernielsmichielhein.watchfriends.model.Creator> created_by = new ObservableArrayList<nmct.jaspernielsmichielhein.watchfriends.model.Creator>();
     private int[] episode_run_time = new int[0];
     private String first_air_date = "";
     private ObservableArrayList<Genre> genres = new ObservableArrayList<Genre>();
@@ -39,11 +47,11 @@ public class Series extends BaseObservable {
         this.backdrop_path = backdrop_path;
     }
 
-    public ObservableArrayList<Creator> getCreated_by() {
+    public ObservableArrayList<nmct.jaspernielsmichielhein.watchfriends.model.Creator> getCreated_by() {
         return created_by;
     }
 
-    public void setCreated_by(ObservableArrayList<Creator> created_by) {
+    public void setCreated_by(ObservableArrayList<nmct.jaspernielsmichielhein.watchfriends.model.Creator> created_by) {
         this.created_by = created_by;
     }
 
@@ -187,6 +195,15 @@ public class Series extends BaseObservable {
         return poster_path;
     }
 
+    public String getFullPoster_path() {
+
+        if (poster_path != null && poster_path != "") {
+            return "https://image.tmdb.org/t/p/w300_and_h450_bestv2" + poster_path;
+        }
+
+        return "https://www.themoviedb.org/assets/e2dd052f141e33392eb749aab2414ec0/images/no-poster-w300_and_h450_bestv2-v2.png";
+    }
+
     public void setPoster_path(String poster_path) {
         this.poster_path = poster_path;
     }
@@ -237,5 +254,90 @@ public class Series extends BaseObservable {
 
     public void setVote_count(int vote_count) {
         this.vote_count = vote_count;
+    }
+
+    //PARCELABLE
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.getBackdrop_path());
+        dest.writeTypedList(this.getCreated_by());
+        dest.writeIntArray(this.getEpisode_run_time());
+        dest.writeString(this.getFirst_air_date());
+        dest.writeTypedList(this.getGenres());
+        dest.writeString(this.getHomepage());
+        dest.writeInt(this.getId());
+        dest.writeValue(this.isIn_production());
+        dest.writeStringArray(this.getLanguages());
+        dest.writeString(this.getLast_air_date());
+        dest.writeString(this.getName());
+        dest.writeTypedList(this.getNetworks());
+        dest.writeInt(this.getNumber_of_episodes());
+        dest.writeInt(this.getNumber_of_seasons());
+        dest.writeStringArray(this.getOrigin_country());
+        dest.writeString(this.getOriginal_language());
+        dest.writeString(this.getOriginal_name());
+        dest.writeString(this.getName());
+        dest.writeString(this.getOverview());
+        dest.writeDouble(this.getPopularity());
+        dest.writeString(this.getPoster_path());
+        dest.writeTypedList(this.getProduction_companies());
+        dest.writeTypedList(this.getSeasons());
+        dest.writeString(this.getStatus());
+        dest.writeString(this.getType());
+        dest.writeDouble(this.getVote_average());
+        dest.writeInt(this.getVote_count());
+    }
+
+    public static final Creator<Series> CREATOR = new Creator<Series>() {
+        @Override
+        public Series createFromParcel(Parcel in) {
+            return new Series(in);
+        }
+
+        @Override
+        public Series[] newArray(int size) {
+            return new Series[size];
+        }
+    };
+
+    protected Series(Parcel in) {
+        created_by = new ObservableArrayList<nmct.jaspernielsmichielhein.watchfriends.model.Creator>();
+        genres = new ObservableArrayList<Genre>();
+        networks = new ObservableArrayList<Network>();
+        production_companies = new ObservableArrayList<Company>();
+        seasons = new ObservableArrayList<Season>();
+
+        setBackdrop_path(in.readString());
+        in.readTypedList(created_by, nmct.jaspernielsmichielhein.watchfriends.model.Creator.CREATOR);
+        setEpisode_run_time(in.createIntArray());
+        setFirst_air_date(in.readString());
+        in.readTypedList(genres, Genre.CREATOR);
+        setHomepage(in.readString());
+        setId(in.readInt());
+        setIn_production(in.readByte() != 0);
+        setLanguages(in.createStringArray());
+        setLast_air_date(in.readString());
+        setName(in.readString());
+        in.readTypedList(networks, Network.CREATOR);
+        setNumber_of_episodes(in.readInt());
+        setNumber_of_seasons(in.readInt());
+        setOrigin_country(in.createStringArray());
+        setOriginal_language(in.readString());
+        setOriginal_name(in.readString());
+        setName(in.readString());
+        setOverview(in.readString());
+        setPopularity(in.readDouble());
+        setPoster_path(in.readString());
+        in.readTypedList(production_companies, Company.CREATOR);
+        in.readTypedList(seasons, Season.CREATOR);
+        setStatus(in.readString());
+        setType(in.readString());
+        setVote_average(in.readDouble());
+        setVote_count(in.readInt());
     }
 }
