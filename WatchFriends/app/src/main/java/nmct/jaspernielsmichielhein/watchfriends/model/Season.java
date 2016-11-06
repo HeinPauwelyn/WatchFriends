@@ -2,8 +2,11 @@ package nmct.jaspernielsmichielhein.watchfriends.model;
 
 import android.databinding.BaseObservable;
 import android.databinding.ObservableArrayList;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;
 
 public class Season extends BaseObservable implements Parcelable {
     private String _id = "";
@@ -86,6 +89,10 @@ public class Season extends BaseObservable implements Parcelable {
 
     public void setSeason_number(int season_number) {
         this.season_number = season_number;
+    }
+
+    public Uri getImage_uri() {
+        return Uri.parse(Contract.MOVIEDB_IMAGE_BASE_URL + getPoster_path());
     }
 
     // PARCELABLE

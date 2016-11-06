@@ -16,10 +16,11 @@ public class Episode extends BaseObservable implements Parcelable {
     private int id = 0;
     private Uri image_uri;
     private String production_code = "";
+    private float rating = 0;
     private int season_number = 0;
     private String shortcode = "";
     private String still_path = "";
-    private double vote_average = 0;
+    private float vote_average = 0;
     private int vote_count = 0;
 
     public String getAir_date() {
@@ -66,8 +67,8 @@ public class Episode extends BaseObservable implements Parcelable {
         return image_uri;
     }
 
-    public void setImage_uri(String image_uri) {
-        this.image_uri = Uri.parse(image_uri);
+    public void setImage_uri(Uri image_uri) {
+        this.image_uri = image_uri;
     }
 
     public String getProduction_code() {
@@ -76,6 +77,14 @@ public class Episode extends BaseObservable implements Parcelable {
 
     public void setProduction_code(String production_code) {
         this.production_code = production_code;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
     }
 
     public int getSeason_number() {
@@ -103,10 +112,10 @@ public class Episode extends BaseObservable implements Parcelable {
     }
 
     public float getVote_average() {
-        return (float) (vote_average / 2);
+        return vote_average;
     }
 
-    public void setVote_average(double vote_average) {
+    public void setVote_average(float vote_average) {
         this.vote_average = vote_average;
     }
 
@@ -118,12 +127,18 @@ public class Episode extends BaseObservable implements Parcelable {
         this.vote_count = vote_count;
     }
 
-    public Uri makeImage_uri() {
-        return Uri.parse(Contract.MOVIEDB_IMAGE_BASE_URL + getStill_path());
+    public void initExtraFields() {
+        makeImage_uri();
+        makeShortcode();
+        setRating((float) getVote_average() / 2);
     }
 
-    public String makeShortcode() {
-        return SeriesHelper.getShortcode(this.getSeason_number(), this.getEpisode_number());
+    public void makeImage_uri() {
+        setImage_uri(Uri.parse(Contract.MOVIEDB_IMAGE_BASE_URL + getStill_path()));
+    }
+
+    public void makeShortcode() {
+        setShortcode(SeriesHelper.getShortcode(this.getSeason_number(), this.getEpisode_number()));
     }
 
     // PARCELABLE
@@ -139,12 +154,10 @@ public class Episode extends BaseObservable implements Parcelable {
         dest.writeString(this.getName());
         dest.writeString(this.getOverview());
         dest.writeInt(this.getId());
-        dest.writeString(this.makeImage_uri().toString());
         dest.writeString(this.getProduction_code());
         dest.writeInt(this.getSeason_number());
-        dest.writeString(this.makeShortcode());
         dest.writeString(this.getStill_path());
-        dest.writeDouble(this.getVote_average());
+        dest.writeFloat(this.getVote_average());
         dest.writeInt(this.getVote_count());
     }
 
@@ -166,12 +179,10 @@ public class Episode extends BaseObservable implements Parcelable {
         setName(in.readString());
         setOverview(in.readString());
         setId(in.readInt());
-        setImage_uri(in.readString());
         setProduction_code(in.readString());
         setSeason_number(in.readInt());
-        setShortcode(in.readString());
         setStill_path(in.readString());
-        setVote_average(in.readDouble());
+        setVote_average(in.readFloat());
         setVote_count(in.readInt());
     }
 }

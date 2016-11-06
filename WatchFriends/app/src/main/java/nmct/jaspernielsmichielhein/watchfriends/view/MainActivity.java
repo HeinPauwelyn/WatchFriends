@@ -7,6 +7,7 @@ import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -26,17 +27,21 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
+import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
 import nmct.jaspernielsmichielhein.watchfriends.model.Season;
-
-import static nmct.jaspernielsmichielhein.watchfriends.R.id.image;
-import static nmct.jaspernielsmichielhein.watchfriends.R.id.imageView;
+import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener
-        , SearchView.OnQueryTextListener
-        , Interfaces.onItemSelectedListener<Season> {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        SearchView.OnQueryTextListener,
+        Interfaces.onHeaderChanged,
+        Interfaces.onSeriesSelectedListener,
+        Interfaces.onEpisodeSelectedListener {
+
 
     private ImageView headerImage;
     private FloatingActionButton actionButton;
@@ -63,8 +68,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -77,6 +81,12 @@ public class MainActivity extends AppCompatActivity
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
 
         collapseToolbar();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        navigate(HomeFragment.newInstance(), "homeFragment", false);
     }
 
     @Override
@@ -98,8 +108,7 @@ public class MainActivity extends AppCompatActivity
         searchView.setOnQueryTextListener(this);
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(
-                new ComponentName(this, MainActivity.class)));
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(this, MainActivity.class)));
         searchView.setIconifiedByDefault(false);
 
         return true;
@@ -135,10 +144,9 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.nav_watching:
-                navigate(EpisodeFragment.newInstance(63174, 1, 10), "episodeFragment", true);
                 break;
             case R.id.nav_watchlist:
-                navigate(SeasonFragment.newInstance(63174, 2), "seasonFragment", true);
+                navigate(SeasonFragment.newInstance("The Flash", 60735, 2), "seasonFragment", true);
                 break;
             case R.id.nav_watched:
                 break;
@@ -194,9 +202,28 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
+    @Override
+    public void onSetTitle(String title) {
+        setTitle(title);
+    }
+
+    @Override
+    public void onSetImage(Uri uri) {
+        Picasso.with(this).load(uri).into(getHeaderImage());
+    }
+
+    @Override
+    public FloatingActionButton onGetActionButton() {
+        return getActionButton();
+    }
+
+    public void onSeriesSelected(Series series) {
+
+    }
+
+    public void onEpisodeSelected(Episode episode) {
+        navigate(EpisodeFragment.newInstance(episode), "episodeFragment", true);
+    }
     //todo search back button -> navigate(HomeFragment)
 
-    public void onSelected(Season obj) {
-       //navigate(EpisodeFragment.newInstance(obj), "episodeFragment", true);
-    }
 }

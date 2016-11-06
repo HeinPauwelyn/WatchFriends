@@ -9,22 +9,31 @@ import android.view.ViewGroup;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentSeasonBinding;
+import nmct.jaspernielsmichielhein.watchfriends.model.Season;
 import nmct.jaspernielsmichielhein.watchfriends.viewmodel.SeasonFragmentViewModel;
 
 public class SeasonFragment extends Fragment {
-    private static final String ARG_series = "nmct.jaspernielsmichielhein.watchfriends.series";
-    private static final String ARG_season = "nmct.jaspernielsmichielhein.watchfriends.season";
+    private static final String ARG_seriesName = "nmct.jaspernielsmichielhein.watchfriends.seriesName";
+    private static final String ARG_seriesId = "nmct.jaspernielsmichielhein.watchfriends.seriesId";
+    private static final String ARG_seasonNumber = "nmct.jaspernielsmichielhein.watchfriends.seasonNumber";
 
     private SeasonFragmentViewModel seasonFragmentViewModel;
+
+    private Season season = null;
+
+    private String seriesName = "";
+    private int seriesId = 0;
+    private int seasonNumber = 0;
 
     public SeasonFragment() {
         // Required empty public constructor
     }
 
-    public static SeasonFragment newInstance(int seriesId, int seasonNumber) {
+    public static SeasonFragment newInstance(String seriesName, int seriesId, int seasonNumber) {
         Bundle args = new Bundle();
-        args.putInt(ARG_series, seriesId);
-        args.putInt(ARG_season, seasonNumber);
+        args.putString(ARG_seriesName, seriesName);
+        args.putInt(ARG_seriesId, seriesId);
+        args.putInt(ARG_seasonNumber, seasonNumber);
 
         SeasonFragment fragment = new SeasonFragment();
         fragment.setArguments(args);
@@ -32,15 +41,20 @@ public class SeasonFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        int series = 0, season = 0;
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
         if (arguments != null) {
-            series = arguments.getInt(ARG_series);
-            season = arguments.getInt(ARG_season);
+            seriesName = arguments.getString(ARG_seriesName);
+            seriesId = arguments.getInt(ARG_seriesId);
+            seasonNumber = arguments.getInt(ARG_seasonNumber);
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragmentSeasonBinding fragmentSeasonBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_season, container, false);
-        seasonFragmentViewModel = new SeasonFragmentViewModel(getActivity(), fragmentSeasonBinding, series, season);
+        seasonFragmentViewModel = new SeasonFragmentViewModel(getActivity(), fragmentSeasonBinding, seriesName, seriesId, seasonNumber);
         return fragmentSeasonBinding.getRoot();
     }
 
