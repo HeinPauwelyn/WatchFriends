@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
+import nmct.jaspernielsmichielhein.watchfriends.model.Series;
+import rx.Observable;
 
 public class SearchFragment extends Fragment {
     private static final String ARG_QUERY = "nmct.jaspernielsmichielhein.watchfriends.searchquery";
@@ -38,6 +41,7 @@ public class SearchFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             query = getArguments().getString(ARG_QUERY);
+            Observable<Series> results = ApiHelper.getMoviedbServiceInstance().searchSeries(query);
         }
     }
 
