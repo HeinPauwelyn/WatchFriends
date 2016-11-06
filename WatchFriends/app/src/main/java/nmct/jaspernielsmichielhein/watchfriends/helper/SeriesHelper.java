@@ -1,7 +1,5 @@
 package nmct.jaspernielsmichielhein.watchfriends.helper;
 
-import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
-
 public class SeriesHelper {
     public static String getShortcode(int seasonNumber, int episodeNumber) {
         return "S" + getNumber(seasonNumber) + "E" + getNumber(episodeNumber);

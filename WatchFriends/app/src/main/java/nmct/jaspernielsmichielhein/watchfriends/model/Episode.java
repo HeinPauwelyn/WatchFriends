@@ -16,10 +16,11 @@ public class Episode extends BaseObservable implements Parcelable {
     private int id = 0;
     private Uri image_uri;
     private String production_code = "";
+    private float rating = 0;
     private int season_number = 0;
     private String shortcode = "";
     private String still_path = "";
-    private double vote_average = 0;
+    private float vote_average = 0;
     private int vote_count = 0;
 
     public String getAir_date() {
@@ -78,6 +79,14 @@ public class Episode extends BaseObservable implements Parcelable {
         this.production_code = production_code;
     }
 
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
     public int getSeason_number() {
         return season_number;
     }
@@ -103,10 +112,10 @@ public class Episode extends BaseObservable implements Parcelable {
     }
 
     public float getVote_average() {
-        return (float) (vote_average / 2);
+        return vote_average;
     }
 
-    public void setVote_average(double vote_average) {
+    public void setVote_average(float vote_average) {
         this.vote_average = vote_average;
     }
 
@@ -116,6 +125,12 @@ public class Episode extends BaseObservable implements Parcelable {
 
     public void setVote_count(int vote_count) {
         this.vote_count = vote_count;
+    }
+
+    public void initExtraFields() {
+        makeImage_uri();
+        makeShortcode();
+        setRating((float) getVote_average() / 2);
     }
 
     public void makeImage_uri() {
@@ -142,7 +157,7 @@ public class Episode extends BaseObservable implements Parcelable {
         dest.writeString(this.getProduction_code());
         dest.writeInt(this.getSeason_number());
         dest.writeString(this.getStill_path());
-        dest.writeDouble(this.getVote_average());
+        dest.writeFloat(this.getVote_average());
         dest.writeInt(this.getVote_count());
     }
 
@@ -167,7 +182,7 @@ public class Episode extends BaseObservable implements Parcelable {
         setProduction_code(in.readString());
         setSeason_number(in.readInt());
         setStill_path(in.readString());
-        setVote_average(in.readDouble());
+        setVote_average(in.readFloat());
         setVote_count(in.readInt());
     }
 }
