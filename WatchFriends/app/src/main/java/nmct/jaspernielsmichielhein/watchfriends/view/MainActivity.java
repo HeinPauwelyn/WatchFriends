@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_watching:
                 break;
             case R.id.nav_watchlist:
-                navigate(SeasonFragment.newInstance(63174, 2), "seasonFragment", true);
+                navigate(SeasonFragment.newInstance("The Flash", 60735, 2), "seasonFragment", true);
                 break;
             case R.id.nav_watched:
                 break;
