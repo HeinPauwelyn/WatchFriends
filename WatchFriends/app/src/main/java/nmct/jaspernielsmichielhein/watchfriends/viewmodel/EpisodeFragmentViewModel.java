@@ -61,21 +61,21 @@ public class EpisodeFragmentViewModel extends BaseObservable {
     private void initFloatingActionButton(final FloatingActionButton fab) {
         if (watched) {
             fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.themeBlack)));
-            fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_visibility_off_white_24dp));
+            fab.setImageResource(R.drawable.ic_visibility_off_white_24dp);
         } else {
             fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.themeAccent)));
-            fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_visibility_white_24dp));
+            fab.setImageResource(R.drawable.ic_visibility_white_24dp);
         }
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (watched) {
-                    fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_visibility_white_24dp));
+                    fab.setImageResource(R.drawable.ic_visibility_white_24dp);
                     fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.themeAccent)));
                     Snackbar.make(v, "Marked episode as not watched", Snackbar.LENGTH_LONG).show();
                 } else {
-                    fab.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_visibility_off_white_24dp));
+                    fab.setImageResource(R.drawable.ic_visibility_off_white_24dp);
                     fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.themeBlack)));
                     Snackbar.make(v, "Marked episode as watched", Snackbar.LENGTH_LONG).show();
                 }

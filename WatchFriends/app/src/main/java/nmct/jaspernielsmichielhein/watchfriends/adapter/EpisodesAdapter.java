@@ -2,11 +2,14 @@ package nmct.jaspernielsmichielhein.watchfriends.adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
@@ -17,8 +20,13 @@ import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
 public class EpisodesAdapter extends ArrayAdapter<Episode> {
     private Interfaces.onEpisodeSelectedListener mListener;
 
+    private Context context;
+
+    private boolean watched = false;
+
     public EpisodesAdapter(Context context, ListView listView) {
         super(context, R.layout.row_episode);
+        this.context = context;
         mListener = (Interfaces.onEpisodeSelectedListener) context;
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -34,7 +42,34 @@ public class EpisodesAdapter extends ArrayAdapter<Episode> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final RowEpisodeBinding rowEpisodeBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.row_episode, parent, false);
-        rowEpisodeBinding.setEpisode(getItem(position));
+        Episode episode = getItem(position);
+        episode.initExtraFields();
+        rowEpisodeBinding.setEpisode(episode);
+
+        if (convertView == null) {
+            convertView = LayoutInflater.from(context).inflate(R.layout.row_episode, parent, false);
+        }
+
+        final ImageView imgViewed = (ImageView) convertView.findViewById(R.id.imgViewed);
+        if (watched) {
+            imgViewed.setImageResource(R.drawable.ic_visibility_off_white_24dp);
+        } else {
+            imgViewed.setImageResource(R.drawable.ic_visibility_white_24dp);
+        }
+        imgViewed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (watched) {
+                    imgViewed.setImageResource(R.drawable.ic_visibility_off_white_24dp);
+                    Snackbar.make(v, "Marked episode as not watched", Snackbar.LENGTH_LONG).show();
+                } else {
+                    imgViewed.setImageResource(R.drawable.ic_visibility_white_24dp);
+                    Snackbar.make(v, "Marked episode as watched", Snackbar.LENGTH_LONG).show();
+                }
+                watched = !watched;
+            }
+        });
+
         return rowEpisodeBinding.getRoot();
     }
 }
