@@ -9,19 +9,18 @@
             type="nmct.jaspernielsmichielhein.watchfriends.viewmodel.HomeFragmentViewModel" />
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/clMain"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:layout_height="match_parent">
 
-        <android.support.v4.widget.NestedScrollView
-            android:id="@+id/scrollViewDetailsEpisode"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
 
             <RelativeLayout
+                android:id="@+id/rlRecommended"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -37,21 +36,40 @@
                     android:text="Recommended by friends"
                     style="?android:attr/listSeparatorTextViewStyle" />
 
-                <ListView
-                    android:id="@+id/lvRecommended"
-                    android:layout_width="wrap_content"
-                    android:layout_height="400dp"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvRecommended"
+                    android:layout_width="match_parent"
+                    android:layout_height="435px"
                     android:layout_below="@id/txtRecommended"
-                    android:layout_gravity="center_vertical"
-                    android:scrollbars="horizontal"
-                    app:items="@{viewmodel.recommendedByFriends}">
-
-                </ListView>
+                    app:items="@{viewmodel.recommendedByFriends}" />
 
             </RelativeLayout>
 
-        </android.support.v4.widget.NestedScrollView>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:layout_below="@id/rlRecommended">
 
-    </android.support.design.widget.CoordinatorLayout>
+                <TextView
+                    android:id="@+id/txtPopular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:text="Popular"
+                    style="?android:attr/listSeparatorTextViewStyle" />
 
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvPopular"
+                    android:layout_width="match_parent"
+                    android:layout_height="435px"
+                    android:layout_below="@id/txtPopular"
+                    app:items="@{viewmodel.popular}" />
+
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
 </layout>

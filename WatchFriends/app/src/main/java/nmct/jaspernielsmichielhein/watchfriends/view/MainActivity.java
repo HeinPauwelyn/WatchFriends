@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity
         toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
 
-        collapseToolbar();
+        //collapseToolbar();
     }
 
     @Override
