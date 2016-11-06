@@ -23,7 +23,7 @@ public class SeasonsAdapter extends ArrayAdapter<Season> implements View.OnClick
 
     private boolean watched = false;
 
-    public SeasonsAdapter(Context context, ListView listView) {
+    public SeasonsAdapter(Context context, ListView listView, final String seriesName, final int seriesId) {
         super(context, R.layout.row_episode);
         this.context = context;
         mListener = (Interfaces.onSeasonSelectedListener) context;
@@ -32,7 +32,7 @@ public class SeasonsAdapter extends ArrayAdapter<Season> implements View.OnClick
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Season selectedSeason = getItem(position);
                 if (selectedSeason != null) {
-                    mListener.onSeasonSelected(selectedSeason);
+                    mListener.onSeasonSelected(seriesName, seriesId, selectedSeason.getSeason_number());
                 }
             }
         });
@@ -42,7 +42,6 @@ public class SeasonsAdapter extends ArrayAdapter<Season> implements View.OnClick
     public View getView(int position, View convertView, ViewGroup parent) {
         final RowSeasonBinding rowSeasonBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.row_season, parent, false);
         Season season = getItem(position);
-        //season.initExtraFields();
         rowSeasonBinding.setSeason(season);
 
         ImageButton imgViewed = (ImageButton) rowSeasonBinding.getRoot().findViewById(R.id.imgViewed);
@@ -61,10 +60,10 @@ public class SeasonsAdapter extends ArrayAdapter<Season> implements View.OnClick
         ImageButton imgViewed = (ImageButton) v;
         if (watched) {
             imgViewed.setImageResource(R.drawable.ic_visibility_white_24dp);
-            Snackbar.make(v, "Marked Season as not watched", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(v, "Marked season as not watched", Snackbar.LENGTH_LONG).show();
         } else {
             imgViewed.setImageResource(R.drawable.ic_visibility_off_white_24dp);
-            Snackbar.make(v, "Marked Season as watched", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(v, "Marked season as watched", Snackbar.LENGTH_LONG).show();
         }
         watched = !watched;
     }

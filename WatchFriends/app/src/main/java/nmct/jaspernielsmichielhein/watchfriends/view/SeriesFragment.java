@@ -27,6 +27,7 @@ public class SeriesFragment extends Fragment {
     public static SeriesFragment newInstance(Series series) {
         Bundle args = new Bundle();
         args.putParcelable(ARG_series,series);
+
         SeriesFragment fragment = new SeriesFragment();
         fragment.setArguments(args);
         return fragment;
@@ -38,6 +39,7 @@ public class SeriesFragment extends Fragment {
         Bundle arguments = getArguments();
         if (arguments != null) {
             series = arguments.getParcelable(ARG_series);
+            series.initExtraFields();
         }
     }
 
