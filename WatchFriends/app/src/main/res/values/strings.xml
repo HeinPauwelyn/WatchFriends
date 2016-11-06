@@ -22,4 +22,9 @@
     <string name="overview_icon_description">overviewIcon</string>
     <string name="air_date">Air date: </string>
     <string name="friends_who_watched_this_episode">Friends who watched this episode</string>
+    <string name="friends_watched_episode">Friends who watched this episode</string>
+    <string name="rating">Rating</string>
+    <string name="episodes">Episodes</string>
+    <string name="friends_watched_season">Friends who watched this season</string>
+    <string name="episode_watched">Episode watched</string>
 </resources>

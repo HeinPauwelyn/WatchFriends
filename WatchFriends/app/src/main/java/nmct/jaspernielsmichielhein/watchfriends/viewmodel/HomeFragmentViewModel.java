@@ -27,12 +27,23 @@ public class HomeFragmentViewModel extends BaseObservable {
     @Bindable
     private ObservableArrayList<Series> recommendedByFriends = null;
 
+    @Bindable
+    private ObservableArrayList<Series> popular = null;
+
     public ObservableArrayList<Series> getRecommendedByFriends() {
         return recommendedByFriends;
     }
 
     public void setRecommendedByFriends(ObservableArrayList<Series> recommendedByFriends) {
         this.recommendedByFriends = recommendedByFriends;
+    }
+
+    public ObservableArrayList<Series> getPopular() {
+        return popular;
+    }
+
+    public void setPopular(ObservableArrayList<Series> popular) {
+        this.popular = popular;
     }
 
     public HomeFragmentViewModel(Context context, FragmentHomeBinding fragmentHomeBinding) {
@@ -44,15 +55,24 @@ public class HomeFragmentViewModel extends BaseObservable {
         final HomeFragmentViewModel that = this;
         fragmentHomeBinding.setViewmodel(that);
 
-        int[] ids = {16148, 64095, 248936, 1399, 25778, 14506, 33088, 13687};
+        int[] ids1 = {16148, 64095, 248936, 1399, 25778, 14506, 33088, 13687};
+        int[] ids2 = {1399, 1396, 4614, 12908, 45, 456, 2190, 16148};
 
         setRecommendedByFriends(new ObservableArrayList<Series>());
+        setPopular(new ObservableArrayList<Series>());
+
+        fillLists(ids1, recommendedByFriends, "r");
+        fillLists(ids2, popular, "p");
+    }
+
+    private void fillLists(int[] ids, final ObservableArrayList<Series> seriesToLoad, String karakter) {
+
         for(int id : ids) {
-            loadSeries(id);
+            loadSeries(id, seriesToLoad, karakter);
         }
     }
 
-    private void loadSeries(int id) {
+    private void loadSeries(int id, final ObservableArrayList<Series> seriesToLoad, final String karakter) {
         ApiHelper.getMoviedbServiceInstance().getSeries(id).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .onErrorReturn(new Func1<Throwable, Series>() {
@@ -65,7 +85,8 @@ public class HomeFragmentViewModel extends BaseObservable {
                     @Override
                     public void call(Series returnedSeries) {
                         if (returnedSeries != null) {
-                            recommendedByFriends.add(returnedSeries);
+                            seriesToLoad.add(returnedSeries);
+
                             notifyPropertyChanged(BR.viewmodel);
                         }
                     }

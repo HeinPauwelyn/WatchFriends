@@ -12,12 +12,37 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:padding="5dp" >
+        android:paddingTop="10dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="10dp"
+        android:paddingStart="5dp"
+        android:descendantFocusability="blocksDescendants">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingEnd="20dp"
+            android:textStyle="bold"
+            android:text="@{String.valueOf(episode.episode_number)}"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_weight="1"
             android:text="@{episode.name}" />
+
+        <ImageButton
+            android:id="@+id/imgViewed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:contentDescription="@string/episode_watched"
+            android:src="@drawable/ic_visibility_white_24dp"
+            android:background="@color/themeAccent"
+            android:focusable="false"/>
 
     </LinearLayout>
 
