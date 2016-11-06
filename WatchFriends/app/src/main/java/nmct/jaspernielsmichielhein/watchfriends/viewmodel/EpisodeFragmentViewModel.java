@@ -16,10 +16,13 @@ import com.squareup.picasso.Picasso;
 import nmct.jaspernielsmichielhein.watchfriends.BR;
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentEpisodeBinding;
+import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
 import nmct.jaspernielsmichielhein.watchfriends.view.MainActivity;
 
 public class EpisodeFragmentViewModel extends BaseObservable {
+    private Interfaces.onHeaderChanged mListener;
+
     private Context context;
     private FragmentEpisodeBinding fragmentEpisodeBinding;
 
@@ -40,6 +43,11 @@ public class EpisodeFragmentViewModel extends BaseObservable {
         this.context = context;
         this.fragmentEpisodeBinding = fragmentEpisodeBinding;
         this.episode = episode;
+        if (context instanceof Interfaces.onHeaderChanged) {
+            mListener = (Interfaces.onHeaderChanged) context;
+        } else {
+            throw new RuntimeException(context.toString() + " must implement onHeaderChanged");
+        }
     }
 
     public void loadEpisode() {
@@ -49,12 +57,10 @@ public class EpisodeFragmentViewModel extends BaseObservable {
     }
 
     private void setHeader() {
-        MainActivity mainActivity = (MainActivity) context;
-        mainActivity.setTitle(episode.getShortcode());
+        mListener.onSetTitle(episode.getShortcode());
+        mListener.onSetImage(episode.getImage_uri());
 
-        Picasso.with(context).load(episode.getImage_uri()).into(mainActivity.getHeaderImage());
-
-        final FloatingActionButton fab = mainActivity.getActionButton();
+        final FloatingActionButton fab = mListener.onGetActionButton();
         initFloatingActionButton(fab);
     }
 
