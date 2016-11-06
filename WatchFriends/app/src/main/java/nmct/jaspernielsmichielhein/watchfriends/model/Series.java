@@ -1,8 +1,15 @@
 package nmct.jaspernielsmichielhein.watchfriends.model;
 
+import android.app.Activity;
+import android.content.Context;
 import android.databinding.ObservableArrayList;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
+
+import nmct.jaspernielsmichielhein.watchfriends.R;
 
 public class Series implements Parcelable {
     private String backdrop_path = "";
@@ -186,6 +193,15 @@ public class Series implements Parcelable {
 
     public String getPoster_path() {
         return poster_path;
+    }
+
+    public String getFullPoster_path() {
+
+        if (poster_path != null && poster_path != "") {
+            return "https://image.tmdb.org/t/p/w300_and_h450_bestv2" + poster_path;
+        }
+
+        return "https://www.themoviedb.org/assets/e2dd052f141e33392eb749aab2414ec0/images/no-poster-w300_and_h450_bestv2-v2.png";
     }
 
     public void setPoster_path(String poster_path) {
