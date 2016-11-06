@@ -7,6 +7,7 @@ import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -26,6 +27,8 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
@@ -35,6 +38,7 @@ import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         SearchView.OnQueryTextListener,
+        Interfaces.onHeaderChanged,
         Interfaces.onSeriesSelectedListener,
         Interfaces.onEpisodeSelectedListener {
 
@@ -196,6 +200,21 @@ public class MainActivity extends AppCompatActivity
     public boolean onQueryTextChange(String newText) {
         //search query changed
         return false;
+    }
+
+    @Override
+    public void onSetTitle(String title) {
+        setTitle(title);
+    }
+
+    @Override
+    public void onSetImage(Uri uri) {
+        Picasso.with(this).load(uri).into(getHeaderImage());
+    }
+
+    @Override
+    public FloatingActionButton onGetActionButton() {
+        return getActionButton();
     }
 
     public void onSeriesSelected(Series series) {
