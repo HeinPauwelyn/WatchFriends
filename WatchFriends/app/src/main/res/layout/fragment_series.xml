@@ -425,7 +425,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_below="@id/llSimilar"
-                    android:layout_marginBottom="10dp" >
+                    android:layout_marginBottom="10dp"
+                    app:items="@{viewmodel.similarSeries}">
 
                 </ListView>
 

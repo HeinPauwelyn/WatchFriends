@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.databinding.ObservableArrayList;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -18,6 +19,7 @@ import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class SeriesFragmentViewModel extends BaseObservable {
@@ -37,6 +39,17 @@ public class SeriesFragmentViewModel extends BaseObservable {
         this.series = series;
     }
 
+    @Bindable
+    private ObservableArrayList<Series> similarSeries = null;
+
+    public ObservableArrayList<Series> getSimilarSeries() {
+        return similarSeries;
+    }
+
+    public void setSimilarSeries(ObservableArrayList<Series> similarSeries) {
+        this.similarSeries = similarSeries;
+    }
+
     private boolean followed = false;
 
     public SeriesFragmentViewModel(Context context, FragmentSeriesBinding fragmentSeriesBinding, Series series) {
@@ -54,6 +67,7 @@ public class SeriesFragmentViewModel extends BaseObservable {
         fragmentSeriesBinding.setViewmodel(this);
         notifyPropertyChanged(BR.viewmodel);
         setHeader();
+        loadSimilarSeries();
     }
 
     private void setHeader() {
@@ -88,5 +102,28 @@ public class SeriesFragmentViewModel extends BaseObservable {
                 followed = !followed;
             }
         });
+    }
+
+    private void loadSimilarSeries() {
+        int[] ids = {63174, 4604, 1412, 60735, 60708};
+        setSimilarSeries(new ObservableArrayList<Series>());
+
+        for (int id : ids) {
+            ApiHelper.getMoviedbServiceInstance().getSeries(id).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .onErrorReturn(new Func1<Throwable, Series>() {
+                        @Override
+                        public Series call(Throwable throwable) {
+                            return null;
+                        }
+                    })
+                    .subscribe(new Action1<Series>() {
+                        @Override
+                        public void call(Series returnedSeries) {
+                            similarSeries.add(returnedSeries);
+                            notifyPropertyChanged(BR.viewmodel);
+                        }
+                    });
+        }
     }
 }

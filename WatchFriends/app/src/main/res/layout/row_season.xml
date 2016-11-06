@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="season"
             type="nmct.jaspernielsmichielhein.watchfriends.model.Season" />

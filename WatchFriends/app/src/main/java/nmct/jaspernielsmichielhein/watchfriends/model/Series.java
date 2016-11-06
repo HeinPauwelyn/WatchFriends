@@ -327,7 +327,7 @@ public class Series implements Parcelable {
     }
 
     public void makeImage_uri() {
-        setImage_uri(Uri.parse(Contract.MOVIEDB_IMAGE_BASE_URL + getPoster_path()));
+        setImage_uri(Uri.parse(Contract.MOVIEDB_IMAGE_BASE_URL + getBackdrop_path()));
     }
 
     public void makeShowed_on() {
@@ -341,6 +341,8 @@ public class Series implements Parcelable {
         int[] episode_times = getEpisode_run_time();
         if (episode_times.length == 1) {
             median_episode_time = episode_times[0];
+        } else if(episode_times.length == 0) {
+            median_episode_time = 0;
         } else {
             Arrays.sort(episode_times);
             int middle = ((episode_times.length) / 2);
