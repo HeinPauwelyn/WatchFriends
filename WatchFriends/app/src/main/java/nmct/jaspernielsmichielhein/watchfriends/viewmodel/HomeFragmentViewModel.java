@@ -1,12 +1,16 @@
 package nmct.jaspernielsmichielhein.watchfriends.viewmodel;
 
+import android.app.Activity;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
+import android.widget.ImageView;
 
 import com.android.databinding.library.baseAdapters.BR;
+import com.squareup.picasso.Picasso;
 
+import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentHomeBinding;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentSeasonBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;

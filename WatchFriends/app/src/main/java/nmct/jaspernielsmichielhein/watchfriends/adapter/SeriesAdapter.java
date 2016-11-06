@@ -3,11 +3,16 @@ package nmct.jaspernielsmichielhein.watchfriends.adapter;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableArrayList;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.PosterSeriesBinding;
@@ -38,6 +43,9 @@ public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.SeriesView
         Series seriesObject = series.get(position);
         holder.getPosterSeriesBinding().setSeries(seriesObject);
         holder.getPosterSeriesBinding().executePendingBindings();
+
+        Picasso.with(context).load(seriesObject.getFullPoster_path()).into(holder.imgSeriesPoster);
+        //holder.teName.setText(seriesObject.getName());
     }
 
     @Override
@@ -48,10 +56,14 @@ public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.SeriesView
     public class SeriesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final PosterSeriesBinding posterSeriesBinding;
 
+        public final ImageView imgSeriesPoster;
+
         public SeriesViewHolder(PosterSeriesBinding posterSeriesBinding) {
             super(posterSeriesBinding.getRoot());
             this.posterSeriesBinding = posterSeriesBinding;
             posterSeriesBinding.getRoot().setOnClickListener(this);
+
+            imgSeriesPoster = (ImageView) posterSeriesBinding.getRoot().findViewById(R.id.imgSeriesPoster);
         }
 
         public PosterSeriesBinding getPosterSeriesBinding() {

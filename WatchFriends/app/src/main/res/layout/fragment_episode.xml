@@ -149,7 +149,7 @@
                         android:layout_marginBottom="10dp"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentEnd="true"
-                        android:text="Friends who watched this episode"
+                        android:text="@string/friends_who_watched_this_episode"
                         style="?android:attr/listSeparatorTextViewStyle" />
 
                     <LinearLayout

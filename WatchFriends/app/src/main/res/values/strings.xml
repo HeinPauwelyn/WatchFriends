@@ -21,4 +21,5 @@
     <string name="air_date_icon_description">airDateIcon</string>
     <string name="overview_icon_description">overviewIcon</string>
     <string name="air_date">Air date: </string>
+    <string name="friends_who_watched_this_episode">Friends who watched this episode</string>
 </resources>
