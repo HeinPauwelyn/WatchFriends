@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 
 import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
+import nmct.jaspernielsmichielhein.watchfriends.model.Season;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 
 public class Interfaces {
@@ -15,6 +16,10 @@ public class Interfaces {
 
     public interface onSeriesSelectedListener {
         void onSeriesSelected(Series series);
+    }
+
+    public interface onSeasonSelectedListener {
+        void onSeasonSelected(Season series);
     }
 
     public interface onEpisodeSelectedListener {

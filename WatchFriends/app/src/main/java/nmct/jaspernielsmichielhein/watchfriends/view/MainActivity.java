@@ -40,7 +40,8 @@ public class MainActivity extends AppCompatActivity
         SearchView.OnQueryTextListener,
         Interfaces.onHeaderChanged,
         Interfaces.onSeriesSelectedListener,
-        Interfaces.onEpisodeSelectedListener {
+        Interfaces.onEpisodeSelectedListener,
+        Interfaces.onSeasonSelectedListener{
 
 
     private ImageView headerImage;
@@ -179,6 +180,7 @@ public class MainActivity extends AppCompatActivity
     private void navigate(Fragment fragment, String tag, boolean collapsing){
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_frame, fragment, tag);
+        fragmentTransaction.addToBackStack(tag);
         fragmentTransaction.commit();
         if(collapsing){
             appBarLayout.setExpanded(true, true);
@@ -195,6 +197,8 @@ public class MainActivity extends AppCompatActivity
         navigate(SearchFragment.newInstance(query), "searchFragment", false);
         return false;
     }
+
+    //todo search back button -> navigate(HomeFragment)
 
     @Override
     public boolean onQueryTextChange(String newText) {
@@ -217,13 +221,18 @@ public class MainActivity extends AppCompatActivity
         return getActionButton();
     }
 
+    @Override
     public void onSeriesSelected(Series series) {
-
+        navigate(SeriesFragment.newInstance(series), "seriesFragment", true);
     }
 
+    @Override
+    public void onSeasonSelected(Season season) {
+        //navigate(SeasonFragment.newInstance(season), "seriesFragment", true);
+    }
+
+    @Override
     public void onEpisodeSelected(Episode episode) {
         navigate(EpisodeFragment.newInstance(episode), "episodeFragment", true);
     }
-    //todo search back button -> navigate(HomeFragment)
-
 }

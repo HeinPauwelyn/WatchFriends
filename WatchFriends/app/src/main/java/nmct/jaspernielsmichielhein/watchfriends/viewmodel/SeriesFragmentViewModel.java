@@ -17,7 +17,6 @@ public class SeriesFragmentViewModel extends BaseObservable {
     private Context context;
     private FragmentSeriesBinding fragmentSeriesBinding;
 
-    private int seriesId;
 
     @Bindable
     private Series series = null;
@@ -30,13 +29,14 @@ public class SeriesFragmentViewModel extends BaseObservable {
         this.series = series;
     }
 
-    public SeriesFragmentViewModel(Context context, FragmentSeriesBinding fragmentSeriesBinding, int seriesId) {
+    public SeriesFragmentViewModel(Context context, FragmentSeriesBinding fragmentSeriesBinding, Series series) {
         this.context = context;
         this.fragmentSeriesBinding = fragmentSeriesBinding;
-        this.seriesId = seriesId;
+        this.series = series;
     }
 
     public void loadSeries() {
+        /*
         ApiHelper.getMoviedbServiceInstance().getSeries(seriesId).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Series>() {
@@ -47,5 +47,6 @@ public class SeriesFragmentViewModel extends BaseObservable {
                         notifyPropertyChanged(BR.series);
                     }
                 });
+        */
     }
 }
