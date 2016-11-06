@@ -11,6 +11,7 @@ import com.squareup.picasso.Picasso;
 import nmct.jaspernielsmichielhein.watchfriends.BR;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentSeasonBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Season;
 import nmct.jaspernielsmichielhein.watchfriends.view.MainActivity;
 import rx.android.schedulers.AndroidSchedulers;
@@ -18,6 +19,7 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 public class SeasonFragmentViewModel extends BaseObservable {
+    private final Interfaces.onHeaderChanged mListener;
     private Context context;
     private FragmentSeasonBinding fragmentSeasonBinding;
 
@@ -42,6 +44,11 @@ public class SeasonFragmentViewModel extends BaseObservable {
         this.seriesName = seriesName;
         this.seriesId = seriesId;
         this.seasonNumber = seasonNumber;
+        if (context instanceof Interfaces.onHeaderChanged) {
+            mListener = (Interfaces.onHeaderChanged) context;
+        } else {
+            throw new RuntimeException(context.toString() + " must implement onHeaderChanged");
+        }
     }
 
     public void loadSeason() {
@@ -61,12 +68,9 @@ public class SeasonFragmentViewModel extends BaseObservable {
     }
 
     private void setHeader() {
-        MainActivity mainActivity = (MainActivity) context;
-        mainActivity.setTitle(seriesName);
-
-        Picasso.with(context).load(season.getImage_uri()).into(mainActivity.getHeaderImage());
-
-        final FloatingActionButton fab = mainActivity.getActionButton();
+        mListener.onSetTitle(seriesName);
+        mListener.onSetImage(season.getImage_uri());
+        final FloatingActionButton fab = mListener.onGetActionButton();
         fab.setVisibility(View.INVISIBLE);
     }
 }

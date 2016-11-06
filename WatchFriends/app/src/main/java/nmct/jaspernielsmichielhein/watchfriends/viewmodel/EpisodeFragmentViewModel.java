@@ -43,7 +43,11 @@ public class EpisodeFragmentViewModel extends BaseObservable {
         this.context = context;
         this.fragmentEpisodeBinding = fragmentEpisodeBinding;
         this.episode = episode;
-        mListener = (Interfaces.onHeaderChanged) context;
+        if (context instanceof Interfaces.onHeaderChanged) {
+            mListener = (Interfaces.onHeaderChanged) context;
+        } else {
+            throw new RuntimeException(context.toString() + " must implement onHeaderChanged");
+        }
     }
 
     public void loadEpisode() {
