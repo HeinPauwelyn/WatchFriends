@@ -113,6 +113,13 @@ public class SeriesFragmentViewModel extends BaseObservable {
                         for (int i = 0; i < 5; i++) {
                             ApiHelper.subscribe(
                             ApiHelper.getMoviedbServiceInstance().getSeries(series.get(i).getId()),
+                                new Action1<Series>() {
+                                    @Override
+                                    public void call(Series series) {
+                                        similarSeries.add(series);
+                                        notifyPropertyChanged(BR.viewmodel);
+                                    }
+                                });
                         }
                     }
                 }
