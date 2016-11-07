@@ -9,86 +9,93 @@
             type="nmct.jaspernielsmichielhein.watchfriends.viewmodel.HomeFragmentViewModel" />
     </data>
 
-    <ScrollView
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/clMain"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <com.synnapps.carouselview.CarouselView
-                android:id="@+id/cvCarousel"
-                android:layout_width="match_parent"
-                android:layout_height="435px"
-                app:fillColor="#FFFFFFFF"
-                app:pageColor="#00000000"
-                app:radius="6dp"
-                app:slideInterval="3000"
-                app:strokeColor="#FF777777"
-                app:strokeWidth="1dp"
-                app:autoPlay="false"
-                app:pageTransformer="flow"/><!--
-                app:items="@{viewmodel.carousel}"
-                app:pageCount="@{viewmodel.carousel.size()}"/>-->
-
-            <RelativeLayout
-                android:id="@+id/rlRecommended"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_below="@id/cvCarousel"
-                android:padding="10dp">
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/txtRecommended"
+                <com.synnapps.carouselview.CarouselView
+                    android:id="@+id/cvCarousel"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentEnd="true"
-                    android:text="Recommended by friends"
-                    style="?android:attr/listSeparatorTextViewStyle" />
+                    android:layout_height="290dp"
+                    app:fillColor="#FFFFFFFF"
+                    app:pageColor="#00000000"
+                    app:radius="6dp"
+                    app:slideInterval="3000"
+                    app:strokeColor="#FF777777"
+                    app:strokeWidth="1dp"
+                    app:autoPlay="false"
+                    app:pageTransformer="flow"/><!--
+                    app:items="@{viewmodel.carousel}"
+                    app:pageCount="@{viewmodel.carousel.size()}"/>-->
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rvRecommended"
+                <RelativeLayout
+                    android:id="@+id/rlRecommended"
                     android:layout_width="match_parent"
-                    android:layout_marginRight="0dp"
-                    android:layout_marginLeft="0dp"
-                    android:layout_height="435px"
-                    android:layout_below="@id/txtRecommended"
-                    app:items="@{viewmodel.recommendedByFriends}" />
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_below="@id/cvCarousel"
+                    android:padding="10dp">
 
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/txtRecommended"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
+                        android:text="Recommended by friends"
+                        style="?android:attr/listSeparatorTextViewStyle" />
 
-            <RelativeLayout
-                android:id="@+id/rlPopular"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="10dp">
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rvRecommended"
+                        android:layout_width="match_parent"
+                        android:layout_marginRight="0dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_height="290dp"
+                        android:layout_below="@id/txtRecommended"
+                        app:items="@{viewmodel.recommendedByFriends}" />
 
-                <TextView
-                    android:id="@+id/txtPopular"
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlPopular"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentEnd="true"
-                    android:text="Popular"
-                    style="?android:attr/listSeparatorTextViewStyle" />
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rvPopular"
-                    android:layout_width="match_parent"
-                    android:layout_height="435px"
-                    android:layout_marginRight="0dp"
-                    android:layout_marginLeft="0dp"
-                    android:layout_below="@id/txtPopular"
-                    app:items="@{viewmodel.popular}" />
+                    <TextView
+                        android:id="@+id/txtPopular"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
+                        android:text="Popular"
+                        style="?android:attr/listSeparatorTextViewStyle" />
 
-            </RelativeLayout>
-        </LinearLayout>
-    </ScrollView>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rvPopular"
+                        android:layout_width="match_parent"
+                        android:layout_height="290dp"
+                        android:layout_marginRight="0dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_below="@id/txtPopular"
+                        app:items="@{viewmodel.popular}" />
+
+                </RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
+    </android.support.design.widget.CoordinatorLayout>
 </layout>
