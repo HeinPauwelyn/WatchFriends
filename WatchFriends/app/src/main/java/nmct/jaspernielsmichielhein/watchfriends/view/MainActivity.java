@@ -7,6 +7,7 @@ import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity
     private FloatingActionButton actionButton;
     private CollapsingToolbarLayout toolbarLayout;
     private AppBarLayout appBarLayout;
+    private View headerView;
+    private ImageView profilePicture;
 
     public void setTitle(String title){
         toolbarLayout.setTitle(title);
@@ -74,8 +77,20 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        headerView = navigationView.getHeaderView(0);
+        profilePicture = (ImageView) headerView.findViewById(R.id.profilePicture);
+
+        profilePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigate(ProfileFragment.newInstance(), "profileFragment", false);
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
+            }
+        });
 
         headerImage = (ImageView) findViewById(R.id.header_image);
+
         actionButton = (FloatingActionButton) findViewById(R.id.fab);
         toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
