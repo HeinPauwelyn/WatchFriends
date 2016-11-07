@@ -14,6 +14,11 @@ public interface IMovieDBService {
     @GET("tv/{series}?api_key=" + Contract.MOVIEDB_API_KEY + "&language=en-US")
     public Observable<Series> getSeries(@Path("series") int seriesId);
 
+    //SIMILAR SERIES
+    //https://api.themoviedb.org/3/tv/63174/similar?api_key=1447c9e70c5784fbe8a492a4d5f37c8b&language=en-US
+    @GET("tv/{series}/similar?api_key=" + Contract.MOVIEDB_API_KEY + "&language=en-US")
+    public Observable<SimilarSeriesResult> getSimilarSeries(@Path("series") int seriesId);
+
     //SEASON
     //https://api.themoviedb.org/3/tv/63174/season/2?api_key=1447c9e70c5784fbe8a492a4d5f37c8b&language=en-US
     @GET("tv/{series}/season/{season}?api_key=" + Contract.MOVIEDB_API_KEY + "&language=en-US")

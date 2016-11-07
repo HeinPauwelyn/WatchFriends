@@ -40,6 +40,9 @@ public class SeriesFragment extends Fragment {
         if (arguments != null) {
             series = arguments.getParcelable(ARG_series);
             series.initExtraFields();
+            if(series.getSeasons().get(0).getSeason_number() == 0) {
+                series.getSeasons().remove(0);
+            }
         }
     }
 

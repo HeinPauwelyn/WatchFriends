@@ -36,6 +36,6 @@
     <string name="genre">Genre:</string>
     <string name="created_by">Created by:</string>
     <string name="showed_on">Showed on:</string>
-    <string name="number_of_seasons">Seasons:.</string>
+    <string name="number_of_seasons">Seasons:</string>
     <string name="number_of_episodes">Episodes:</string>
 </resources>

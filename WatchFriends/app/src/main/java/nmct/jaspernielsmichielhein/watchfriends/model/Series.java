@@ -310,19 +310,33 @@ public class Series implements Parcelable {
 
     public void makeAll_creators() {
         String all_creators = "";
-        for (nmct.jaspernielsmichielhein.watchfriends.model.Creator creator : getCreated_by()) {
-            all_creators += creator.getName() + ", ";
+        ObservableArrayList<nmct.jaspernielsmichielhein.watchfriends.model.Creator> creators = getCreated_by();
+
+        if (creators.size() == 0) {
+            all_creators = "n.a.";
+        } else {
+            for (nmct.jaspernielsmichielhein.watchfriends.model.Creator creator : creators) {
+                all_creators += creator.getName() + ", ";
+            }
+            all_creators = all_creators.substring(0, all_creators.length() - 2);
         }
-        all_creators = all_creators.substring(0, all_creators.length() - 2);
+
         setAll_creators(all_creators);
     }
 
     public void makeAll_genres() {
         String all_genres = "";
-        for (Genre genre : getGenres()) {
-            all_genres += genre.getName() + ", ";
+        ObservableArrayList<Genre> genres = getGenres();
+
+        if (genres.size() == 0) {
+            all_genres = "n.a.";
+        } else {
+            for (Genre genre : getGenres()) {
+                all_genres += genre.getName() + ", ";
+            }
+            all_genres = all_genres.substring(0, all_genres.length() - 2);
         }
-        all_genres = all_genres.substring(0, all_genres.length() - 2);
+
         setAll_genres(all_genres);
     }
 
@@ -332,17 +346,23 @@ public class Series implements Parcelable {
 
     public void makeShowed_on() {
         String all_networks = "";
-        for (Network network : getNetworks()) {
-            all_networks += network.getName() + ", ";
+        ObservableArrayList<Network> networks = getNetworks();
+
+        if (networks.size() == 0 ) {
+            all_networks = "n.a.";
+        } else {
+            for (Network network : getNetworks()) {
+                all_networks += network.getName() + ", ";
+            }
+            all_networks = all_networks.substring(0, all_networks.length() - 2);
         }
-        all_networks = all_networks.substring(0, all_networks.length() - 2);
 
         int median_episode_time;
         int[] episode_times = getEpisode_run_time();
-        if (episode_times.length == 1) {
-            median_episode_time = episode_times[0];
-        } else if(episode_times.length == 0) {
+        if (episode_times.length == 0) {
             median_episode_time = 0;
+        } else if(episode_times.length == 1) {
+            median_episode_time = episode_times[0];
         } else {
             Arrays.sort(episode_times);
             int middle = ((episode_times.length) / 2);
@@ -363,6 +383,8 @@ public class Series implements Parcelable {
     public void makeTime_period() {
         if(getStatus().equals("Ended")) {
             setTime_period(getFirst_air_date().substring(0, 4) + " - " + getLast_air_date().substring(0, 3));
+        } else if (getStatus().equals("")) {
+            setTime_period(getFirst_air_date().substring(0, 4) + " - Unknown");
         } else {
             setTime_period(getFirst_air_date().substring(0, 4) + " - Continuing");
         }
