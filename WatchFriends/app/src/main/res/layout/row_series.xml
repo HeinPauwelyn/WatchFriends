@@ -13,17 +13,23 @@
         android:layout_height="match_parent"
         android:descendantFocusability="blocksDescendants"
         android:orientation="horizontal"
-        android:paddingBottom="10dp"
+        android:paddingBottom="1dp"
         android:paddingEnd="5dp"
         android:paddingStart="5dp"
-        android:paddingTop="10dp">
+        android:paddingTop="1dp">
+
+        <ImageView
+            android:id="@+id/imgPoster"
+            android:layout_width="40dp"
+            android:layout_height="80dp"
+            android:layout_marginEnd="20dp"/>
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="@{series.name}"
-            android:textStyle="bold" />
+            android:text="@{series.name}" />
 
     </LinearLayout>
 </layout>
