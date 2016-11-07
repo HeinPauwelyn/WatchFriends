@@ -18,10 +18,7 @@ import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentSeriesBindin
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 public class SeriesFragmentViewModel extends BaseObservable {
     private Interfaces.onHeaderChanged mListener;
@@ -107,39 +104,18 @@ public class SeriesFragmentViewModel extends BaseObservable {
 
     private void loadSimilarSeries() {
         setSimilarSeries(new ObservableArrayList<Series>());
-
-        ApiHelper.getMoviedbServiceInstance().getSimilarSeries(series.getId()).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .onErrorReturn(new Func1<Throwable, SimilarSeriesResult>() {
-                    @Override
-                    public SimilarSeriesResult call(Throwable throwable) {
-                        return null;
-                    }
-                })
-                .subscribe(new Action1<SimilarSeriesResult>() {
-                    @Override
-                    public void call(SimilarSeriesResult similarSeriesResult) {
-                        ObservableArrayList<Series> series = similarSeriesResult.getResults();
-                        if (series.size() != 0) {
-                            for (int i = 0; i < 5; i++) {
-                                ApiHelper.getMoviedbServiceInstance().getSeries(series.get(i).getId()).subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .onErrorReturn(new Func1<Throwable, Series>() {
-                                            @Override
-                                            public Series call(Throwable throwable) {
-                                                return null;
-                                            }
-                                        })
-                                        .subscribe(new Action1<Series>() {
-                                            @Override
-                                            public void call(Series returnedSeries) {
-                                                similarSeries.add(returnedSeries);
-                                                notifyPropertyChanged(BR.viewmodel);
-                                            }
-                                        });
-                            }
+        ApiHelper.subscribe(ApiHelper.getMoviedbServiceInstance().getSimilarSeries(series.getId()),
+            new Action1<SimilarSeriesResult>() {
+                @Override
+                public void call(SimilarSeriesResult similarSeriesResult) {
+                    ObservableArrayList<Series> series = similarSeriesResult.getResults();
+                    if (series.size() != 0) {
+                        for (int i = 0; i < 5; i++) {
+                            ApiHelper.subscribe(
+                            ApiHelper.getMoviedbServiceInstance().getSeries(series.get(i).getId()),
                         }
                     }
-                });
+                }
+            });
     }
 }

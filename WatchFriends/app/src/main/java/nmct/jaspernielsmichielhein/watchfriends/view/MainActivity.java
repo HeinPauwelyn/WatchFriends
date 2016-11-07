@@ -1,7 +1,6 @@
 package nmct.jaspernielsmichielhein.watchfriends.view;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.ComponentName;
@@ -12,9 +11,7 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -23,18 +20,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import nmct.jaspernielsmichielhein.watchfriends.BR;
 import nmct.jaspernielsmichielhein.watchfriends.R;
+import nmct.jaspernielsmichielhein.watchfriends.api.MovieDBService;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
-import nmct.jaspernielsmichielhein.watchfriends.model.Season;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -52,6 +49,7 @@ public class MainActivity extends AppCompatActivity
     private FloatingActionButton actionButton;
     private CollapsingToolbarLayout toolbarLayout;
     private AppBarLayout appBarLayout;
+    private MovieDBService movieDBService;
 
     public void setTitle(String title){
         toolbarLayout.setTitle(title);
@@ -85,6 +83,7 @@ public class MainActivity extends AppCompatActivity
         toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
 
+        movieDBService = ApiHelper.getMoviedbServiceInstance();
         collapseToolbar();
     }
 
@@ -144,6 +143,7 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -151,14 +151,13 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_watching:
                 break;
             case R.id.nav_watchlist:
-                ApiHelper.getMoviedbServiceInstance().getSeries(63174).subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Action1<Series>() {
-                            @Override
-                            public void call(Series returnedSeries) {
-                                navigate(SeriesFragment.newInstance(returnedSeries), "seasonFragment", true);
-                            }
-                        });
+                ApiHelper.subscribe(movieDBService.getSeries(63174),
+                    new Action1<Series>() {
+                        @Override
+                        public void call(Series series) {
+                            navigate(SeriesFragment.newInstance(series), "seasonFragment", true);
+                        }
+                    });
                 break;
             case R.id.nav_watched:
                 break;
@@ -184,6 +183,7 @@ public class MainActivity extends AppCompatActivity
 
     private void collapseToolbar(){
         appBarLayout.setExpanded(false, true);
+        actionButton.setVisibility(View.GONE);
         //todo ook disablen
     }
 
@@ -195,6 +195,7 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.commit();
         if(collapsing){
             appBarLayout.setExpanded(true, true);
+            actionButton.setVisibility(View.VISIBLE);
             //todo ook enablen
         }
         else{

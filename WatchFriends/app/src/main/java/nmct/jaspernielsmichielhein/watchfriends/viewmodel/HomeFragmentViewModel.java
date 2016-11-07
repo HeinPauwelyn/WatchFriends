@@ -49,22 +49,15 @@ public class HomeFragmentViewModel extends BaseObservable {
     }
 
     private void loadSeries(int id) {
-        ApiHelper.getMoviedbServiceInstance().getSeries(id).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .onErrorReturn(new Func1<Throwable, Series>() {
-                    @Override
-                    public Series call(Throwable throwable) {
-                        return null;
+        ApiHelper.subscribe(ApiHelper.getMoviedbServiceInstance().getSeries(id),
+            new Action1<Series>() {
+                @Override
+                public void call(Series series) {
+                    if (series != null) {
+                        recommendedByFriends.add(series);
+                        notifyPropertyChanged(BR.viewmodel);
                     }
-                })
-                .subscribe(new Action1<Series>() {
-                    @Override
-                    public void call(Series returnedSeries) {
-                        if (returnedSeries != null) {
-                            recommendedByFriends.add(returnedSeries);
-                            notifyPropertyChanged(BR.viewmodel);
-                        }
-                    }
-                });
+                }
+            });
     }
 }
