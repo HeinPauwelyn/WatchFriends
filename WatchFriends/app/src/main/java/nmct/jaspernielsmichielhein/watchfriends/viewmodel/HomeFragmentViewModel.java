@@ -58,7 +58,7 @@ public class HomeFragmentViewModel extends BaseObservable {
 
         int[] ids1 = {16148, 64095, 1402, 1399, 25778, 14506, 33088, 13687};
         int[] ids2 = {1399, 1396, 4614, 12908, 45, 456, 2190, 16148};
-        int[] ids3 = {8318, 57243, 1418, 2734, 34, 25384};
+        int[] ids3 = {8318, 57243, 1418, 2734, 63174, 25384};
 
         setRecommendedByFriends(new ObservableArrayList<Series>());
         setPopular(new ObservableArrayList<Series>());
