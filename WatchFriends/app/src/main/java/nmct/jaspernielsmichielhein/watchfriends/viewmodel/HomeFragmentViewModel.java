@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import com.android.databinding.library.baseAdapters.BR;
 
+import java.util.ArrayList;
+
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentHomeBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
 import nmct.jaspernielsmichielhein.watchfriends.model.MediaItem;
@@ -77,8 +79,6 @@ public class HomeFragmentViewModel extends BaseObservable {
                     .onErrorReturn(new Func1<Throwable, MediaPackage>() {
                         @Override
                         public MediaPackage call(Throwable throwable) {
-
-                            Toast.makeText(context, "Series with ID " + id + ": " + throwable.getMessage(), Toast.LENGTH_LONG).show();
                             return null;
                         }
                     })
@@ -107,8 +107,6 @@ public class HomeFragmentViewModel extends BaseObservable {
                     .onErrorReturn(new Func1<Throwable, Series>() {
                         @Override
                         public Series call(Throwable throwable) {
-
-                            Toast.makeText(context, "Series with ID " + id + ": " + throwable.getMessage(), Toast.LENGTH_LONG).show();
                             return null;
                         }
                     })

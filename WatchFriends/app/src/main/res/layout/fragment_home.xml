@@ -21,7 +21,7 @@
             <com.synnapps.carouselview.CarouselView
                 android:id="@+id/cvCarousel"
                 android:layout_width="match_parent"
-                android:layout_height="290dp"
+                android:layout_height="193dp"
                 app:fillColor="#FFFFFFFF"
                 app:pageColor="#00000000"
                 app:radius="6dp"
@@ -53,7 +53,7 @@
                     android:id="@+id/rvRecommended"
                     android:layout_width="match_parent"
                     android:layout_margin="0dp"
-                    android:layout_height="330dp"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/txtRecommended"
                     app:items="@{viewmodel.recommendedByFriends}" />
 
@@ -79,7 +79,7 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rvPopular"
                     android:layout_width="match_parent"
-                    android:layout_height="330dp"
+                    android:layout_height="wrap_content"
                     android:layout_margin="0dp"
                     android:layout_below="@id/txtPopular"
                     app:items="@{viewmodel.popular}" />
