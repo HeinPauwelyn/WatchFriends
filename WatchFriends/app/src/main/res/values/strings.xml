@@ -16,7 +16,7 @@
     <string name="title_activity_login">Sign in</string>
     <string name="studio_name">Cross Platform Apps - NMCT</string>
     <string name="developer_name">Hein Jasper Michiel Niels</string>
-    <string name="menu_search_hint">search series</string>
+    <string name="menu_search_hint">search seriesLists</string>
     <string name="episodeHeaderDescription">episodeHeader</string>
     <string name="air_date_icon_description">airDateIcon</string>
     <string name="overview_icon_description">overviewIcon</string>

@@ -1,7 +1,6 @@
 package nmct.jaspernielsmichielhein.watchfriends.view;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,12 +13,9 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.ImageListener;
-import com.synnapps.carouselview.ViewListener;
 
 
 import nmct.jaspernielsmichielhein.watchfriends.model.MediaItem;
-import nmct.jaspernielsmichielhein.watchfriends.model.MediaPackage;
-import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentHomeBinding;
 import nmct.jaspernielsmichielhein.watchfriends.viewmodel.HomeFragmentViewModel;
@@ -53,7 +49,7 @@ public class HomeFragment extends Fragment implements HomeFragmentViewModel.ISer
     @Override
     public void onStart() {
         super.onStart();
-        homeFragmentViewModel.generateFakeData();
+        homeFragmentViewModel.getData();
     }
 
     @Override

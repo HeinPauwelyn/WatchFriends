@@ -7,6 +7,7 @@ import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
 import nmct.jaspernielsmichielhein.watchfriends.model.MediaPackage;
 import nmct.jaspernielsmichielhein.watchfriends.model.Season;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
+import nmct.jaspernielsmichielhein.watchfriends.model.SeriesList;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import rx.Observable;
@@ -29,4 +30,7 @@ public interface IMovieDBService {
 
     @GET("tv/{series}/images?api_key=" + Contract.MOVIEDB_API_KEY)
     Observable<MediaPackage> getMediaSeries(@Path("series") int seriesId);
+
+    @GET("list/{id}?api_key=" + Contract.MOVIEDB_API_KEY)
+    Observable<SeriesList> getSeriesList(@Path("id") int id);
 }

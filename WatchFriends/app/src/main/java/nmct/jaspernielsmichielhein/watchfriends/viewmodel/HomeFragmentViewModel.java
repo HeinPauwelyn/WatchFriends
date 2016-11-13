@@ -4,17 +4,14 @@ import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
-import android.widget.Toast;
-
-import com.android.databinding.library.baseAdapters.BR;
-
-import java.util.ArrayList;
 
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentHomeBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
 import nmct.jaspernielsmichielhein.watchfriends.model.MediaItem;
-import nmct.jaspernielsmichielhein.watchfriends.model.MediaPackage;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
+import nmct.jaspernielsmichielhein.watchfriends.model.SeriesList;
+import nmct.jaspernielsmichielhein.watchfriends.model.SeriesListData;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -54,73 +51,44 @@ public class HomeFragmentViewModel extends BaseObservable {
         seriesAddedToCarouselListener = listener;
     }
 
-    public void generateFakeData() {
-        final HomeFragmentViewModel that = this;
-        fragmentHomeBinding.setViewmodel(that);
+    public void getData() {
 
-        int[] ids1 = {16148, 64095, 1402, 1399, 25778, 14506, 33088, 13687};
-        int[] ids2 = {1399, 1396, 4614, 12908, 45, 456, 2190, 16148};
-        int[] ids3 = {8318, 57243, 1418, 2734, 63174, 25384};
+        ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getLists().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .onErrorReturn(new Func1<Throwable, SeriesListData>() {
+                    @Override
+                    public SeriesListData call(Throwable throwable) {
+                        return null;
+                    }
+                })
+                .subscribe(new Action1<SeriesListData>() {
+                    @Override
+                    public void call(SeriesListData returndList) {
 
-        setRecommendedByFriends(new ObservableArrayList<Series>());
-        setPopular(new ObservableArrayList<Series>());
-        setCarousel(new ObservableArrayList<MediaItem>());
-
-        loadSeries(ids1, recommendedByFriends);
-        loadSeries(ids2, popular);
-        loadMedia(ids3, carousel);
+                        for (int id : returndList.getFeatured()) {
+                            loadSeriesList(id);
+                        }
+                    }
+                });
     }
 
-    private void loadMedia(int[] ids, final ObservableArrayList<MediaItem> seriesToLoad) {
+    private void loadSeriesList(int id) {
 
-        for(final int id : ids) {
-            ApiHelper.getMoviedbServiceInstance().getMediaSeries(id).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .onErrorReturn(new Func1<Throwable, MediaPackage>() {
-                        @Override
-                        public MediaPackage call(Throwable throwable) {
-                            return null;
-                        }
-                    })
-                    .subscribe(new Action1<MediaPackage>() {
-                        @Override
-                        public void call(MediaPackage returnedMedia) {
-                            if (returnedMedia != null) {
+        ApiHelper.getMoviedbServiceInstance().getSeriesList(id).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .onErrorReturn(new Func1<Throwable, SeriesList>() {
+                    @Override
+                    public SeriesList call(Throwable throwable) {
+                        return null;
+                    }
+                })
+                .subscribe(new Action1<SeriesList>() {
+                    @Override
+                    public void call(SeriesList returndSeries) {
 
-                                if (returnedMedia.getBackdrops().size() != 0) {
-                                    seriesToLoad.add(returnedMedia.getBackdrops().get(0));
-                                    notifyPropertyChanged(BR.viewmodel);
-                                    seriesAddedToCarouselListener.updateCarousel(carousel);
-                                }
-                            }
-                        }
-                    });
-        }
-    }
 
-    private void loadSeries(int[] ids, final ObservableArrayList<Series> seriesToLoad) {
-
-        for(final int id : ids) {
-
-            ApiHelper.getMoviedbServiceInstance().getSeries(id).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .onErrorReturn(new Func1<Throwable, Series>() {
-                        @Override
-                        public Series call(Throwable throwable) {
-                            return null;
-                        }
-                    })
-                    .subscribe(new Action1<Series>() {
-                        @Override
-                        public void call(Series returnedSeries) {
-                            if (returnedSeries != null) {
-
-                                seriesToLoad.add(returnedSeries);
-                                notifyPropertyChanged(BR.viewmodel);
-                            }
-                        }
-                    });
-        }
+                    }
+                });
     }
 
     public interface ISeriesAddedToCarouselListener {
