@@ -1,16 +1,33 @@
 package nmct.jaspernielsmichielhein.watchfriends.model;
 
-import android.databinding.BaseObservable;
+import android.app.Activity;
+import android.content.Context;
 import android.databinding.ObservableArrayList;
+import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.widget.ImageView;
 
-public class Series extends BaseObservable {
+import com.squareup.picasso.Picasso;
+
+import nmct.jaspernielsmichielhein.watchfriends.R;
+import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;
+
+import java.util.Arrays;
+
+import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;
+
+public class Series implements Parcelable {
+    private String all_creators;
+    private String all_genres;
     private String backdrop_path = "";
-    private ObservableArrayList<Creator> created_by = new ObservableArrayList<Creator>();
+    private ObservableArrayList<nmct.jaspernielsmichielhein.watchfriends.model.Creator> created_by = new ObservableArrayList<nmct.jaspernielsmichielhein.watchfriends.model.Creator>();
     private int[] episode_run_time = new int[0];
     private String first_air_date = "";
     private ObservableArrayList<Genre> genres = new ObservableArrayList<Genre>();
     private String homepage = "";
     private int id = 0;
+    private Uri image_uri;
     private boolean in_production = false;
     private String[] languages = new String[0];
     private String last_air_date = "";
@@ -25,11 +42,30 @@ public class Series extends BaseObservable {
     private double popularity = 0;
     private String poster_path = "";
     private ObservableArrayList<Company> production_companies = new ObservableArrayList<Company>();
+    private float rating = 0;
     private ObservableArrayList<Season> seasons = new ObservableArrayList<Season>();
+    private String showed_on = "";
     private String status = "";
+    private String time_period = "";
     private String type = "";
     private double vote_average = 0;
     private int vote_count = 0;
+
+    public String getAll_creators() {
+        return all_creators;
+    }
+
+    public void setAll_creators(String all_creators) {
+        this.all_creators = all_creators;
+    }
+
+    public String getAll_genres() {
+        return all_genres;
+    }
+
+    public void setAll_genres(String all_genres) {
+        this.all_genres = all_genres;
+    }
 
     public String getBackdrop_path() {
         return backdrop_path;
@@ -39,11 +75,11 @@ public class Series extends BaseObservable {
         this.backdrop_path = backdrop_path;
     }
 
-    public ObservableArrayList<Creator> getCreated_by() {
+    public ObservableArrayList<nmct.jaspernielsmichielhein.watchfriends.model.Creator> getCreated_by() {
         return created_by;
     }
 
-    public void setCreated_by(ObservableArrayList<Creator> created_by) {
+    public void setCreated_by(ObservableArrayList<nmct.jaspernielsmichielhein.watchfriends.model.Creator> created_by) {
         this.created_by = created_by;
     }
 
@@ -85,6 +121,14 @@ public class Series extends BaseObservable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Uri getImage_uri() {
+        return image_uri;
+    }
+
+    public void setImage_uri(Uri image_uri) {
+        this.image_uri = image_uri;
     }
 
     public boolean isIn_production() {
@@ -187,6 +231,15 @@ public class Series extends BaseObservable {
         return poster_path;
     }
 
+    public String getFullPoster_path() {
+
+        if (poster_path != null && poster_path != "") {
+            return Contract.MOVIEDB_IMAGE_BASE_URL + poster_path;
+        }
+
+        return "https://www.themoviedb.org/assets/e2dd052f141e33392eb749aab2414ec0/images/no-poster-w300_and_h450_bestv2-v2.png";
+    }
+
     public void setPoster_path(String poster_path) {
         this.poster_path = poster_path;
     }
@@ -199,6 +252,14 @@ public class Series extends BaseObservable {
         this.production_companies = production_companies;
     }
 
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
     public ObservableArrayList<Season> getSeasons() {
         return seasons;
     }
@@ -207,12 +268,28 @@ public class Series extends BaseObservable {
         this.seasons = seasons;
     }
 
+    public String getShowed_on() {
+        return showed_on;
+    }
+
+    public void setShowed_on(String showed_on) {
+        this.showed_on = showed_on;
+    }
+
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getTime_period() {
+        return time_period;
+    }
+
+    public void setTime_period(String time_period) {
+        this.time_period = time_period;
     }
 
     public String getType() {
@@ -237,5 +314,181 @@ public class Series extends BaseObservable {
 
     public void setVote_count(int vote_count) {
         this.vote_count = vote_count;
+    }
+
+    public void initExtraFields() {
+        makeAll_creators();
+        makeAll_genres();
+        makeImage_uri();
+        makeShowed_on();
+        makeTime_period();
+        setRating((float) getVote_average() / 2);
+    }
+
+    public void makeAll_creators() {
+        String all_creators = "";
+        ObservableArrayList<nmct.jaspernielsmichielhein.watchfriends.model.Creator> creators = getCreated_by();
+
+        if (creators.size() == 0) {
+            all_creators = "n.a.";
+        } else {
+            for (nmct.jaspernielsmichielhein.watchfriends.model.Creator creator : creators) {
+                all_creators += creator.getName() + ", ";
+            }
+            all_creators = all_creators.substring(0, all_creators.length() - 2);
+        }
+
+        setAll_creators(all_creators);
+    }
+
+    public void makeAll_genres() {
+        String all_genres = "";
+        ObservableArrayList<Genre> genres = getGenres();
+
+        if (genres.size() == 0) {
+            all_genres = "n.a.";
+        } else {
+            for (Genre genre : getGenres()) {
+                all_genres += genre.getName() + ", ";
+            }
+            all_genres = all_genres.substring(0, all_genres.length() - 2);
+        }
+
+        setAll_genres(all_genres);
+    }
+
+    public void makeImage_uri() {
+        setImage_uri(Uri.parse(Contract.MOVIEDB_IMAGE_BASE_URL + getBackdrop_path()));
+    }
+
+    public void makeShowed_on() {
+        String all_networks = "";
+        ObservableArrayList<Network> networks = getNetworks();
+
+        if (networks.size() == 0 ) {
+            all_networks = "n.a.";
+        } else {
+            for (Network network : getNetworks()) {
+                all_networks += network.getName() + ", ";
+            }
+            all_networks = all_networks.substring(0, all_networks.length() - 2);
+        }
+
+        int median_episode_time;
+        int[] episode_times = getEpisode_run_time();
+        if (episode_times.length == 0) {
+            median_episode_time = 0;
+        } else if(episode_times.length == 1) {
+            median_episode_time = episode_times[0];
+        } else {
+            Arrays.sort(episode_times);
+            int middle = ((episode_times.length) / 2);
+            if (episode_times.length % 2 == 0) {
+                int medianA = episode_times[middle];
+                int medianB = episode_times[middle - 1];
+                median_episode_time = (int) Math.ceil((medianA + medianB) / 2);
+            } else {
+                median_episode_time = episode_times[middle + 1];
+            }
+        }
+
+        String showed_on = all_networks + " (" + median_episode_time + " min/ep)";
+
+        setShowed_on(showed_on);
+    }
+
+    public void makeTime_period() {
+        if(getStatus().equals("Ended")) {
+            setTime_period(getFirst_air_date().substring(0, 4) + " - " + getLast_air_date().substring(0, 3));
+        } else if (getStatus().equals("")) {
+            setTime_period(getFirst_air_date().substring(0, 4) + " - Unknown");
+        } else {
+            setTime_period(getFirst_air_date().substring(0, 4) + " - Continuing");
+        }
+    }
+
+    // PARCELABLE
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.getBackdrop_path());
+        dest.writeTypedList(this.getCreated_by());
+        dest.writeIntArray(this.getEpisode_run_time());
+        dest.writeString(this.getFirst_air_date());
+        dest.writeTypedList(this.getGenres());
+        dest.writeString(this.getHomepage());
+        dest.writeInt(this.getId());
+        dest.writeValue(this.isIn_production());
+        dest.writeStringArray(this.getLanguages());
+        dest.writeString(this.getLast_air_date());
+        dest.writeString(this.getName());
+        dest.writeTypedList(this.getNetworks());
+        dest.writeInt(this.getNumber_of_episodes());
+        dest.writeInt(this.getNumber_of_seasons());
+        dest.writeStringArray(this.getOrigin_country());
+        dest.writeString(this.getOriginal_language());
+        dest.writeString(this.getOriginal_name());
+        dest.writeString(this.getName());
+        dest.writeString(this.getOverview());
+        dest.writeDouble(this.getPopularity());
+        dest.writeString(this.getPoster_path());
+        dest.writeTypedList(this.getProduction_companies());
+        dest.writeTypedList(this.getSeasons());
+        dest.writeString(this.getStatus());
+        dest.writeString(this.getType());
+        dest.writeDouble(this.getVote_average());
+        dest.writeInt(this.getVote_count());
+    }
+
+    public static final Creator<Series> CREATOR = new Creator<Series>() {
+        @Override
+        public Series createFromParcel(Parcel in) {
+            return new Series(in);
+        }
+
+        @Override
+        public Series[] newArray(int size) {
+            return new Series[size];
+        }
+    };
+
+    protected Series(Parcel in) {
+        created_by = new ObservableArrayList<nmct.jaspernielsmichielhein.watchfriends.model.Creator>();
+        genres = new ObservableArrayList<Genre>();
+        networks = new ObservableArrayList<Network>();
+        production_companies = new ObservableArrayList<Company>();
+        seasons = new ObservableArrayList<Season>();
+
+        setBackdrop_path(in.readString());
+        in.readTypedList(created_by, nmct.jaspernielsmichielhein.watchfriends.model.Creator.CREATOR);
+        setEpisode_run_time(in.createIntArray());
+        setFirst_air_date(in.readString());
+        in.readTypedList(genres, Genre.CREATOR);
+        setHomepage(in.readString());
+        setId(in.readInt());
+        setIn_production(in.readByte() != 0);
+        setLanguages(in.createStringArray());
+        setLast_air_date(in.readString());
+        setName(in.readString());
+        in.readTypedList(networks, Network.CREATOR);
+        setNumber_of_episodes(in.readInt());
+        setNumber_of_seasons(in.readInt());
+        setOrigin_country(in.createStringArray());
+        setOriginal_language(in.readString());
+        setOriginal_name(in.readString());
+        setName(in.readString());
+        setOverview(in.readString());
+        setPopularity(in.readDouble());
+        setPoster_path(in.readString());
+        in.readTypedList(production_companies, Company.CREATOR);
+        in.readTypedList(seasons, Season.CREATOR);
+        setStatus(in.readString());
+        setType(in.readString());
+        setVote_average(in.readDouble());
+        setVote_count(in.readInt());
     }
 }

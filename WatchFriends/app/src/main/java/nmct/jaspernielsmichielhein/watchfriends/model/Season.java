@@ -2,8 +2,13 @@ package nmct.jaspernielsmichielhein.watchfriends.model;
 
 import android.databinding.BaseObservable;
 import android.databinding.ObservableArrayList;
+import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Season extends BaseObservable {
+import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;
+
+public class Season extends BaseObservable implements Parcelable {
     private String _id = "";
     private String air_date = "";
     private ObservableArrayList<Episode> episodes = new ObservableArrayList<Episode>();
@@ -84,5 +89,50 @@ public class Season extends BaseObservable {
 
     public void setSeason_number(int season_number) {
         this.season_number = season_number;
+    }
+
+    public Uri getImage_uri() {
+        return Uri.parse(Contract.MOVIEDB_IMAGE_BASE_URL + getPoster_path());
+    }
+
+    // PARCELABLE
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.get_id());
+        dest.writeString(this.getAir_date());
+        dest.writeInt(this.getEpisode_count());
+        dest.writeInt(this.getId());
+        dest.writeString(this.getOverview());
+        dest.writeString(this.getName());
+        dest.writeString(this.getPoster_path());
+        dest.writeInt(this.getSeason_number());
+    }
+
+    public static final Creator<Season> CREATOR = new Creator<Season>() {
+        @Override
+        public Season createFromParcel(Parcel in) {
+            return new Season(in);
+        }
+
+        @Override
+        public Season[] newArray(int size) {
+            return new Season[size];
+        }
+    };
+
+    protected Season(Parcel in) {
+        set_id(in.readString());
+        setAir_date(in.readString());
+        setEpisode_count(in.readInt());
+        setId(in.readInt());
+        setOverview(in.readString());
+        setName(in.readString());
+        setPoster_path(in.readString());
+        setSeason_number(in.readInt());
     }
 }
