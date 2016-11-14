@@ -5,10 +5,13 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
 
+import com.android.databinding.library.baseAdapters.BR;
+
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentHomeBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
 import nmct.jaspernielsmichielhein.watchfriends.model.MediaItem;
+import nmct.jaspernielsmichielhein.watchfriends.model.MediaPackage;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import nmct.jaspernielsmichielhein.watchfriends.model.SeriesList;
 import nmct.jaspernielsmichielhein.watchfriends.model.SeriesListData;
@@ -89,6 +92,25 @@ public class HomeFragmentViewModel extends BaseObservable {
                     }
                 });
     }
+
+
+    /*private void loadMedia(int[] ids, final ObservableArrayList<MediaItem> seriesToLoad) {
+        for(final int id : ids) {
+            ApiHelper.subscribe(ApiHelper.getMoviedbServiceInstance().getMediaSeries(id),
+                new Action1<MediaPackage>() {
+                    @Override
+                    public void call(MediaPackage returnedMedia) {
+                        if (returnedMedia != null) {
+                            if (returnedMedia.getBackdrops().size() != 0) {
+                                seriesToLoad.add(returnedMedia.getBackdrops().get(0));
+                                notifyPropertyChanged(BR.viewmodel);
+                                seriesAddedToCarouselListener.updateCarousel(carousel);
+                            }
+                        }
+                    }
+                });
+        }
+    }*/
 
     public interface ISeriesAddedToCarouselListener {
 
