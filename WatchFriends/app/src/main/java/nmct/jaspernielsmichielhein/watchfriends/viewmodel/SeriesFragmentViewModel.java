@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import com.android.databinding.library.baseAdapters.BR;
+import com.squareup.picasso.Picasso;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.api.SimilarSeriesResult;
@@ -21,14 +22,14 @@ import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import rx.functions.Action1;
 
 public class SeriesFragmentViewModel extends BaseObservable {
-    private Interfaces.onHeaderChanged mListener;
+    private Interfaces.headerChangedListener listener;
 
     private Context context;
     private FragmentSeriesBinding fragmentSeriesBinding;
 
-    @Bindable
     private Series series = null;
 
+    @Bindable
     public Series getSeries() {
         return series;
     }
@@ -54,10 +55,10 @@ public class SeriesFragmentViewModel extends BaseObservable {
         this.context = context;
         this.fragmentSeriesBinding = fragmentSeriesBinding;
         this.series = series;
-        if (context instanceof Interfaces.onHeaderChanged) {
-            mListener = (Interfaces.onHeaderChanged) context;
+        if (context instanceof Interfaces.headerChangedListener) {
+            listener = (Interfaces.headerChangedListener) context;
         } else {
-            throw new RuntimeException(context.toString() + " must implement onHeaderChanged");
+            throw new RuntimeException(context.toString() + " must implement headerChangedListener");
         }
     }
 
@@ -69,10 +70,10 @@ public class SeriesFragmentViewModel extends BaseObservable {
     }
 
     private void setHeader() {
-        mListener.onSetTitle(series.getName());
-        mListener.onSetImage(series.getImage_uri());
-
-        final FloatingActionButton fab = mListener.onGetActionButton();
+        listener.expandToolbar();
+        listener.setTitle(series.getName());
+        Picasso.with(context).load(series.getImage_uri()).into(listener.getHeaderImage());
+        final FloatingActionButton fab = listener.getActionButton();
         initFloatingActionButton(fab);
     }
 

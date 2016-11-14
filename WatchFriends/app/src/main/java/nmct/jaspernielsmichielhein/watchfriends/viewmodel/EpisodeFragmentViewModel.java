@@ -9,6 +9,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 
+import com.squareup.picasso.Picasso;
+
 import nmct.jaspernielsmichielhein.watchfriends.BR;
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentEpisodeBinding;
@@ -16,14 +18,14 @@ import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
 
 public class EpisodeFragmentViewModel extends BaseObservable {
-    private Interfaces.onHeaderChanged mListener;
+    private Interfaces.headerChangedListener listener;
 
     private Context context;
     private FragmentEpisodeBinding fragmentEpisodeBinding;
 
-    @Bindable
     private Episode episode = null;
 
+    @Bindable
     public Episode getEpisode() {
         return episode;
     }
@@ -38,10 +40,10 @@ public class EpisodeFragmentViewModel extends BaseObservable {
         this.context = context;
         this.fragmentEpisodeBinding = fragmentEpisodeBinding;
         this.episode = episode;
-        if (context instanceof Interfaces.onHeaderChanged) {
-            mListener = (Interfaces.onHeaderChanged) context;
+        if (context instanceof Interfaces.headerChangedListener) {
+            listener = (Interfaces.headerChangedListener) context;
         } else {
-            throw new RuntimeException(context.toString() + " must implement onHeaderChanged");
+            throw new RuntimeException(context.toString() + " must implement headerChangedListener");
         }
     }
 
@@ -52,10 +54,10 @@ public class EpisodeFragmentViewModel extends BaseObservable {
     }
 
     private void setHeader() {
-        mListener.onSetTitle(episode.getShortcode());
-        mListener.onSetImage(episode.getImage_uri());
-
-        final FloatingActionButton fab = mListener.onGetActionButton();
+        listener.expandToolbar();
+        listener.setTitle(episode.getShortcode());
+        Picasso.with(context).load(episode.getImage_uri()).into(listener.getHeaderImage());
+        final FloatingActionButton fab = listener.getActionButton();
         initFloatingActionButton(fab);
     }
 
