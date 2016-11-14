@@ -51,11 +51,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        if(AuthHelper.isUserLoggedIn(this)) {
-            finish();
-            showMainActivity();
-        }
-
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         mGoogleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this, this).addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions).build();
 
@@ -124,13 +119,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         setResult(RESULT_OK, intent);
         finish();
-
-        showMainActivity();
-    }
-
-    private void showMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
     }
 
     @Override
