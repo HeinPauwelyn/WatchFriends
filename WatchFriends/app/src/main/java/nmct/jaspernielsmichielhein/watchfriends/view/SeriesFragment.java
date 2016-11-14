@@ -20,9 +20,7 @@ public class SeriesFragment extends Fragment {
 
     private Series series = null;
 
-    public SeriesFragment() {
-        // Required empty public constructor
-    }
+    public SeriesFragment() { }
 
     public static SeriesFragment newInstance(Series series) {
         Bundle args = new Bundle();
