@@ -97,7 +97,6 @@ public class HomeFragmentViewModel extends BaseObservable {
                     });
         }
     }
-
     private void loadSeries(int[] ids, final ObservableArrayList<Series> seriesToLoad) {
 
         for(final int id : ids) {
