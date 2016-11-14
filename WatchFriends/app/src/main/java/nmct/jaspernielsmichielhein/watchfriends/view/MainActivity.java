@@ -1,7 +1,6 @@
 package nmct.jaspernielsmichielhein.watchfriends.view;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.ComponentName;
@@ -13,9 +12,7 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -24,16 +21,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import rx.functions.Action1;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
+import nmct.jaspernielsmichielhein.watchfriends.api.MovieDBService;
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
-import nmct.jaspernielsmichielhein.watchfriends.model.Season;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 
 public class MainActivity extends AppCompatActivity
@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity
         SearchView.OnQueryTextListener,
         Interfaces.onHeaderChanged,
         Interfaces.onSeriesSelectedListener,
+        Interfaces.onSeasonSelectedListener,
         Interfaces.onEpisodeSelectedListener {
-
 
     private ImageView headerImage;
     private FloatingActionButton actionButton;
@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity
     private AppBarLayout appBarLayout;
     private View headerView;
     private ImageView profilePicture;
+    private MovieDBService movieDBService;
 
     public void setTitle(String title){
         toolbarLayout.setTitle(title);
@@ -95,6 +96,7 @@ public class MainActivity extends AppCompatActivity
         toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
 
+        movieDBService = ApiHelper.getMoviedbServiceInstance();
         //collapseToolbar();
     }
 
@@ -154,6 +156,7 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -161,7 +164,13 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_watching:
                 break;
             case R.id.nav_watchlist:
-                navigate(SeasonFragment.newInstance("The Flash", 60735, 2), "seasonFragment", true);
+                ApiHelper.subscribe(movieDBService.getSeries(63174),
+                        new Action1<Series>() {
+                            @Override
+                            public void call(Series series) {
+                                navigate(SeriesFragment.newInstance(series), "seasonFragment", true);
+                            }
+                        });
                 break;
             case R.id.nav_watched:
                 break;
@@ -187,6 +196,7 @@ public class MainActivity extends AppCompatActivity
 
     private void collapseToolbar(){
         appBarLayout.setExpanded(false, true);
+        actionButton.setVisibility(View.GONE);
         //todo ook disablen
     }
 
@@ -194,9 +204,11 @@ public class MainActivity extends AppCompatActivity
     private void navigate(Fragment fragment, String tag, boolean collapsing){
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_frame, fragment, tag);
+        fragmentTransaction.addToBackStack(tag);
         fragmentTransaction.commit();
         if(collapsing){
             appBarLayout.setExpanded(true, true);
+            actionButton.setVisibility(View.VISIBLE);
             //todo ook enablen
         }
         else{
@@ -210,6 +222,8 @@ public class MainActivity extends AppCompatActivity
         navigate(SearchFragment.newInstance(query), "searchFragment", false);
         return false;
     }
+
+    //todo search back button -> navigate(HomeFragment)
 
     @Override
     public boolean onQueryTextChange(String newText) {
@@ -232,13 +246,18 @@ public class MainActivity extends AppCompatActivity
         return getActionButton();
     }
 
+    @Override
     public void onSeriesSelected(Series series) {
-
+        navigate(SeriesFragment.newInstance(series), "seriesFragment", true);
     }
 
+    @Override
+    public void onSeasonSelected(String seriesName, int seriesId, int seasonNumber) {
+        navigate(SeasonFragment.newInstance(seriesName, seriesId, seasonNumber), "seasonFragment", true);
+    }
+
+    @Override
     public void onEpisodeSelected(Episode episode) {
         navigate(EpisodeFragment.newInstance(episode), "episodeFragment", true);
     }
-    //todo search back button -> navigate(HomeFragment)
-
 }
