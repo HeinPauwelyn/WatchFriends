@@ -29,4 +29,5 @@
     <string name="episode_watched">Episode watched</string>
     <string name="recommended_by_friends">Recommended by friends</string>
     <string name="popular">Popular</string>
+    <string name="profile_picture">Profile Picture</string>
 </resources>
