@@ -1,16 +1,19 @@
 package nmct.jaspernielsmichielhein.watchfriends.helper;
 
 import nmct.jaspernielsmichielhein.watchfriends.api.MovieDBService;
-import nmct.jaspernielsmichielhein.watchfriends.api.WatchFriendsService;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ApiWatchFriendsHelper extends ApiHelper {
+/**
+ * Created by hein_ on 14-Nov-16.
+ */
+
+public class ApiMovieDbHelper extends ApiHelper {
 
     private static Retrofit RETROFIT_INSTANCE;
-    private static WatchFriendsService WATCHFRIENDS_SERVICE_INSTANCE;
+    private static MovieDBService MOVIEDB_SERVICE_INSTANCE;
 
     private static Object lock_retrofit = new Object();
     private static Object lock_service = new Object();
@@ -21,21 +24,21 @@ public class ApiWatchFriendsHelper extends ApiHelper {
                 if (RETROFIT_INSTANCE == null) {
                     OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(new LoggingInterceptor()).build();
 
-                    RETROFIT_INSTANCE = new Retrofit.Builder().baseUrl(Contract.WATCHFRIENDS_BASE_URL).addCallAdapterFactory(RxJavaCallAdapterFactory.create()).client(okHttpClient).addConverterFactory(GsonConverterFactory.create()).build();
+                    RETROFIT_INSTANCE = new Retrofit.Builder().baseUrl(Contract.MOVIEDB_BASE_URL).addCallAdapterFactory(RxJavaCallAdapterFactory.create()).client(okHttpClient).addConverterFactory(GsonConverterFactory.create()).build();
                 }
             }
         }
         return RETROFIT_INSTANCE;
     }
 
-    public static WatchFriendsService getWatchFriendsServiceInstance() {
-        if (WATCHFRIENDS_SERVICE_INSTANCE == null) {
+    public static MovieDBService getMoviedbServiceInstance() {
+        if (MOVIEDB_SERVICE_INSTANCE == null) {
             synchronized (lock_service) {
-                if (WATCHFRIENDS_SERVICE_INSTANCE == null) {
-                    WATCHFRIENDS_SERVICE_INSTANCE = getRetrofitInstance().create(WatchFriendsService.class);
+                if (MOVIEDB_SERVICE_INSTANCE == null) {
+                    MOVIEDB_SERVICE_INSTANCE = getRetrofitInstance().create(MovieDBService.class);
                 }
             }
         }
-        return WATCHFRIENDS_SERVICE_INSTANCE;
+        return MOVIEDB_SERVICE_INSTANCE;
     }
 }

@@ -16,6 +16,7 @@ import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.api.SimilarSeriesResult;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentSeriesBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import rx.functions.Action1;
@@ -104,7 +105,7 @@ public class SeriesFragmentViewModel extends BaseObservable {
 
     private void loadSimilarSeries() {
         setSimilarSeries(new ObservableArrayList<Series>());
-        ApiHelper.subscribe(ApiHelper.getMoviedbServiceInstance().getSimilarSeries(series.getId()),
+        ApiHelper.subscribe(ApiMovieDbHelper.getMoviedbServiceInstance().getSimilarSeries(series.getId()),
             new Action1<SimilarSeriesResult>() {
                 @Override
                 public void call(SimilarSeriesResult similarSeriesResult) {
@@ -112,7 +113,7 @@ public class SeriesFragmentViewModel extends BaseObservable {
                     if (series.size() != 0) {
                         for (int i = 0; i < 5; i++) {
                             ApiHelper.subscribe(
-                            ApiHelper.getMoviedbServiceInstance().getSeries(series.get(i).getId()),
+                                    ApiMovieDbHelper.getMoviedbServiceInstance().getSeries(series.get(i).getId()),
                                 new Action1<Series>() {
                                     @Override
                                     public void call(Series series) {

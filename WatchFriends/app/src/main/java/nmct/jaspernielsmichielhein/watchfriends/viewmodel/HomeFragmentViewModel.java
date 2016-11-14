@@ -9,6 +9,7 @@ import com.android.databinding.library.baseAdapters.BR;
 
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentHomeBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
 import nmct.jaspernielsmichielhein.watchfriends.model.MediaItem;
 import nmct.jaspernielsmichielhein.watchfriends.model.MediaPackage;
@@ -25,22 +26,16 @@ public class HomeFragmentViewModel extends BaseObservable {
     private ISeriesAddedToCarouselListener seriesAddedToCarouselListener;
     private Context context;
     private FragmentHomeBinding fragmentHomeBinding;
-    @Bindable private ObservableArrayList<Series> recommendedByFriends = null;
-    @Bindable private ObservableArrayList<Series> popular = null;
+    @Bindable private ObservableArrayList<SeriesList> items = null;
     @Bindable private ObservableArrayList<MediaItem> carousel = null;
 
-    public ObservableArrayList<Series> getRecommendedByFriends() {
-        return recommendedByFriends;
+    public ObservableArrayList<SeriesList> getItems() {
+        return items;
     }
-    public void setRecommendedByFriends(ObservableArrayList<Series> recommendedByFriends) {
-        this.recommendedByFriends = recommendedByFriends;
+    public void setItems(ObservableArrayList<SeriesList> items) {
+        this.items = items;
     }
-    public ObservableArrayList<Series> getPopular() {
-        return popular;
-    }
-    public void setPopular(ObservableArrayList<Series> popular) {
-        this.popular = popular;
-    }
+
     public ObservableArrayList<MediaItem> getCarousel() {
         return carousel;
     }
@@ -56,41 +51,23 @@ public class HomeFragmentViewModel extends BaseObservable {
 
     public void getData() {
 
-        ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getLists().subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .onErrorReturn(new Func1<Throwable, SeriesListData>() {
-                    @Override
-                    public SeriesListData call(Throwable throwable) {
-                        return null;
-                    }
-                })
-                .subscribe(new Action1<SeriesListData>() {
-                    @Override
-                    public void call(SeriesListData returndList) {
-
-                        for (int id : returndList.getFeatured()) {
-                            loadSeriesList(id);
-                        }
-                    }
-                });
+        ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getLists(), new Action1<SeriesListData>() {
+            @Override
+            public void call(SeriesListData seriesListData) {
+                for (int id : seriesListData.getFeatured()) {
+                    loadSeriesList(id);
+                }
+            }
+        });
     }
     private void loadSeriesList(int id) {
 
-        ApiHelper.getMoviedbServiceInstance().getSeriesList(id).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .onErrorReturn(new Func1<Throwable, SeriesList>() {
-                    @Override
-                    public SeriesList call(Throwable throwable) {
-                        return null;
-                    }
-                })
-                .subscribe(new Action1<SeriesList>() {
-                    @Override
-                    public void call(SeriesList returndSeries) {
+        ApiHelper.subscribe(ApiMovieDbHelper.getMoviedbServiceInstance().getSeriesList(id), new Action1<SeriesList>() {
+            @Override
+            public void call(SeriesList seriesList) {
 
-
-                    }
-                });
+            }
+        });
     }
 
 
