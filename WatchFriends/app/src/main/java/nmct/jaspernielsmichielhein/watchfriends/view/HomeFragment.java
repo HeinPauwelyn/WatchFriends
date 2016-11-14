@@ -15,10 +15,10 @@ import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.ImageListener;
 
 
+import nmct.jaspernielsmichielhein.watchfriends.adapter.SeriesListAdapter;
 import nmct.jaspernielsmichielhein.watchfriends.model.MediaItem;
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentHomeBinding;
-import nmct.jaspernielsmichielhein.watchfriends.model.MediaItem;
 import nmct.jaspernielsmichielhein.watchfriends.viewmodel.HomeFragmentViewModel;
 
 public class HomeFragment extends Fragment implements HomeFragmentViewModel.ISeriesAddedToCarouselListener {
@@ -35,11 +35,11 @@ public class HomeFragment extends Fragment implements HomeFragmentViewModel.ISer
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentHomeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
+        homeFragmentViewModel = new HomeFragmentViewModel(getActivity(), fragmentHomeBinding, this);
 
+        fragmentHomeBinding.rvLists.setAdapter(new SeriesListAdapter(homeFragmentViewModel.getSeriesLists(), getActivity().getBaseContext()));
         fragmentHomeBinding.rvLists.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         fragmentHomeBinding.rvLists.setItemAnimator(new DefaultItemAnimator());
-
-        homeFragmentViewModel = new HomeFragmentViewModel(getActivity(), fragmentHomeBinding, this);
 
         return fragmentHomeBinding.getRoot();
     }

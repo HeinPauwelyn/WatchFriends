@@ -12,28 +12,23 @@ import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
 import nmct.jaspernielsmichielhein.watchfriends.model.MediaItem;
-import nmct.jaspernielsmichielhein.watchfriends.model.MediaPackage;
-import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import nmct.jaspernielsmichielhein.watchfriends.model.SeriesList;
 import nmct.jaspernielsmichielhein.watchfriends.model.SeriesListData;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 public class HomeFragmentViewModel extends BaseObservable {
 
     private ISeriesAddedToCarouselListener seriesAddedToCarouselListener;
     private Context context;
     private FragmentHomeBinding fragmentHomeBinding;
-    @Bindable private ObservableArrayList<SeriesList> items = null;
+    @Bindable private ObservableArrayList<SeriesList> seriesLists = null;
     @Bindable private ObservableArrayList<MediaItem> carousel = null;
 
-    public ObservableArrayList<SeriesList> getItems() {
-        return items;
+    public ObservableArrayList<SeriesList> getSeriesLists() {
+        return seriesLists;
     }
-    public void setItems(ObservableArrayList<SeriesList> items) {
-        this.items = items;
+    public void setSeriesLists(ObservableArrayList<SeriesList> seriesLists) {
+        this.seriesLists = seriesLists;
     }
 
     public ObservableArrayList<MediaItem> getCarousel() {
@@ -47,6 +42,8 @@ public class HomeFragmentViewModel extends BaseObservable {
         this.context = context;
         this.fragmentHomeBinding = fragmentHomeBinding;
         seriesAddedToCarouselListener = listener;
+
+        setSeriesLists(new ObservableArrayList<SeriesList>());
     }
 
     public void getData() {
@@ -54,40 +51,25 @@ public class HomeFragmentViewModel extends BaseObservable {
         ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getLists(), new Action1<SeriesListData>() {
             @Override
             public void call(SeriesListData seriesListData) {
-                for (int id : seriesListData.getFeatured()) {
-                    loadSeriesList(id);
+                if (seriesListData != null) {
+                    for (int id : seriesListData.getFeatured()) {
+                        loadSeriesList(id);
+                    }
                 }
             }
         });
     }
+
     private void loadSeriesList(int id) {
 
         ApiHelper.subscribe(ApiMovieDbHelper.getMoviedbServiceInstance().getSeriesList(id), new Action1<SeriesList>() {
             @Override
             public void call(SeriesList seriesList) {
-
+                seriesLists.add(seriesList);
+                notifyPropertyChanged(BR.viewmodel);
             }
         });
     }
-
-
-    /*private void loadMedia(int[] ids, final ObservableArrayList<MediaItem> seriesToLoad) {
-        for(final int id : ids) {
-            ApiHelper.subscribe(ApiHelper.getMoviedbServiceInstance().getMediaSeries(id),
-                new Action1<MediaPackage>() {
-                    @Override
-                    public void call(MediaPackage returnedMedia) {
-                        if (returnedMedia != null) {
-                            if (returnedMedia.getBackdrops().size() != 0) {
-                                seriesToLoad.add(returnedMedia.getBackdrops().get(0));
-                                notifyPropertyChanged(BR.viewmodel);
-                                seriesAddedToCarouselListener.updateCarousel(carousel);
-                            }
-                        }
-                    }
-                });
-        }
-    }*/
 
     public interface ISeriesAddedToCarouselListener {
 

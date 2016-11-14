@@ -5,10 +5,10 @@ import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableField;
 
-public class SeriesList extends BaseObservable{
+public class SeriesList extends BaseObservable {
 
     private String created_by;
-    private String description;
+    @Bindable private String description;
     private int favorite_count;
     private String id;
     @Bindable ObservableArrayList<Series> items;

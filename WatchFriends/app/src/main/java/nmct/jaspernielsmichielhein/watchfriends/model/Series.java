@@ -2,6 +2,7 @@ package nmct.jaspernielsmichielhein.watchfriends.model;
 
 import android.app.Activity;
 import android.content.Context;
+import android.databinding.BaseObservable;
 import android.databinding.ObservableArrayList;
 import android.net.Uri;
 import android.os.Parcel;

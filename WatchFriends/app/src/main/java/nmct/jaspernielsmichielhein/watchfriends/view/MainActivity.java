@@ -26,6 +26,8 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
 import rx.functions.Action1;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
@@ -81,7 +83,7 @@ public class MainActivity extends AppCompatActivity
         toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
 
-        movieDBService = ApiHelper.getMoviedbServiceInstance();
+        movieDBService = ApiMovieDbHelper.getMoviedbServiceInstance();
         //collapseToolbar();
     }
 

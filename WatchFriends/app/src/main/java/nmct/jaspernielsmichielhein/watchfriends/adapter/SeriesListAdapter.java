@@ -39,7 +39,11 @@ public class SeriesListAdapter extends RecyclerView.Adapter<SeriesListAdapter.Se
 
     @Override
     public int getItemCount() {
-        return seriesLists.size();
+        if (seriesLists != null) {
+            return seriesLists.size();
+        }
+
+        return 0;
     }
 
     public class SeriesListViewHolder extends RecyclerView.ViewHolder {
@@ -49,6 +53,8 @@ public class SeriesListAdapter extends RecyclerView.Adapter<SeriesListAdapter.Se
         public SeriesListViewHolder(RowSeriesListBinding rowSeriesListBinding) {
             super(rowSeriesListBinding.getRoot());
             this.rowSeriesListBinding = rowSeriesListBinding;
+
+            //rowSeriesListBinding.rvListItems.setAdapter(new SeriesAdapter());
         }
 
         public RowSeriesListBinding getRowSeriesListBinding() {
