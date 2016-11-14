@@ -1,9 +1,11 @@
 package nmct.jaspernielsmichielhein.watchfriends.model;
 
+import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
+import android.databinding.ObservableField;
 
-public class SeriesList {
+public class SeriesList extends BaseObservable{
 
     private String created_by;
     private String description;
@@ -12,7 +14,7 @@ public class SeriesList {
     @Bindable ObservableArrayList<Series> items;
     private int item_count;
     private String iso_639_1;
-    @Bindable String name;
+    @Bindable ObservableField<String> name;
     private String poster_path;
 
     public String getCreated_by() {
@@ -71,11 +73,11 @@ public class SeriesList {
         this.iso_639_1 = iso_639_1;
     }
 
-    public String getName() {
+    public ObservableField<String> getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(ObservableField<String> name) {
         this.name = name;
     }
 
