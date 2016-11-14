@@ -1,6 +1,5 @@
 package nmct.jaspernielsmichielhein.watchfriends.helper;
 
-import nmct.jaspernielsmichielhein.watchfriends.api.IMovieDBService;
 import nmct.jaspernielsmichielhein.watchfriends.api.WatchFriendsService;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;

@@ -17,6 +17,10 @@ public class Interfaces {
         void onSeriesSelected(Series series);
     }
 
+    public interface onSeasonSelectedListener {
+        void onSeasonSelected(String seriesName, int seriesId, int seasonNumber);
+    }
+
     public interface onEpisodeSelectedListener {
         void onEpisodeSelected(Episode episode);
     }

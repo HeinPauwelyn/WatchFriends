@@ -9,31 +9,30 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
-import nmct.jaspernielsmichielhein.watchfriends.databinding.RowEpisodeBinding;
+import nmct.jaspernielsmichielhein.watchfriends.databinding.RowSeasonBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
-import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
+import nmct.jaspernielsmichielhein.watchfriends.model.Season;
 
-public class EpisodesAdapter extends ArrayAdapter<Episode> implements View.OnClickListener {
-    private Interfaces.onEpisodeSelectedListener mListener;
+public class SeasonsAdapter extends ArrayAdapter<Season> implements View.OnClickListener {
+    private Interfaces.onSeasonSelectedListener mListener;
 
     private Context context;
 
     private boolean watched = false;
 
-    public EpisodesAdapter(Context context, ListView listView) {
+    public SeasonsAdapter(Context context, ListView listView, final String seriesName, final int seriesId) {
         super(context, R.layout.row_episode);
         this.context = context;
-        mListener = (Interfaces.onEpisodeSelectedListener) context;
+        mListener = (Interfaces.onSeasonSelectedListener) context;
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Episode selectedEpisode = getItem(position);
-                if (selectedEpisode != null) {
-                    mListener.onEpisodeSelected(selectedEpisode);
+                Season selectedSeason = getItem(position);
+                if (selectedSeason != null) {
+                    mListener.onSeasonSelected(seriesName, seriesId, selectedSeason.getSeason_number());
                 }
             }
         });
@@ -41,11 +40,11 @@ public class EpisodesAdapter extends ArrayAdapter<Episode> implements View.OnCli
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final RowEpisodeBinding rowEpisodeBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.row_episode, parent, false);
-        Episode episode = getItem(position);
-        rowEpisodeBinding.setEpisode(episode);
+        final RowSeasonBinding rowSeasonBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.row_season, parent, false);
+        Season season = getItem(position);
+        rowSeasonBinding.setSeason(season);
 
-        ImageButton imgViewed = (ImageButton) rowEpisodeBinding.getRoot().findViewById(R.id.imgViewed);
+        ImageButton imgViewed = (ImageButton) rowSeasonBinding.getRoot().findViewById(R.id.imgViewed);
         if (watched) {
             imgViewed.setImageResource(R.drawable.ic_visibility_off_white_24dp);
         } else {
@@ -53,7 +52,7 @@ public class EpisodesAdapter extends ArrayAdapter<Episode> implements View.OnCli
         }
         imgViewed.setOnClickListener(this);
 
-        return rowEpisodeBinding.getRoot();
+        return rowSeasonBinding.getRoot();
     }
 
     @Override
@@ -61,10 +60,10 @@ public class EpisodesAdapter extends ArrayAdapter<Episode> implements View.OnCli
         ImageButton imgViewed = (ImageButton) v;
         if (watched) {
             imgViewed.setImageResource(R.drawable.ic_visibility_white_24dp);
-            Snackbar.make(v, "Marked episode as not watched", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(v, "Marked season as not watched", Snackbar.LENGTH_LONG).show();
         } else {
             imgViewed.setImageResource(R.drawable.ic_visibility_off_white_24dp);
-            Snackbar.make(v, "Marked episode as watched", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(v, "Marked season as watched", Snackbar.LENGTH_LONG).show();
         }
         watched = !watched;
     }

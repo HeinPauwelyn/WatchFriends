@@ -71,7 +71,6 @@ public class HomeFragmentViewModel extends BaseObservable {
                     }
                 });
     }
-
     private void loadSeriesList(int id) {
 
         ApiHelper.getMoviedbServiceInstance().getSeriesList(id).subscribeOn(Schedulers.io())
