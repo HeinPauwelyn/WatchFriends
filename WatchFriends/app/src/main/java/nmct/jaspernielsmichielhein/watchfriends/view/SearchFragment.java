@@ -51,7 +51,7 @@ public class SearchFragment extends Fragment {
         super.onAttach(context);
         /*
         if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+            listener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -62,6 +62,6 @@ public class SearchFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        //mListener = null;
+        //listener = null;
     }
 }

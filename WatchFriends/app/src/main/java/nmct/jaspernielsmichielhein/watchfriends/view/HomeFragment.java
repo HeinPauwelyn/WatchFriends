@@ -1,6 +1,7 @@
 package nmct.jaspernielsmichielhein.watchfriends.view;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableArrayList;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.synnapps.carouselview.ImageListener;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentHomeBinding;
+import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.MediaItem;
 import nmct.jaspernielsmichielhein.watchfriends.viewmodel.HomeFragmentViewModel;
 
@@ -47,6 +49,10 @@ public class HomeFragment extends Fragment implements HomeFragmentViewModel.ISer
     public void onStart() {
         super.onStart();
         homeFragmentViewModel.generateFakeData();
+        listener.collapseToolbar();
+        listener.setTitle(getResources().getString(R.string.app_name));
+        listener.getActionButton().setVisibility(View.GONE);
+
     }
 
     @Override
@@ -61,5 +67,24 @@ public class HomeFragment extends Fragment implements HomeFragmentViewModel.ISer
             });
             fragmentHomeBinding.cvCarousel.setPageCount(mediaItems.size());
         }
+    }
+
+    Interfaces.headerChangedListener listener;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof Interfaces.headerChangedListener) {
+            listener = ((Interfaces.headerChangedListener) context);
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        listener = null;
+        super.onDetach();
     }
 }
