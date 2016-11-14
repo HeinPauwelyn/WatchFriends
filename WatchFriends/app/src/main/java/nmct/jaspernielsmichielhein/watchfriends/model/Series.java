@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
+import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;
 
 public class Series implements Parcelable {
     private String backdrop_path = "";
@@ -198,7 +199,7 @@ public class Series implements Parcelable {
     public String getFullPoster_path() {
 
         if (poster_path != null && poster_path != "") {
-            return "https://image.tmdb.org/t/p/w300_and_h450_bestv2" + poster_path;
+            return Contract.MOVIEDB_IMAGE_BASE_URL + poster_path;
         }
 
         return "https://www.themoviedb.org/assets/e2dd052f141e33392eb749aab2414ec0/images/no-poster-w300_and_h450_bestv2-v2.png";

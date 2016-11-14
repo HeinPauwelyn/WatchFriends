@@ -27,4 +27,6 @@
     <string name="episodes">Episodes</string>
     <string name="friends_watched_season">Friends who watched this season</string>
     <string name="episode_watched">Episode watched</string>
+    <string name="recommended_by_friends">Recommended by friends</string>
+    <string name="popular">Popular</string>
 </resources>
