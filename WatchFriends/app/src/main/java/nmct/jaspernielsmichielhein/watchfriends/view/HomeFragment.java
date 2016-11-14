@@ -1,27 +1,22 @@
 package nmct.jaspernielsmichielhein.watchfriends.view;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableArrayList;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.databinding.ObservableArrayList;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.ImageListener;
-import com.synnapps.carouselview.ViewListener;
 
-
-import nmct.jaspernielsmichielhein.watchfriends.model.MediaItem;
-import nmct.jaspernielsmichielhein.watchfriends.model.MediaPackage;
-import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentHomeBinding;
+import nmct.jaspernielsmichielhein.watchfriends.model.MediaItem;
 import nmct.jaspernielsmichielhein.watchfriends.viewmodel.HomeFragmentViewModel;
 
 public class HomeFragment extends Fragment implements HomeFragmentViewModel.ISeriesAddedToCarouselListener {
@@ -29,9 +24,7 @@ public class HomeFragment extends Fragment implements HomeFragmentViewModel.ISer
     private HomeFragmentViewModel homeFragmentViewModel;
     private FragmentHomeBinding fragmentHomeBinding;
 
-    public HomeFragment() {
-        // Required empty public constructor
-    }
+    public HomeFragment() { }
 
     public static HomeFragment newInstance() {
         return new HomeFragment();

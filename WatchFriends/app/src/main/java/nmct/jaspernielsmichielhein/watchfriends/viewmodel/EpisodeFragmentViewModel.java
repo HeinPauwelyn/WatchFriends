@@ -1,6 +1,5 @@
 package nmct.jaspernielsmichielhein.watchfriends.viewmodel;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.databinding.BaseObservable;
@@ -9,16 +8,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.widget.ImageView;
-
-import com.squareup.picasso.Picasso;
 
 import nmct.jaspernielsmichielhein.watchfriends.BR;
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentEpisodeBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
-import nmct.jaspernielsmichielhein.watchfriends.view.MainActivity;
 
 public class EpisodeFragmentViewModel extends BaseObservable {
     private Interfaces.onHeaderChanged mListener;

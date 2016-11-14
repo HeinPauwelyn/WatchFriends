@@ -6,17 +6,12 @@ import android.databinding.Bindable;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
-import com.squareup.picasso.Picasso;
-
 import nmct.jaspernielsmichielhein.watchfriends.BR;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentSeasonBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Season;
-import nmct.jaspernielsmichielhein.watchfriends.view.MainActivity;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 public class SeasonFragmentViewModel extends BaseObservable {
     private final Interfaces.onHeaderChanged mListener;
@@ -53,18 +48,16 @@ public class SeasonFragmentViewModel extends BaseObservable {
 
     public void loadSeason() {
         final SeasonFragmentViewModel that = this;
-
-        ApiHelper.getMoviedbServiceInstance().getSeason(seriesId, seasonNumber).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Season>() {
-                    @Override
-                    public void call(Season returnedSeason) {
-                        setSeason(returnedSeason);
-                        fragmentSeasonBinding.setViewmodel(that);
-                        notifyPropertyChanged(BR.viewmodel);
-                        setHeader();
-                    }
-                });
+        ApiHelper.subscribe(ApiHelper.getMoviedbServiceInstance().getSeason(seriesId, seasonNumber),
+            new Action1<Season>() {
+                @Override
+                public void call(Season season) {
+                    setSeason(season);
+                    fragmentSeasonBinding.setViewmodel(that);
+                    notifyPropertyChanged(BR.viewmodel);
+                    setHeader();
+                }
+            });
     }
 
     private void setHeader() {

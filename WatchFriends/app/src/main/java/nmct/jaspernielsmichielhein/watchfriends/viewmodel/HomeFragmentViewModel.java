@@ -4,21 +4,15 @@ import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
-import android.widget.Toast;
 
 import com.android.databinding.library.baseAdapters.BR;
-
-import java.util.ArrayList;
 
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentHomeBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
 import nmct.jaspernielsmichielhein.watchfriends.model.MediaItem;
 import nmct.jaspernielsmichielhein.watchfriends.model.MediaPackage;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 public class HomeFragmentViewModel extends BaseObservable {
 
@@ -72,54 +66,34 @@ public class HomeFragmentViewModel extends BaseObservable {
     }
 
     private void loadMedia(int[] ids, final ObservableArrayList<MediaItem> seriesToLoad) {
-
         for(final int id : ids) {
-            ApiHelper.getMoviedbServiceInstance().getMediaSeries(id).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .onErrorReturn(new Func1<Throwable, MediaPackage>() {
-                        @Override
-                        public MediaPackage call(Throwable throwable) {
-                            return null;
-                        }
-                    })
-                    .subscribe(new Action1<MediaPackage>() {
-                        @Override
-                        public void call(MediaPackage returnedMedia) {
-                            if (returnedMedia != null) {
-
-                                if (returnedMedia.getBackdrops().size() != 0) {
-                                    seriesToLoad.add(returnedMedia.getBackdrops().get(0));
-                                    notifyPropertyChanged(BR.viewmodel);
-                                    seriesAddedToCarouselListener.updateCarousel(carousel);
-                                }
+            ApiHelper.subscribe(ApiHelper.getMoviedbServiceInstance().getMediaSeries(id),
+                new Action1<MediaPackage>() {
+                    @Override
+                    public void call(MediaPackage returnedMedia) {
+                        if (returnedMedia != null) {
+                            if (returnedMedia.getBackdrops().size() != 0) {
+                                seriesToLoad.add(returnedMedia.getBackdrops().get(0));
+                                notifyPropertyChanged(BR.viewmodel);
+                                seriesAddedToCarouselListener.updateCarousel(carousel);
                             }
                         }
-                    });
+                    }
+                });
         }
     }
-
     private void loadSeries(int[] ids, final ObservableArrayList<Series> seriesToLoad) {
-
         for(final int id : ids) {
-
-            ApiHelper.getMoviedbServiceInstance().getSeries(id).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .onErrorReturn(new Func1<Throwable, Series>() {
-                        @Override
-                        public Series call(Throwable throwable) {
-                            return null;
+            ApiHelper.subscribe(ApiHelper.getMoviedbServiceInstance().getSeries(id),
+                new Action1<Series>() {
+                    @Override
+                    public void call(Series returnedSeries) {
+                        if (returnedSeries != null) {
+                            seriesToLoad.add(returnedSeries);
+                            notifyPropertyChanged(BR.viewmodel);
                         }
-                    })
-                    .subscribe(new Action1<Series>() {
-                        @Override
-                        public void call(Series returnedSeries) {
-                            if (returnedSeries != null) {
-
-                                seriesToLoad.add(returnedSeries);
-                                notifyPropertyChanged(BR.viewmodel);
-                            }
-                        }
-                    });
+                    }
+                });
         }
     }
 
