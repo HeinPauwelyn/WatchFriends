@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
 
         movieDBService = ApiHelper.getMoviedbServiceInstance();
-        collapseToolbar();
+        //collapseToolbar();
     }
 
     @Override

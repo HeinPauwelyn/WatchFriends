@@ -1,9 +1,17 @@
 package nmct.jaspernielsmichielhein.watchfriends.model;
 
+import android.app.Activity;
+import android.content.Context;
 import android.databinding.ObservableArrayList;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
+
+import nmct.jaspernielsmichielhein.watchfriends.R;
+import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;
 
 import java.util.Arrays;
 
@@ -221,6 +229,15 @@ public class Series implements Parcelable {
 
     public String getPoster_path() {
         return poster_path;
+    }
+
+    public String getFullPoster_path() {
+
+        if (poster_path != null && poster_path != "") {
+            return Contract.MOVIEDB_IMAGE_BASE_URL + poster_path;
+        }
+
+        return "https://www.themoviedb.org/assets/e2dd052f141e33392eb749aab2414ec0/images/no-poster-w300_and_h450_bestv2-v2.png";
     }
 
     public void setPoster_path(String poster_path) {

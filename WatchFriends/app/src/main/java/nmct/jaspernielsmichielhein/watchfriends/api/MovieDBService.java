@@ -1,7 +1,10 @@
 package nmct.jaspernielsmichielhein.watchfriends.api;
 
+import android.databinding.ObservableArrayList;
+
 import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;
 import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
+import nmct.jaspernielsmichielhein.watchfriends.model.MediaPackage;
 import nmct.jaspernielsmichielhein.watchfriends.model.Season;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import retrofit2.http.GET;
@@ -28,4 +31,7 @@ public interface MovieDBService {
     //https://api.themoviedb.org/3/tv/63174/season/2/episode/2?api_key=1447c9e70c5784fbe8a492a4d5f37c8b&language=en-US
     @GET("tv/{series}/season/{season}/episode/{episode}?api_key=" + Contract.MOVIEDB_API_KEY + "&language=en-US")
     Observable<Episode> getEpisode(@Path("series") int seriesId, @Path("season") int season, @Path("episode") int episode);
+
+    @GET("tv/{series}/images?api_key=" + Contract.MOVIEDB_API_KEY)
+    Observable<MediaPackage> getMediaSeries(@Path("series") int seriesId);
 }

@@ -21,6 +21,7 @@
     <string name="air_date_icon_description">airDateIcon</string>
     <string name="overview_icon_description">overviewIcon</string>
     <string name="air_date">Air date: </string>
+    <string name="friends_who_watched_this_episode">Friends who watched this episode</string>
     <string name="friends_watched_episode">Friends who watched this episode</string>
     <string name="rating">Rating</string>
     <string name="episodes">Episodes</string>
@@ -38,4 +39,6 @@
     <string name="showed_on">Showed on:</string>
     <string name="number_of_seasons">Seasons:</string>
     <string name="number_of_episodes">Episodes:</string>
+    <string name="recommended_by_friends">Recommended by friends</string>
+    <string name="popular">Popular</string>
 </resources>
