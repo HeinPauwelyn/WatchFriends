@@ -36,11 +36,7 @@ public class HomeFragment extends Fragment implements HomeFragmentViewModel.ISer
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentHomeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
-        fragmentHomeBinding.rvRecommended.setLayoutManager(new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        fragmentHomeBinding.rvRecommended.setItemAnimator(new DefaultItemAnimator());
 
-        fragmentHomeBinding.rvPopular.setLayoutManager(new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        fragmentHomeBinding.rvPopular.setItemAnimator(new DefaultItemAnimator());
         homeFragmentViewModel = new HomeFragmentViewModel(getActivity(), fragmentHomeBinding, this);
 
         return fragmentHomeBinding.getRoot();

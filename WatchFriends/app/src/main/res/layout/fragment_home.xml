@@ -31,32 +31,9 @@
                 app:autoPlay="false"
                 app:pageTransformer="flow" />
 
-            <RelativeLayout
-                android:id="@+id/rlPopular"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_margin="0dp">
-
-                <TextView
-                    android:id="@+id/txtPopular"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentEnd="true"
-                    android:text="@string/popular"
-                    android:layout_margin="10dp"
-                    style="?android:attr/listSeparatorTextViewStyle" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rvPopular"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="0dp"
-                    android:layout_below="@id/txtPopular"
-                    app:items="@{viewmodel.popular}" />
-
-            </RelativeLayout>
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
         </LinearLayout>
     </ScrollView>
 </layout>
