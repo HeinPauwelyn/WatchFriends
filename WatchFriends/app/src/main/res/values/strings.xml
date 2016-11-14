@@ -1,6 +1,7 @@
 <resources>
     <!-- API KEY -->
     <string name="moviedb_api_key">1447c9e70c5784fbe8a492a4d5f37c8b</string>
+    <string name="facebook_app_id">610786829108817</string>
 
     <string name="title_activity_main">WatchFriends</string>
 
@@ -45,4 +46,6 @@
     <string name="password_hint">Password</string>
     <string name="login">Login</string>
     <string name="create_account_link">No account yet? Create one</string>
+    <string name="login_link">Already have an account? Login</string>
+    <string name="register">Register</string>
 </resources>

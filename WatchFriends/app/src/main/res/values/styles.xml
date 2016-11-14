@@ -35,4 +35,10 @@
         <item name="android:isIndicator">true</item>
     </style>
 
+    <style name="customDialog" parent="Theme.AppCompat.Dialog">
+        <item name="colorAccent">@color/themeAccent</item>
+        <item name="android:textColorPrimary">@color/themeWhite</item>
+        <item name="android:background">@color/themePrimary</item>
+    </style>
+
 </resources>

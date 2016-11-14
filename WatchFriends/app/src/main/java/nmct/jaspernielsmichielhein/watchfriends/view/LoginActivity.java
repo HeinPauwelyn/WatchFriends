@@ -4,6 +4,7 @@ import android.accounts.Account;
 import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
 import android.accounts.OnAccountsUpdateListener;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
@@ -59,6 +60,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         findViewById(R.id.btnLogin).setOnClickListener(this);
         findViewById(R.id.btnLoginGoogle).setOnClickListener(this);
+        findViewById(R.id.btnLoginFacebook).setOnClickListener(this);
+        findViewById(R.id.txtRegisterLink).setOnClickListener(this);
 
         mAccountManager = AccountManager.get(this);
         mAccountAuthenticatorResponse = this.getIntent().getParcelableExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE);
@@ -77,12 +80,33 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnLogin:
+                showDialog();
                 onSignInClicked();
                 break;
             case R.id.btnLoginGoogle:
+                showDialog();
                 onSignInClickedGoogle();
                 break;
+            case R.id.btnLoginFacebook:
+                showDialog();
+                onSignInClickedFacebook();
+                break;
+            case R.id.txtRegisterLink:
+                showRegisterActivity();
+                break;
         }
+    }
+
+    private void showDialog() {
+        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this, R.style.customDialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Authenticating ...");
+        progressDialog.show();
+    }
+
+    private void showRegisterActivity() {
+        Intent intent = new Intent(this, RegisterActivity.class);
+        startActivity(intent);
     }
 
     private void onSignInClicked() {
@@ -92,6 +116,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void addAccount(String userName) {
+        showDialog();
+
         Account[] accountsByType = mAccountManager.getAccountsByType(Contract.ACCOUNT_TYPE);
         Account account;
 
@@ -185,6 +211,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(LoginActivity.class.getName(), "Connection failed: " + connectionResult);
+    }
+
+    // FACEBOOK
+
+    private void onSignInClickedFacebook() {
     }
 
 }

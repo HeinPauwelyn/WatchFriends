@@ -64,13 +64,13 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btnLogin"
+            android:id="@+id/btnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="6dp"
             android:padding="12dp"
-            android:text="@string/login" />
+            android:text="@string/register" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -79,7 +79,7 @@
             android:orientation="horizontal">
 
             <com.google.android.gms.common.SignInButton
-                android:id="@+id/btnLoginGoogle"
+                android:id="@+id/btnRegisterGoogle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -87,7 +87,7 @@
                 android:layout_marginTop="20dp" />
 
             <android.support.v7.widget.AppCompatButton
-                android:id="@+id/btnLoginFacebook"
+                android:id="@+id/btnRegisterFacebook"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -97,13 +97,13 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/txtRegisterLink"
+            android:id="@+id/txtLoginLink"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:gravity="center"
             android:textSize="16sp"
-            android:text="@string/create_account_link" />
+            android:text="@string/login_link" />
 
     </LinearLayout>
 
