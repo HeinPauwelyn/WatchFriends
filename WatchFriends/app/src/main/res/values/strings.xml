@@ -1,21 +1,20 @@
 <resources>
-    <!-- API KEY -->
+    <!-- global -->
     <string name="moviedb_api_key">1447c9e70c5784fbe8a492a4d5f37c8b</string>
-
+    <string name="studio_name">Cross Platform Apps - NMCT</string>
+    <string name="developer_name">Hein Jasper Michiel Niels</string>
+    <string name="app_name">WatchFriends</string>
+    <!-- MainActivity -->
     <string name="title_activity_main">WatchFriends</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
     <string name="action_settings">Settings</string>
-
-    <string name="app_name">WatchFriends</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- fragments -->
     <string name="title_activity_login">Sign in</string>
-    <string name="studio_name">Cross Platform Apps - NMCT</string>
-    <string name="developer_name">Hein Jasper Michiel Niels</string>
     <string name="menu_search_hint">search series</string>
     <string name="episodeHeaderDescription">episodeHeader</string>
     <string name="air_date_icon_description">airDateIcon</string>
