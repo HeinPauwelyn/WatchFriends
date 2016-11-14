@@ -3,14 +3,11 @@ package nmct.jaspernielsmichielhein.watchfriends.adapter;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableArrayList;
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -20,7 +17,7 @@ import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 
 public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.SeriesViewHolder> {
-    public Interfaces.onSeriesSelectedListener mListener;
+    public Interfaces.onSeriesSelectedListener listener;
 
     private Context context;
     private ObservableArrayList<Series> series = null;
@@ -28,7 +25,7 @@ public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.SeriesView
     public SeriesAdapter(ObservableArrayList<Series> series, Context context) {
         this.context = context;
         this.series = series;
-        mListener = (Interfaces.onSeriesSelectedListener) context;
+        listener = (Interfaces.onSeriesSelectedListener) context;
     }
 
     @Override

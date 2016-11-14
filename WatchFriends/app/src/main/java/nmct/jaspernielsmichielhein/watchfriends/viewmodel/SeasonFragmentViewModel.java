@@ -6,6 +6,8 @@ import android.databinding.Bindable;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
+import com.squareup.picasso.Picasso;
+
 import nmct.jaspernielsmichielhein.watchfriends.BR;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentSeasonBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
@@ -15,13 +17,13 @@ import nmct.jaspernielsmichielhein.watchfriends.model.Season;
 import rx.functions.Action1;
 
 public class SeasonFragmentViewModel extends BaseObservable {
-    private final Interfaces.onHeaderChanged mListener;
+    private final Interfaces.headerChangedListener listener;
     private Context context;
     private FragmentSeasonBinding fragmentSeasonBinding;
 
-    @Bindable
     private Season season = null;
 
+    @Bindable
     public Season getSeason() {
         return season;
     }
@@ -40,10 +42,10 @@ public class SeasonFragmentViewModel extends BaseObservable {
         this.seriesName = seriesName;
         this.seriesId = seriesId;
         this.seasonNumber = seasonNumber;
-        if (context instanceof Interfaces.onHeaderChanged) {
-            mListener = (Interfaces.onHeaderChanged) context;
+        if (context instanceof Interfaces.headerChangedListener) {
+            listener = (Interfaces.headerChangedListener) context;
         } else {
-            throw new RuntimeException(context.toString() + " must implement onHeaderChanged");
+            throw new RuntimeException(context.toString() + " must implement headerChangedListener");
         }
     }
 
@@ -62,9 +64,10 @@ public class SeasonFragmentViewModel extends BaseObservable {
     }
 
     private void setHeader() {
-        mListener.onSetTitle(seriesName);
-        mListener.onSetImage(season.getImage_uri());
-        final FloatingActionButton fab = mListener.onGetActionButton();
+        listener.expandToolbar();
+        listener.setTitle(seriesName);
+        Picasso.with(context).load(season.getImage_uri()).into(listener.getHeaderImage());
+        final FloatingActionButton fab = listener.getActionButton();
         fab.setVisibility(View.INVISIBLE);
     }
 }

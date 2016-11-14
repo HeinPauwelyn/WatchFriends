@@ -1,6 +1,7 @@
 package nmct.jaspernielsmichielhein.watchfriends.view;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.ComponentName;
@@ -40,7 +41,7 @@ import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         SearchView.OnQueryTextListener,
-        Interfaces.onHeaderChanged,
+        Interfaces.headerChangedListener,
         Interfaces.onSeriesSelectedListener,
         Interfaces.onSeasonSelectedListener,
         Interfaces.onEpisodeSelectedListener {
@@ -99,6 +100,17 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            FragmentManager fmgr = getFragmentManager();
+            if(fmgr.getBackStackEntryCount() == 1) //home fragment
+                fmgr.popBackStack();
+            else{
+                //search fragment
+                int index = fmgr.getBackStackEntryCount() - 1;
+                FragmentManager.BackStackEntry backEntry = fmgr.getBackStackEntryAt(index);
+                //if("searchFragment" == backEntry.getName())
+                //    fmgr.popBackStackImmediate();
+            }
+
             super.onBackPressed();
         }
     }
@@ -181,26 +193,25 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void collapseToolbar(){
+    public void collapseToolbar(){
         appBarLayout.setExpanded(false, true);
-        actionButton.setVisibility(View.GONE);
         //todo ook disablen
+        actionButton.setVisibility(View.GONE);
     }
 
+    public void expandToolbar(){
+        appBarLayout.setExpanded(true, true);
+        //todo ook enablen
+        actionButton.setVisibility(View.VISIBLE);
+    }
 
     private void navigate(Fragment fragment, String tag, boolean collapsing){
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_frame, fragment, tag);
         fragmentTransaction.addToBackStack(tag);
         fragmentTransaction.commit();
-        if(collapsing){
-            appBarLayout.setExpanded(true, true);
-            actionButton.setVisibility(View.VISIBLE);
-            //todo ook enablen
-        }
-        else{
-            collapseToolbar();
-        }
+        if(collapsing) expandToolbar();
+        else collapseToolbar();
     }
 
     @Override
@@ -210,28 +221,16 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
-    //todo search back button -> navigate(HomeFragment)
-
     @Override
     public boolean onQueryTextChange(String newText) {
         //search query changed
         return false;
     }
 
-    @Override
-    public void onSetTitle(String title) {
-        setTitle(title);
-    }
-
-    @Override
-    public void onSetImage(Uri uri) {
+    public void setImage(Uri uri) {
         Picasso.with(this).load(uri).into(getHeaderImage());
     }
 
-    @Override
-    public FloatingActionButton onGetActionButton() {
-        return getActionButton();
-    }
 
     @Override
     public void onSeriesSelected(Series series) {
