@@ -14,7 +14,7 @@ public class SeriesList extends BaseObservable {
     @Bindable ObservableArrayList<Series> items;
     private int item_count;
     private String iso_639_1;
-    @Bindable ObservableField<String> name;
+    @Bindable String name;
     private String poster_path;
 
     public String getCreated_by() {
@@ -73,11 +73,11 @@ public class SeriesList extends BaseObservable {
         this.iso_639_1 = iso_639_1;
     }
 
-    public ObservableField<String> getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(ObservableField<String> name) {
+    public void setName(String name) {
         this.name = name;
     }
 

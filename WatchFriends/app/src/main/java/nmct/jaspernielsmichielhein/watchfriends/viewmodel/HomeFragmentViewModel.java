@@ -18,7 +18,7 @@ import rx.functions.Action1;
 
 public class HomeFragmentViewModel extends BaseObservable {
 
-    private ISeriesAddedToCarouselListener seriesAddedToCarouselListener;
+    private ISeriesAddedListener seriesAddedListener;
     private Context context;
     private FragmentHomeBinding fragmentHomeBinding;
     @Bindable private ObservableArrayList<SeriesList> seriesLists = null;
@@ -38,10 +38,10 @@ public class HomeFragmentViewModel extends BaseObservable {
         this.carousel = carousel;
     }
 
-    public HomeFragmentViewModel(Context context, FragmentHomeBinding fragmentHomeBinding, ISeriesAddedToCarouselListener listener) {
+    public HomeFragmentViewModel(Context context, FragmentHomeBinding fragmentHomeBinding, ISeriesAddedListener listener) {
         this.context = context;
         this.fragmentHomeBinding = fragmentHomeBinding;
-        seriesAddedToCarouselListener = listener;
+        seriesAddedListener = listener;
 
         setSeriesLists(new ObservableArrayList<SeriesList>());
     }
@@ -52,7 +52,7 @@ public class HomeFragmentViewModel extends BaseObservable {
             @Override
             public void call(SeriesListData seriesListData) {
                 if (seriesListData != null) {
-                    for (int id : seriesListData.getFeatured()) {
+                    for (int id : seriesListData.getSeriesLists()) {
                         loadSeriesList(id);
                     }
                 }
@@ -67,12 +67,15 @@ public class HomeFragmentViewModel extends BaseObservable {
             public void call(SeriesList seriesList) {
                 seriesLists.add(seriesList);
                 notifyPropertyChanged(BR.viewmodel);
+
+                seriesAddedListener.updateLists(seriesLists);
             }
         });
     }
 
-    public interface ISeriesAddedToCarouselListener {
+    public interface ISeriesAddedListener {
 
+        void updateLists(ObservableArrayList<SeriesList> seriesLists);
         void updateCarousel(ObservableArrayList<MediaItem> series);
     }
 }

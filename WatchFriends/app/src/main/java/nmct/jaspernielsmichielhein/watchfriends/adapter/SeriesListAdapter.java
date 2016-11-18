@@ -35,6 +35,9 @@ public class SeriesListAdapter extends RecyclerView.Adapter<SeriesListAdapter.Se
         SeriesList seriesObject = seriesLists.get(position);
         holder.getRowSeriesListBinding().setSeriesList(seriesObject);
         holder.getRowSeriesListBinding().executePendingBindings();
+
+        holder.rowSeriesListBinding.rvListItems.setAdapter(new SeriesAdapter(seriesLists.get(position).getItems(), context));
+
     }
 
     @Override
@@ -48,11 +51,12 @@ public class SeriesListAdapter extends RecyclerView.Adapter<SeriesListAdapter.Se
 
     public class SeriesListViewHolder extends RecyclerView.ViewHolder {
 
-        private final RowSeriesListBinding rowSeriesListBinding;
+        public final RowSeriesListBinding rowSeriesListBinding;
 
         public SeriesListViewHolder(RowSeriesListBinding rowSeriesListBinding) {
             super(rowSeriesListBinding.getRoot());
             this.rowSeriesListBinding = rowSeriesListBinding;
+
 
             //rowSeriesListBinding.rvListItems.setAdapter(new SeriesAdapter());
         }

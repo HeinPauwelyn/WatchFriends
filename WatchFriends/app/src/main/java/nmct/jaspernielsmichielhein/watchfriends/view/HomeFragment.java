@@ -21,13 +21,14 @@ import nmct.jaspernielsmichielhein.watchfriends.model.MediaItem;
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentHomeBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
-import nmct.jaspernielsmichielhein.watchfriends.model.MediaItem;
+import nmct.jaspernielsmichielhein.watchfriends.model.SeriesList;
 import nmct.jaspernielsmichielhein.watchfriends.viewmodel.HomeFragmentViewModel;
 
-public class HomeFragment extends Fragment implements HomeFragmentViewModel.ISeriesAddedToCarouselListener {
+public class HomeFragment extends Fragment implements HomeFragmentViewModel.ISeriesAddedListener {
 
     private HomeFragmentViewModel homeFragmentViewModel;
     private FragmentHomeBinding fragmentHomeBinding;
+    private Interfaces.headerChangedListener listener;
 
     public HomeFragment() { }
 
@@ -53,9 +54,15 @@ public class HomeFragment extends Fragment implements HomeFragmentViewModel.ISer
 
         homeFragmentViewModel.getData();
 
-        listener.collapseToolbar();
-        listener.setTitle(getResources().getString(R.string.app_name));
-        listener.getActionButton().setVisibility(View.GONE);
+        //listener.collapseToolbar();
+        //listener.setTitle(getResources().getString(R.string.app_name));
+        //listener.getActionButton().setVisibility(View.GONE);
+    }
+
+    @Override
+    public void updateLists(ObservableArrayList<SeriesList> seriesLists) {
+
+        fragmentHomeBinding.rvLists.setAdapter(new SeriesListAdapter(seriesLists, getActivity().getBaseContext()));
     }
 
     @Override
@@ -71,8 +78,6 @@ public class HomeFragment extends Fragment implements HomeFragmentViewModel.ISer
             fragmentHomeBinding.cvCarousel.setPageCount(mediaItems.size());
         }
     }
-
-    Interfaces.headerChangedListener listener;
 
     @Override
     public void onAttach(Context context) {

@@ -25,7 +25,7 @@ public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.SeriesView
     public SeriesAdapter(ObservableArrayList<Series> series, Context context) {
         this.context = context;
         this.series = series;
-        listener = (Interfaces.onSeriesSelectedListener) context;
+        //listener = (Interfaces.onSeriesSelectedListener) context;
     }
 
     @Override

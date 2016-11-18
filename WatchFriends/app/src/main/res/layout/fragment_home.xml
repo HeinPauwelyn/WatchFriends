@@ -8,32 +8,36 @@
             type="nmct.jaspernielsmichielhein.watchfriends.viewmodel.HomeFragmentViewModel" />
     </data>
 
-
-    <LinearLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <com.synnapps.carouselview.CarouselView
-            android:id="@+id/cvCarousel"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="193dp"
-            app:fillColor="#FFFFFFFF"
-            app:pageColor="#00000000"
-            app:radius="6dp"
-            app:slideInterval="3000"
-            app:strokeColor="#FF777777"
-            app:strokeWidth="1dp"
-            app:autoPlay="false"
-            app:pageTransformer="flow" />
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_margin="0dp"
-            android:orientation="vertical"
-            android:id="@+id/rvLists"
-            app:items="@{viewmodel.seriesLists}"/>
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <com.synnapps.carouselview.CarouselView
+                android:id="@+id/cvCarousel"
+                android:layout_width="match_parent"
+                android:layout_height="193dp"
+                app:fillColor="#FFFFFFFF"
+                app:pageColor="#00000000"
+                app:radius="6dp"
+                app:slideInterval="3000"
+                app:strokeColor="#FF777777"
+                app:strokeWidth="1dp"
+                app:autoPlay="false"
+                app:pageTransformer="flow" />
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:orientation="vertical"
+                android:id="@+id/rvLists"
+                app:items="@{viewmodel.seriesLists}"/>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 </layout>
