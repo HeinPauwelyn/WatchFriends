@@ -8,11 +8,6 @@
             type="nmct.jaspernielsmichielhein.watchfriends.viewmodel.HomeFragmentViewModel" />
     </data>
 
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -40,6 +35,4 @@
                 app:items="@{viewmodel.seriesLists}"/>
 
         </LinearLayout>
-
-    </android.support.v4.widget.NestedScrollView>
 </layout>

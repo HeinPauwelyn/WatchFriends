@@ -14,7 +14,7 @@ public class SeriesListBinder {
 
     @BindingAdapter("items")
     public static void setSeriesList(RecyclerView view, ObservableArrayList<SeriesList> seriesLists) {
-        SeriesListAdapter seriesListAdapter = new SeriesListAdapter(seriesLists, view.getContext());
+        SeriesListAdapter seriesListAdapter = new SeriesListAdapter(seriesLists, view.getContext(), null);
 
         view.setAdapter(seriesListAdapter);
         seriesListAdapter.notifyDataSetChanged();

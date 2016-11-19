@@ -15,6 +15,7 @@ import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.PosterSeriesBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
+import nmct.jaspernielsmichielhein.watchfriends.view.MainActivity;
 
 public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.SeriesViewHolder> {
     public Interfaces.onSeriesSelectedListener listener;
@@ -22,10 +23,16 @@ public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.SeriesView
     private Context context;
     private ObservableArrayList<Series> series = null;
 
-    public SeriesAdapter(ObservableArrayList<Series> series, Context context) {
+    public SeriesAdapter(ObservableArrayList<Series> series, Context context, Interfaces.onSeriesSelectedListener lst) {
         this.context = context;
         this.series = series;
-        //listener = (Interfaces.onSeriesSelectedListener) context;
+
+        if (context instanceof Interfaces.onSeasonSelectedListener) {
+            listener = (Interfaces.onSeriesSelectedListener) context;
+        }
+        else if (lst != null){
+            listener = lst;
+        }
     }
 
     @Override
@@ -70,6 +77,11 @@ public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.SeriesView
         @Override
         public void onClick(View v) {
             Series selectedSeries = series.get(getAdapterPosition());
+
+            // TODO: listener is null --> null check voorkomt milionOfDolarException...
+            if (listener != null) {
+                listener.onSeriesSelected(selectedSeries);
+            }
         }
     }
 }

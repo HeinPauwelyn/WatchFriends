@@ -3,22 +3,29 @@ package nmct.jaspernielsmichielhein.watchfriends.adapter;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableArrayList;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.RowSeriesListBinding;
+import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import nmct.jaspernielsmichielhein.watchfriends.model.SeriesList;
 
 public class SeriesListAdapter extends RecyclerView.Adapter<SeriesListAdapter.SeriesListViewHolder> {
 
-    private final Context context;
+    private Context context = null;
     private ObservableArrayList<SeriesList> seriesLists;
+    private Interfaces.onSeriesSelectedListener lst;
 
-    public SeriesListAdapter(ObservableArrayList<SeriesList> seriesLists, Context context) {
-        this.context = context;
+    public SeriesListAdapter(ObservableArrayList<SeriesList> seriesLists, Context context, Interfaces.onSeriesSelectedListener lst) {
+        if(context != null) {
+            this.context = context;
+        }
+        this.lst = lst;
         this.seriesLists = seriesLists;
     }
 
@@ -36,8 +43,9 @@ public class SeriesListAdapter extends RecyclerView.Adapter<SeriesListAdapter.Se
         holder.getRowSeriesListBinding().setSeriesList(seriesObject);
         holder.getRowSeriesListBinding().executePendingBindings();
 
-        holder.rowSeriesListBinding.rvListItems.setAdapter(new SeriesAdapter(seriesLists.get(position).getItems(), context));
-
+        holder.getRowSeriesListBinding().rvListItems.setAdapter(new SeriesAdapter(seriesLists.get(position).getItems(), context, lst));
+        holder.getRowSeriesListBinding().rvListItems.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
+        holder.getRowSeriesListBinding().rvListItems.setItemAnimator(new DefaultItemAnimator());
     }
 
     @Override

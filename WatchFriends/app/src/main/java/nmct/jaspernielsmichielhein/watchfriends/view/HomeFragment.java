@@ -35,6 +35,8 @@ public class HomeFragment extends Fragment implements HomeFragmentViewModel.ISer
     private HomeFragmentViewModel homeFragmentViewModel;
     private FragmentHomeBinding fragmentHomeBinding;
     private Interfaces.headerChangedListener listener;
+    private Interfaces.onSeriesSelectedListener lstSeries;
+    private Context context;
 
     public HomeFragment() { }
 
@@ -45,7 +47,7 @@ public class HomeFragment extends Fragment implements HomeFragmentViewModel.ISer
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        Context context = getActivity().getBaseContext();
+        context = getActivity().getBaseContext();
         /*LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context) {
             @Override
             public boolean canScrollVertically() {
@@ -56,13 +58,9 @@ public class HomeFragment extends Fragment implements HomeFragmentViewModel.ISer
         fragmentHomeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
         homeFragmentViewModel = new HomeFragmentViewModel(getActivity(), fragmentHomeBinding, this);
 
-        fragmentHomeBinding.rvLists.setAdapter(new SeriesListAdapter(homeFragmentViewModel.getSeriesLists(), context));
+        fragmentHomeBinding.rvLists.setAdapter(new SeriesListAdapter(homeFragmentViewModel.getSeriesLists(), context, lstSeries));
         fragmentHomeBinding.rvLists.setLayoutManager(new LinearLayoutManager(context));
         fragmentHomeBinding.rvLists.setItemAnimator(new DefaultItemAnimator());
-
-        ViewGroup.LayoutParams params = fragmentHomeBinding.rvLists.getLayoutParams();
-        params.height = 100;
-        fragmentHomeBinding.rvLists.setLayoutParams(params);
 
         return fragmentHomeBinding.getRoot();
     }
@@ -83,7 +81,7 @@ public class HomeFragment extends Fragment implements HomeFragmentViewModel.ISer
     @Override
     public void updateLists(ObservableArrayList<SeriesList> seriesLists) {
 
-        fragmentHomeBinding.rvLists.setAdapter(new SeriesListAdapter(seriesLists, getActivity().getBaseContext()));
+        fragmentHomeBinding.rvLists.setAdapter(new SeriesListAdapter(seriesLists, context, lstSeries));
     }
 
     @Override
@@ -119,8 +117,9 @@ public class HomeFragment extends Fragment implements HomeFragmentViewModel.ISer
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof Interfaces.headerChangedListener) {
+        if (context instanceof Interfaces.headerChangedListener && context instanceof Interfaces.onSeriesSelectedListener) {
             listener = (Interfaces.headerChangedListener) context;
+            lstSeries = (Interfaces.onSeriesSelectedListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -130,8 +129,9 @@ public class HomeFragment extends Fragment implements HomeFragmentViewModel.ISer
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if (activity instanceof Interfaces.headerChangedListener) {
+        if (activity instanceof Interfaces.headerChangedListener && activity instanceof Interfaces.onSeriesSelectedListener) {
             listener = (Interfaces.headerChangedListener) activity;
+            lstSeries = (Interfaces.onSeriesSelectedListener) context;
         } else {
             throw new RuntimeException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
