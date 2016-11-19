@@ -5,6 +5,7 @@ import android.databinding.ObservableArrayList;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;
 import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
 import nmct.jaspernielsmichielhein.watchfriends.model.MediaPackage;
+import nmct.jaspernielsmichielhein.watchfriends.model.Page;
 import nmct.jaspernielsmichielhein.watchfriends.model.Season;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import nmct.jaspernielsmichielhein.watchfriends.model.SeriesList;
@@ -35,4 +36,7 @@ public interface MovieDBService {
 
     @GET("list/{id}?api_key=" + Contract.MOVIEDB_API_KEY)
     Observable<SeriesList> getSeriesList(@Path("id") int id);
+
+    @GET("tv/popular?language=en-us&api_key=" + Contract.MOVIEDB_API_KEY)
+    Observable<Page<Series>> getPopular();
 }

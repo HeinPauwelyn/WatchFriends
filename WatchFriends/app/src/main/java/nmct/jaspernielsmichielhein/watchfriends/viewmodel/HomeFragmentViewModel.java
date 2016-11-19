@@ -7,11 +7,18 @@ import android.databinding.ObservableArrayList;
 
 import com.android.databinding.library.baseAdapters.BR;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentHomeBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;
 import nmct.jaspernielsmichielhein.watchfriends.model.MediaItem;
+import nmct.jaspernielsmichielhein.watchfriends.model.Page;
+import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import nmct.jaspernielsmichielhein.watchfriends.model.SeriesList;
 import nmct.jaspernielsmichielhein.watchfriends.model.SeriesListData;
 import rx.functions.Action1;
@@ -58,6 +65,32 @@ public class HomeFragmentViewModel extends BaseObservable {
                 }
             }
         });
+
+        ApiHelper.subscribe(ApiMovieDbHelper.getMoviedbServiceInstance().getPopular(), new Action1<Page<Series>>() {
+            @Override
+            public void call(Page<Series> seriesPage) {
+                if (seriesPage != null) {
+
+                    ObservableArrayList<Series> series = new ObservableArrayList<Series>();
+                    Random rnd = new Random();
+                    int size = seriesPage.getResults().size();
+                    ArrayList<Integer> takenSeries = new ArrayList<Integer>();
+
+                    for (int i = 0; i < 5; i++) {
+                        Integer number = rnd.nextInt(size);
+
+                        if (takenSeries.contains(number)) {
+                            i--;
+                        }
+                        else {
+                            takenSeries.add(number);
+                            series.add(seriesPage.getResults().get(number));
+                        }
+                    }
+                    seriesAddedListener.updateCarousel(series);
+                }
+            }
+        });
     }
 
     private void loadSeriesList(int id) {
@@ -76,6 +109,6 @@ public class HomeFragmentViewModel extends BaseObservable {
     public interface ISeriesAddedListener {
 
         void updateLists(ObservableArrayList<SeriesList> seriesLists);
-        void updateCarousel(ObservableArrayList<MediaItem> series);
+        void updateCarousel(ObservableArrayList<Series> backdrop_path);
     }
 }
