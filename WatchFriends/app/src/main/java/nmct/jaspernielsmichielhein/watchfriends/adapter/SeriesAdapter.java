@@ -14,26 +14,22 @@ import com.squareup.picasso.Picasso;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.PosterSeriesBinding;
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import nmct.jaspernielsmichielhein.watchfriends.view.MainActivity;
+import rx.functions.Action1;
 
 public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.SeriesViewHolder> {
-    public Interfaces.onSeriesSelectedListener listener;
+    //public Interfaces.onSeriesSelectedListener listener;
 
     private Context context;
     private ObservableArrayList<Series> series = null;
 
-    public SeriesAdapter(ObservableArrayList<Series> series, Context context, Interfaces.onSeriesSelectedListener lst) {
+    public SeriesAdapter(ObservableArrayList<Series> series, Context context) {
         this.context = context;
         this.series = series;
-
-        if (context instanceof Interfaces.onSeasonSelectedListener) {
-            listener = (Interfaces.onSeriesSelectedListener) context;
-        }
-        else if (lst != null){
-            listener = lst;
-        }
     }
 
     @Override
@@ -81,16 +77,22 @@ public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.SeriesView
 
             if (v.getContext() instanceof Interfaces.onSeriesSelectedListener) {
 
-                listener = (Interfaces.onSeriesSelectedListener) v.getContext();
-                listener.onSeriesSelected(selectedSeries);
+                final Interfaces.onSeriesSelectedListener listener = (Interfaces.onSeriesSelectedListener) v.getContext();
+
+                ApiHelper.subscribe(ApiMovieDbHelper.getMoviedbServiceInstance().getSeries(selectedSeries.getId()), new Action1<Series>() {
+                    @Override
+                    public void call(Series series) {
+                        if (series != null) {
+                            listener.onSeriesSelected(series);
+                        }
+                    }
+                });
+
             }
             else {
 
                 Snackbar.make(v, "v is not an instance of Interfaces.onSeriesSelectedListener", Snackbar.LENGTH_LONG).show();
             }
-            //if (listener != null) {
-            //    listener.onSeriesSelected(selectedSeries);
-            //}
         }
     }
 }

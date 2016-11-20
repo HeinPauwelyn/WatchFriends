@@ -111,8 +111,14 @@ public class SeriesFragmentViewModel extends BaseObservable {
                 @Override
                 public void call(SimilarSeriesResult similarSeriesResult) {
                     ObservableArrayList<Series> series = similarSeriesResult.getResults();
+                    int maxTeller = 5;
+
+                    if (series.size() < 5) {
+                        maxTeller = series.size();
+                    }
+
                     if (series.size() != 0) {
-                        for (int i = 0; i < 5; i++) {
+                        for (int i = 0; i < maxTeller; i++) {
                             ApiHelper.subscribe(
                                     ApiMovieDbHelper.getMoviedbServiceInstance().getSeries(series.get(i).getId()),
                                 new Action1<Series>() {

@@ -20,13 +20,11 @@ public class SeriesListAdapter extends RecyclerView.Adapter<SeriesListAdapter.Se
 
     private Context context = null;
     private ObservableArrayList<SeriesList> seriesLists;
-    private Interfaces.onSeriesSelectedListener lst;
 
-    public SeriesListAdapter(ObservableArrayList<SeriesList> seriesLists, Context context, Interfaces.onSeriesSelectedListener lst) {
+    public SeriesListAdapter(ObservableArrayList<SeriesList> seriesLists, Context context) {
         if(context != null) {
             this.context = context;
         }
-        this.lst = lst;
         this.seriesLists = seriesLists;
     }
 
@@ -44,7 +42,7 @@ public class SeriesListAdapter extends RecyclerView.Adapter<SeriesListAdapter.Se
         holder.getRowSeriesListBinding().setSeriesList(seriesObject);
         holder.getRowSeriesListBinding().executePendingBindings();
 
-        holder.getRowSeriesListBinding().rvListItems.setAdapter(new SeriesAdapter(seriesLists.get(position).getItems(), context, lst));
+        holder.getRowSeriesListBinding().rvListItems.setAdapter(new SeriesAdapter(seriesLists.get(position).getItems(), context));
         holder.getRowSeriesListBinding().rvListItems.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
         holder.getRowSeriesListBinding().rvListItems.setItemAnimator(new DefaultItemAnimator());
     }
