@@ -3,6 +3,7 @@ package nmct.jaspernielsmichielhein.watchfriends.adapter;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableArrayList;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,10 +79,18 @@ public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.SeriesView
         public void onClick(View v) {
             Series selectedSeries = series.get(getAdapterPosition());
 
-            // TODO: listener is null --> null check voorkomt milionOfDolarException...
-            if (listener != null) {
+            if (v.getContext() instanceof Interfaces.onSeriesSelectedListener) {
+
+                listener = (Interfaces.onSeriesSelectedListener) v.getContext();
                 listener.onSeriesSelected(selectedSeries);
             }
+            else {
+
+                Snackbar.make(v, "v is not an instance of Interfaces.onSeriesSelectedListener", Snackbar.LENGTH_LONG).show();
+            }
+            //if (listener != null) {
+            //    listener.onSeriesSelected(selectedSeries);
+            //}
         }
     }
 }
