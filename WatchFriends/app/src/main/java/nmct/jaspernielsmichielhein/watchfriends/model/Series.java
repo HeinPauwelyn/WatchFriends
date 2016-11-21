@@ -2,6 +2,7 @@ package nmct.jaspernielsmichielhein.watchfriends.model;
 
 import android.app.Activity;
 import android.content.Context;
+import android.databinding.BaseObservable;
 import android.databinding.ObservableArrayList;
 import android.net.Uri;
 import android.os.Parcel;
@@ -240,6 +241,15 @@ public class Series implements Parcelable {
         return "https://www.themoviedb.org/assets/e2dd052f141e33392eb749aab2414ec0/images/no-poster-w300_and_h450_bestv2-v2.png";
     }
 
+    public String getFullBackdrop_path() {
+
+        if (poster_path != null && poster_path != "") {
+            return Contract.MOVIEDB_IMAGE_BASE_URL + backdrop_path;
+        }
+
+        return "https://www.themoviedb.org/assets/e2dd052f141e33392eb749aab2414ec0/images/no-poster-w300_and_h450_bestv2-v2.png";
+    }
+
     public void setPoster_path(String poster_path) {
         this.poster_path = poster_path;
     }
@@ -329,7 +339,7 @@ public class Series implements Parcelable {
         String all_creators = "";
         ObservableArrayList<nmct.jaspernielsmichielhein.watchfriends.model.Creator> creators = getCreated_by();
 
-        if (creators.size() == 0) {
+        if (creators == null || creators.size() == 0) {
             all_creators = "n.a.";
         } else {
             for (nmct.jaspernielsmichielhein.watchfriends.model.Creator creator : creators) {
@@ -345,7 +355,7 @@ public class Series implements Parcelable {
         String all_genres = "";
         ObservableArrayList<Genre> genres = getGenres();
 
-        if (genres.size() == 0) {
+        if (genres == null || genres.size() == 0) {
             all_genres = "n.a.";
         } else {
             for (Genre genre : getGenres()) {
@@ -365,7 +375,7 @@ public class Series implements Parcelable {
         String all_networks = "";
         ObservableArrayList<Network> networks = getNetworks();
 
-        if (networks.size() == 0 ) {
+        if (networks == null || networks.size() == 0 ) {
             all_networks = "n.a.";
         } else {
             for (Network network : getNetworks()) {
@@ -376,7 +386,7 @@ public class Series implements Parcelable {
 
         int median_episode_time;
         int[] episode_times = getEpisode_run_time();
-        if (episode_times.length == 0) {
+        if (episode_times == null || episode_times.length == 0) {
             median_episode_time = 0;
         } else if(episode_times.length == 1) {
             median_episode_time = episode_times[0];
@@ -398,12 +408,19 @@ public class Series implements Parcelable {
     }
 
     public void makeTime_period() {
-        if(getStatus().equals("Ended")) {
-            setTime_period(getFirst_air_date().substring(0, 4) + " - " + getLast_air_date().substring(0, 3));
-        } else if (getStatus().equals("")) {
-            setTime_period(getFirst_air_date().substring(0, 4) + " - Unknown");
-        } else {
-            setTime_period(getFirst_air_date().substring(0, 4) + " - Continuing");
+
+        if (getStatus() != null) {
+
+            if (getStatus().equals("Ended")) {
+                setTime_period(getFirst_air_date().substring(0, 4) + " - " + getLast_air_date().substring(0, 3));
+            } else if (getStatus().equals("")) {
+                setTime_period(getFirst_air_date().substring(0, 4) + " - Unknown");
+            } else {
+                setTime_period(getFirst_air_date().substring(0, 4) + " - Continuing");
+            }
+        }
+        else {
+            setTime_period("Unknown");
         }
     }
 
