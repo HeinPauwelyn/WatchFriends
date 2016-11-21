@@ -20,7 +20,7 @@ import rx.schedulers.Schedulers;
 
 public class ProfileFragmentViewModel extends BaseObservable {
 
-    private final Interfaces.onHeaderChanged mListener;
+    private final Interfaces.headerChangedListener mListener;
     private Context context;
     private FragmentProfileBinding fragmentProfileBinding;
     @Bindable
@@ -38,8 +38,8 @@ public class ProfileFragmentViewModel extends BaseObservable {
         this.context = context;
         this.fragmentProfileBinding = fragmentProfileBinding;
 
-        if (context instanceof Interfaces.onHeaderChanged) {
-            mListener = (Interfaces.onHeaderChanged) context;
+        if (context instanceof Interfaces.headerChangedListener) {
+            mListener = (Interfaces.headerChangedListener) context;
         } else {
             throw new RuntimeException(context.toString() + " must implement onHeaderChanged");
         }
@@ -52,8 +52,8 @@ public class ProfileFragmentViewModel extends BaseObservable {
     }
 
     private void setHeader() {
-        mListener.onSetTitle("UserName");
-        final FloatingActionButton fab = mListener.onGetActionButton();
+        mListener.setTitle("UserName");
+        final FloatingActionButton fab = mListener.getActionButton();
         fab.setVisibility(View.INVISIBLE);
     }
 
