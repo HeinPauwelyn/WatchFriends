@@ -40,4 +40,7 @@
     <string name="number_of_episodes">Episodes:</string>
     <string name="recommended_by_friends">Recommended by friends</string>
     <string name="popular">Popular</string>
+    <string name="profile_picture">Profile Picture</string>
+    <string name="achievements">Achievements</string>
+    <string name="watchlist">Watchlist</string>
 </resources>
