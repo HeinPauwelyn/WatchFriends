@@ -107,7 +107,6 @@ public class HomeFragmentViewModel extends BaseObservable {
     }
 
     public interface ISeriesAddedListener {
-
         void updateLists(ObservableArrayList<SeriesList> seriesLists);
         void updateCarousel(ObservableArrayList<Series> backdrop_path);
     }
