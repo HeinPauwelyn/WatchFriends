@@ -9,10 +9,16 @@ import android.view.View;
 
 import com.android.databinding.library.baseAdapters.BR;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentProfileBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
+import nmct.jaspernielsmichielhein.watchfriends.model.Page;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
+import nmct.jaspernielsmichielhein.watchfriends.model.SeriesList;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -43,9 +49,11 @@ public class ProfileFragmentViewModel extends BaseObservable {
         } else {
             throw new RuntimeException(context.toString() + " must implement onHeaderChanged");
         }
+
+        setWatchlist(new ObservableArrayList<Series>());
     }
 
-    public void loadUser() {
+    public void getUser() {
         final ProfileFragmentViewModel that = this;
         fragmentProfileBinding.setViewmodel(that);
         setHeader();
@@ -58,35 +66,30 @@ public class ProfileFragmentViewModel extends BaseObservable {
     }
 
     public void generateFakeDate() {
-        final ProfileFragmentViewModel that = this;
-        fragmentProfileBinding.setViewmodel(that);
-        int[] ids = {16148, 64095, 1402, 1399, 25778, 14506, 33088, 13687};
-        setWatchlist(new ObservableArrayList<Series>());
-        loadSeries(ids, watchlist);
+        getData(watchlist);
     }
 
-    private void loadSeries(int[] ids, final ObservableArrayList<Series> seriesToLoad) {
+    private void getData(final ObservableArrayList<Series> series) {
+        ApiHelper.subscribe(ApiMovieDbHelper.getMoviedbServiceInstance().getPopular(), new Action1<Page<Series>>() {
+            @Override
+            public void call(Page<Series> seriesPage) {
+                if (seriesPage != null) {
+                    Random rnd = new Random();
+                    int size = seriesPage.getResults().size();
+                    ArrayList<Integer> takenSeries = new ArrayList<Integer>();
 
-        for (final int id : ids) {
+                    for (int i = 0; i < 5; i++) {
+                        Integer number = rnd.nextInt(size);
 
-            ApiHelper.getMoviedbServiceInstance().getSeries(id).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .onErrorReturn(new Func1<Throwable, Series>() {
-                        @Override
-                        public Series call(Throwable throwable) {
-                            return null;
+                        if (takenSeries.contains(number)) {
+                            i--;
+                        } else {
+                            takenSeries.add(number);
+                            series.add(seriesPage.getResults().get(number));
                         }
-                    })
-                    .subscribe(new Action1<Series>() {
-                        @Override
-                        public void call(Series returnedSeries) {
-                            if (returnedSeries != null) {
-
-                                seriesToLoad.add(returnedSeries);
-                                notifyPropertyChanged(BR.viewmodel);
-                            }
-                        }
-                    });
-        }
+                    }
+                }
+            }
+        });
     }
 }
