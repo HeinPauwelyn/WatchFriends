@@ -11,6 +11,7 @@ import com.squareup.picasso.Picasso;
 import nmct.jaspernielsmichielhein.watchfriends.BR;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentSeasonBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Season;
 import rx.functions.Action1;
@@ -50,7 +51,7 @@ public class SeasonFragmentViewModel extends BaseObservable {
 
     public void loadSeason() {
         final SeasonFragmentViewModel that = this;
-        ApiHelper.subscribe(ApiHelper.getMoviedbServiceInstance().getSeason(seriesId, seasonNumber),
+        ApiHelper.subscribe(ApiMovieDbHelper.getMoviedbServiceInstance().getSeason(seriesId, seasonNumber),
             new Action1<Season>() {
                 @Override
                 public void call(Season season) {

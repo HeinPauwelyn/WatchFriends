@@ -7,34 +7,37 @@ import android.databinding.ObservableArrayList;
 
 import com.android.databinding.library.baseAdapters.BR;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentHomeBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;
 import nmct.jaspernielsmichielhein.watchfriends.model.MediaItem;
-import nmct.jaspernielsmichielhein.watchfriends.model.MediaPackage;
+import nmct.jaspernielsmichielhein.watchfriends.model.Page;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
+import nmct.jaspernielsmichielhein.watchfriends.model.SeriesList;
+import nmct.jaspernielsmichielhein.watchfriends.model.SeriesListData;
 import rx.functions.Action1;
 
 public class HomeFragmentViewModel extends BaseObservable {
 
-    private ISeriesAddedToCarouselListener seriesAddedToCarouselListener;
+    private ISeriesAddedListener seriesAddedListener;
     private Context context;
     private FragmentHomeBinding fragmentHomeBinding;
-    @Bindable private ObservableArrayList<Series> recommendedByFriends = null;
-    @Bindable private ObservableArrayList<Series> popular = null;
+    @Bindable private ObservableArrayList<SeriesList> seriesLists = null;
     @Bindable private ObservableArrayList<MediaItem> carousel = null;
 
-    public ObservableArrayList<Series> getRecommendedByFriends() {
-        return recommendedByFriends;
+    public ObservableArrayList<SeriesList> getSeriesLists() {
+        return seriesLists;
     }
-    public void setRecommendedByFriends(ObservableArrayList<Series> recommendedByFriends) {
-        this.recommendedByFriends = recommendedByFriends;
+    public void setSeriesLists(ObservableArrayList<SeriesList> seriesLists) {
+        this.seriesLists = seriesLists;
     }
-    public ObservableArrayList<Series> getPopular() {
-        return popular;
-    }
-    public void setPopular(ObservableArrayList<Series> popular) {
-        this.popular = popular;
-    }
+
     public ObservableArrayList<MediaItem> getCarousel() {
         return carousel;
     }
@@ -42,63 +45,70 @@ public class HomeFragmentViewModel extends BaseObservable {
         this.carousel = carousel;
     }
 
-    public HomeFragmentViewModel(Context context, FragmentHomeBinding fragmentHomeBinding, ISeriesAddedToCarouselListener listener) {
+    public HomeFragmentViewModel(Context context, FragmentHomeBinding fragmentHomeBinding, ISeriesAddedListener listener) {
         this.context = context;
         this.fragmentHomeBinding = fragmentHomeBinding;
-        seriesAddedToCarouselListener = listener;
+        seriesAddedListener = listener;
+
+        setSeriesLists(new ObservableArrayList<SeriesList>());
     }
 
-    public void generateFakeData() {
-        final HomeFragmentViewModel that = this;
-        fragmentHomeBinding.setViewmodel(that);
+    public void getData() {
 
-        int[] ids1 = {16148, 64095, 1402, 1399, 25778, 14506, 33088, 13687};
-        int[] ids2 = {1399, 1396, 4614, 12908, 45, 456, 2190, 16148};
-        int[] ids3 = {8318, 57243, 1418, 2734, 63174, 25384};
+        ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getLists(), new Action1<SeriesListData>() {
+            @Override
+            public void call(SeriesListData seriesListData) {
+                if (seriesListData != null) {
+                    for (int id : seriesListData.getSeriesLists()) {
+                        loadSeriesList(id);
+                    }
+                }
+            }
+        });
 
-        setRecommendedByFriends(new ObservableArrayList<Series>());
-        setPopular(new ObservableArrayList<Series>());
-        setCarousel(new ObservableArrayList<MediaItem>());
+        ApiHelper.subscribe(ApiMovieDbHelper.getMoviedbServiceInstance().getPopular(), new Action1<Page<Series>>() {
+            @Override
+            public void call(Page<Series> seriesPage) {
+                if (seriesPage != null) {
 
-        loadSeries(ids1, recommendedByFriends);
-        loadSeries(ids2, popular);
-        loadMedia(ids3, carousel);
-    }
+                    ObservableArrayList<Series> series = new ObservableArrayList<Series>();
+                    Random rnd = new Random();
+                    int size = seriesPage.getResults().size();
+                    ArrayList<Integer> takenSeries = new ArrayList<Integer>();
 
-    private void loadMedia(int[] ids, final ObservableArrayList<MediaItem> seriesToLoad) {
-        for(final int id : ids) {
-            ApiHelper.subscribe(ApiHelper.getMoviedbServiceInstance().getMediaSeries(id),
-                new Action1<MediaPackage>() {
-                    @Override
-                    public void call(MediaPackage returnedMedia) {
-                        if (returnedMedia != null) {
-                            if (returnedMedia.getBackdrops().size() != 0) {
-                                seriesToLoad.add(returnedMedia.getBackdrops().get(0));
-                                notifyPropertyChanged(BR.viewmodel);
-                                seriesAddedToCarouselListener.updateCarousel(carousel);
-                            }
+                    for (int i = 0; i < 5; i++) {
+                        Integer number = rnd.nextInt(size);
+
+                        if (takenSeries.contains(number)) {
+                            i--;
+                        }
+                        else {
+                            takenSeries.add(number);
+                            series.add(seriesPage.getResults().get(number));
                         }
                     }
-                });
-        }
-    }
-    private void loadSeries(int[] ids, final ObservableArrayList<Series> seriesToLoad) {
-        for(final int id : ids) {
-            ApiHelper.subscribe(ApiHelper.getMoviedbServiceInstance().getSeries(id),
-                new Action1<Series>() {
-                    @Override
-                    public void call(Series returnedSeries) {
-                        if (returnedSeries != null) {
-                            seriesToLoad.add(returnedSeries);
-                            notifyPropertyChanged(BR.viewmodel);
-                        }
-                    }
-                });
-        }
+                    seriesAddedListener.updateCarousel(series);
+                }
+            }
+        });
     }
 
-    public interface ISeriesAddedToCarouselListener {
+    private void loadSeriesList(int id) {
 
-        void updateCarousel(ObservableArrayList<MediaItem> series);
+        ApiHelper.subscribe(ApiMovieDbHelper.getMoviedbServiceInstance().getSeriesList(id), new Action1<SeriesList>() {
+            @Override
+            public void call(SeriesList seriesList) {
+                seriesLists.add(seriesList);
+                notifyPropertyChanged(BR.viewmodel);
+
+                seriesAddedListener.updateLists(seriesLists);
+            }
+        });
+    }
+
+    public interface ISeriesAddedListener {
+
+        void updateLists(ObservableArrayList<SeriesList> seriesLists);
+        void updateCarousel(ObservableArrayList<Series> backdrop_path);
     }
 }
