@@ -24,4 +24,8 @@ public class Interfaces {
     public interface onEpisodeSelectedListener {
         void onEpisodeSelected(Episode episode);
     }
+
+    public interface onAccountRegisteredListener {
+        void onAccountRegistered(String mUsername);
+    }
 }

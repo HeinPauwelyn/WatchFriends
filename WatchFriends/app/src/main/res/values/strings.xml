@@ -49,4 +49,5 @@
     <string name="login_link">Already have an account? Login</string>
     <string name="register">Register</string>
     <string name="facebook_login_protocol_scheme">fb610786829108817</string>
+    <string name="confirm_password_hint">Confirm password</string>
 </resources>

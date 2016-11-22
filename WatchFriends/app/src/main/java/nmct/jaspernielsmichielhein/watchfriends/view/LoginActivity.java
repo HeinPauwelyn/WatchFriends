@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -33,9 +35,10 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.helper.AuthHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;
+import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Utils;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener, Interfaces.onAccountRegisteredListener {
     private static final String KEY_IS_RESOLVING = "is_resolving";
     private static final String KEY_SHOULD_RESOLVE = "should_resolve";
     private static final int RC_SIGN_IN = 9000;
@@ -67,9 +70,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         mGoogleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this, this).addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions).build();
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
-        AppEventsLogger.activateApp(this);
 
         setContentView(R.layout.activity_login);
         progressDialog = new ProgressDialog(LoginActivity.this, R.style.customDialog);
@@ -128,6 +129,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 showDialog();
                 onSignInClickedGoogle();
                 break;
+            case R.id.btnLoginFacebook:
+                showDialog();
+                break;
             case R.id.txtRegisterLink:
                 showRegisterActivity();
                 break;
@@ -148,12 +152,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void onSignInClicked() {
         mUsername = mTxbUsername.getText().toString();
         mPassword = mTxbPassword.getText().toString();
-        addAccount(mUsername);
+        if (checkCredentials(mUsername, mPassword)) {
+            addAccount(mUsername);
+        } else {
+            showLoginError();
+        }
     }
 
-    private void addAccount(String userName) {
-        showDialog();
+    private boolean checkCredentials(String mUsername, String mPassword) {
+        return !mUsername.equals("") && !mPassword.equals("");
+    }
 
+    private void showLoginError() {
+        progressDialog.dismiss();
+        Snackbar.make(mTxbUsername, "Error when logging in", Snackbar.LENGTH_SHORT).show();
+    }
+
+    public void addAccount(String userName) {
         Account[] accountsByType = mAccountManager.getAccountsByType(Contract.ACCOUNT_TYPE);
         Account account;
 
@@ -251,4 +266,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Log.d(LoginActivity.class.getName(), "Connection failed: " + connectionResult);
     }
 
+    // REGISTER
+
+    @Override
+    public void onAccountRegistered(String mUsername) {
+        addAccount(mUsername);
+    }
 }

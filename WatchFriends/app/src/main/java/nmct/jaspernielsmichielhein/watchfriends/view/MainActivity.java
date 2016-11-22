@@ -25,6 +25,10 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
@@ -65,6 +69,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -92,6 +100,7 @@ public class MainActivity extends AppCompatActivity
         if (AuthHelper.isUserLoggedIn(this)) {
             navigate(HomeFragment.newInstance(), "homeFragment", false);
         } else {
+            LoginManager.getInstance().logOut();
             showLoginActivity();
         }
     }
@@ -175,6 +184,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_logout:
                 AuthHelper.logUserOff(this);
+                LoginManager.getInstance().logOut();
                 showLoginActivity();
                 break;
             case R.id.nav_upgrade:
