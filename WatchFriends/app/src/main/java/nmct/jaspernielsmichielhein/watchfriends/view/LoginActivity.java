@@ -1,11 +1,13 @@
 package nmct.jaspernielsmichielhein.watchfriends.view;
 
+import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
 import android.accounts.OnAccountsUpdateListener;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -15,6 +17,7 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -36,11 +39,13 @@ import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.helper.AuthHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
+import nmct.jaspernielsmichielhein.watchfriends.helper.PermissionHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Utils;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener, Interfaces.onAccountRegisteredListener {
     private static final String KEY_IS_RESOLVING = "is_resolving";
     private static final String KEY_SHOULD_RESOLVE = "should_resolve";
+    private static final int PERM_REQ_MANAGE_ACCOUNTS = 10000;
     private static final int RC_SIGN_IN = 9000;
 
     private GoogleApiClient mGoogleApiClient;
@@ -108,11 +113,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mAccountManager = AccountManager.get(this);
         mAccountAuthenticatorResponse = this.getIntent().getParcelableExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE);
 
-        if(mAccountAuthenticatorResponse != null) {
+        if (mAccountAuthenticatorResponse != null) {
             mAccountAuthenticatorResponse.onRequestContinued();
         }
 
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             mIsResolving = savedInstanceState.getBoolean(KEY_IS_RESOLVING);
             mShouldResolve = savedInstanceState.getBoolean(KEY_SHOULD_RESOLVE);
         }
@@ -169,6 +174,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void addAccount(String userName) {
+        if (!PermissionHelper.check(LoginActivity.this, Manifest.permission.ACCOUNT_MANAGER, "WatchFriends needs to manage your accounts", PERM_REQ_MANAGE_ACCOUNTS)) {
+            progressDialog.dismiss();
+            Toast.makeText(LoginActivity.this, "Can't login to WatchFriends due to permission issues", Toast.LENGTH_LONG).show();
+            return;
+        }
         Account[] accountsByType = mAccountManager.getAccountsByType(Contract.ACCOUNT_TYPE);
         Account account;
 
@@ -264,6 +274,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(LoginActivity.class.getName(), "Connection failed: " + connectionResult);
+    }
+
+    // PERMISSIONS
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case PERM_REQ_MANAGE_ACCOUNTS: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    progressDialog.dismiss();
+                    Toast.makeText(LoginActivity.this, "Permission granted, please try to login", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Can't login to WatchFriends due to permission issues", Toast.LENGTH_LONG).show();
+                }
+                break;
+            }
+        }
     }
 
     // REGISTER
