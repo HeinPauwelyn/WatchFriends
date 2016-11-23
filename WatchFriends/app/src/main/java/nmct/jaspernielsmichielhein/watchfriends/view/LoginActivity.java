@@ -6,6 +6,7 @@ import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
 import android.accounts.OnAccountsUpdateListener;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.PersistableBundle;
@@ -48,6 +49,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static final int PERM_REQ_MANAGE_ACCOUNTS = 10000;
     private static final int RC_SIGN_IN = 9000;
 
+    public static Context mContext;
+
     private GoogleApiClient mGoogleApiClient;
 
     CallbackManager callbackManager;
@@ -71,6 +74,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mContext = this;
 
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         mGoogleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this, this).addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions).build();
@@ -174,11 +179,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void addAccount(String userName) {
-        if (!PermissionHelper.check(LoginActivity.this, Manifest.permission.ACCOUNT_MANAGER, "WatchFriends needs to manage your accounts", PERM_REQ_MANAGE_ACCOUNTS)) {
+        /*if (!PermissionHelper.check(LoginActivity.this, Manifest.permission.ACCOUNT_MANAGER, "WatchFriends needs to manage your accounts", PERM_REQ_MANAGE_ACCOUNTS)) {
             progressDialog.dismiss();
             Toast.makeText(LoginActivity.this, "Can't login to WatchFriends due to permission issues", Toast.LENGTH_LONG).show();
             return;
-        }
+        }*/
         Account[] accountsByType = mAccountManager.getAccountsByType(Contract.ACCOUNT_TYPE);
         Account account;
 

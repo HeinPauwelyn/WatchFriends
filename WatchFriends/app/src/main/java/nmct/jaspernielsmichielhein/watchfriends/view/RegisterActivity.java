@@ -72,7 +72,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mListener = (Interfaces.onAccountRegisteredListener) getApplicationContext();
+        mListener = (Interfaces.onAccountRegisteredListener) LoginActivity.mContext;
 
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         mGoogleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this, this).addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions).build();
@@ -160,7 +160,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         mConfirmPassword = mTxbConfirmPassword.getText().toString();
         if (checkCredentials(mUsername, mPassword, mConfirmPassword)) {
             registerAccount("def", mUsername);
-            new LoginActivity().addAccount(mUsername);
+            mListener.onAccountRegistered(mUsername);
+            finish();
         } else {
             showRegisterError();
         }
@@ -237,7 +238,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if (result.isSuccess()) {
             GoogleSignInAccount account = result.getSignInAccount();
             registerAccount("google", account.getEmail());
-            new LoginActivity().addAccount(account.getEmail());
+            mListener.onAccountRegistered(account.getEmail());
         }
     }
 
