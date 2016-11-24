@@ -6,6 +6,7 @@ import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
 import android.accounts.OnAccountsUpdateListener;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
@@ -35,8 +36,6 @@ import nmct.jaspernielsmichielhein.watchfriends.helper.AuthHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Utils;
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.RuntimePermissions;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener,
         GoogleApiClient.OnConnectionFailedListener,
@@ -44,6 +43,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static final String KEY_IS_RESOLVING = "is_resolving";
     private static final String KEY_SHOULD_RESOLVE = "should_resolve";
     private static final int RC_SIGN_IN = 9000;
+
+    public static Context mContext;
 
     private GoogleApiClient mGoogleApiClient;
 
@@ -68,6 +69,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mContext = this;
 
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         mGoogleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this, this).addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions).build();
@@ -178,7 +181,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             account = new Account(userName, Contract.ACCOUNT_TYPE);
             mAccountManager.addAccountExplicitly(account, null, null);
         } else if (!userName.equals(accountsByType[0].name)) {
-            mAccountManager.removeAccount(accountsByType[0], this, null, null);
+            AuthHelper.logUserOff(this, accountsByType[0]);
             account = new Account(userName, Contract.ACCOUNT_TYPE);
             mAccountManager.addAccountExplicitly(account, null, null);
         } else {
@@ -197,6 +200,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
         setResult(RESULT_OK, intent);
+        mContext = null;
         finish();
     }
 
@@ -274,4 +278,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onAccountRegistered(String mUsername) {
         addAccount(mUsername);
     }
+
 }

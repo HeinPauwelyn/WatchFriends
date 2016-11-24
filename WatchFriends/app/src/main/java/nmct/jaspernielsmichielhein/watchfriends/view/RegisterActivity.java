@@ -1,10 +1,23 @@
 package nmct.jaspernielsmichielhein.watchfriends.view;
 
+import android.accounts.Account;
+import android.accounts.AccountAuthenticatorResponse;
+import android.accounts.AccountManager;
+import android.accounts.OnAccountsUpdateListener;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatEditText;
+import android.util.Log;
+import android.view.View;
+
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -15,33 +28,12 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import android.accounts.Account;
-import android.accounts.AccountAuthenticatorResponse;
-import android.accounts.AccountManager;
-import android.accounts.OnAccountsUpdateListener;
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
-import android.os.PersistableBundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.AppCompatEditText;
-import android.util.Base64;
-import android.util.Log;
-import android.view.View;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Utils;
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener,
+        GoogleApiClient.OnConnectionFailedListener {
     private static final String KEY_IS_RESOLVING = "is_resolving";
     private static final String KEY_SHOULD_RESOLVE = "should_resolve";
     private static final int RC_SIGN_IN = 9001;
@@ -91,8 +83,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onSuccess(LoginResult loginResult) {
                 registerAccount("fb", loginResult.getAccessToken().getUserId());
-                mListener.onAccountRegistered(loginResult.getAccessToken().getUserId());
-                finish();
             }
 
             @Override
@@ -159,9 +149,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         mPassword = mTxbPassword.getText().toString();
         mConfirmPassword = mTxbConfirmPassword.getText().toString();
         if (checkCredentials(mUsername, mPassword, mConfirmPassword)) {
-            registerAccount("def", mUsername);
-            mListener.onAccountRegistered(mUsername);
-            finish();
+            registerAccount("default", mUsername);
         } else {
             showRegisterError();
         }
@@ -173,11 +161,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private void showRegisterError() {
         progressDialog.dismiss();
-        Snackbar.make(mTxbUsername, "Error when logging in", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(mTxbUsername, "Error when registering", Snackbar.LENGTH_SHORT).show();
     }
 
     private void registerAccount(String tag, String userName) {
         Snackbar.make(mTxbUsername, "Account magically made", Snackbar.LENGTH_SHORT).show();
+        mListener.onAccountRegistered(userName);
+        finish();
     }
 
     @Override
@@ -238,7 +228,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if (result.isSuccess()) {
             GoogleSignInAccount account = result.getSignInAccount();
             registerAccount("google", account.getEmail());
-            mListener.onAccountRegistered(account.getEmail());
         }
     }
 

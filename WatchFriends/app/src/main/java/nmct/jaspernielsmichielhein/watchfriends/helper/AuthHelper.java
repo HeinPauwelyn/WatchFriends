@@ -3,7 +3,9 @@ package nmct.jaspernielsmichielhein.watchfriends.helper;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
+import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 
 public class AuthHelper {
 
@@ -27,11 +29,7 @@ public class AuthHelper {
 
         Account[] accounts = mAccountManager.getAccountsByType(nmct.jaspernielsmichielhein.watchfriends.helper.Contract.ACCOUNT_TYPE);
 
-        if (accounts.length > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return accounts.length > 0;
     }
 
     public static void logUserOff(Context context) {
@@ -39,8 +37,22 @@ public class AuthHelper {
 
         Account[] accounts = mAccountManager.getAccountsByType(nmct.jaspernielsmichielhein.watchfriends.helper.Contract.ACCOUNT_TYPE);
 
-        for(int i = 0, len = accounts.length; i < len; i++) {
-            mAccountManager.removeAccount(accounts[i], null, null, null);
+        for (Account account : accounts) {
+            removeAccount(context, account);
+        }
+    }
+
+    public static void logUserOff(Context context, Account account) {
+        mAccountManager = AccountManager.get(context);
+
+        removeAccount(context, account);
+    }
+
+    private static void removeAccount(Context context, Account account) {
+        if (Build.VERSION.SDK_INT >= 22) {
+            mAccountManager.removeAccount(account, (Activity) context, null, null);
+        } else {
+            mAccountManager.removeAccount(account, null, null);
         }
     }
 
