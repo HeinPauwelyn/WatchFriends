@@ -182,7 +182,6 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_logout:
                 AuthHelper.logUserOff(this);
-                LoginManager.getInstance().logOut();
                 showLoginActivity();
                 break;
             case R.id.nav_upgrade:

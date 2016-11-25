@@ -7,16 +7,21 @@ import android.accounts.AccountManager;
 import android.accounts.OnAccountsUpdateListener;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -36,7 +41,14 @@ import nmct.jaspernielsmichielhein.watchfriends.helper.AuthHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Utils;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
 
+@RuntimePermissions
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener,
         GoogleApiClient.OnConnectionFailedListener,
         Interfaces.onAccountRegisteredListener {
@@ -72,7 +84,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         mContext = this;
 
-        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken("955047814444-3e0u7iin8gka9r5htlcj38op04b3ga9c.apps.googleusercontent.com").requestEmail().build();
         mGoogleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this, this).addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions).build();
 
         callbackManager = CallbackManager.Factory.create();
@@ -88,7 +100,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                addAccount(loginResult.getAccessToken().getUserId());
+                LoginActivityPermissionsDispatcher.addAccountWithCheck(LoginActivity.this, loginResult.getAccessToken().getUserId());
             }
 
             @Override
@@ -158,7 +170,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mUsername = mTxbUsername.getText().toString();
         mPassword = mTxbPassword.getText().toString();
         if (checkCredentials(mUsername, mPassword)) {
-            addAccount(mUsername);
+            LoginActivityPermissionsDispatcher.addAccountWithCheck(this, mUsername);
         } else {
             showLoginError();
         }
@@ -173,7 +185,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Snackbar.make(mTxbUsername, "Error when logging in", Snackbar.LENGTH_SHORT).show();
     }
 
+    @NeedsPermission(Manifest.permission.GET_ACCOUNTS)
     public void addAccount(String userName) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
         Account[] accountsByType = mAccountManager.getAccountsByType(Contract.ACCOUNT_TYPE);
         Account account;
 
@@ -222,6 +238,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         };
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
         mAccountManager.addOnAccountsUpdatedListener(mOnAccountsUpdateListener, null, true);
     }
 
@@ -263,7 +282,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Log.d(LoginActivity.class.getName(), "Sign in result: " + result.isSuccess());
         if (result.isSuccess()) {
             GoogleSignInAccount account = result.getSignInAccount();
-            addAccount(account.getEmail());
+            LoginActivityPermissionsDispatcher.addAccountWithCheck(this, account.getEmail());
         }
     }
 
@@ -277,6 +296,53 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onAccountRegistered(String mUsername) {
         addAccount(mUsername);
+    }
+
+    // PERMISSIONS
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        LoginActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    private void showRationaleDialog(String message, final PermissionRequest request) {
+        new AlertDialog.Builder(this, R.style.customDialog)
+                .setPositiveButton("Allow", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        request.proceed();
+                    }
+                })
+                .setNegativeButton("Deny", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        request.cancel();
+                    }
+                })
+                .setCancelable(false)
+                .setTitle("Permission denied")
+                .setMessage(message)
+                .show();
+    }
+
+    @OnShowRationale(Manifest.permission.GET_ACCOUNTS)
+    void showRationaleForAccounts(PermissionRequest request) {
+        showRationaleDialog("Accounts permission needed to log in", request);
+    }
+
+    @OnPermissionDenied(Manifest.permission.GET_ACCOUNTS)
+    void onAccountsDenied() {
+        progressDialog.dismiss();
+        AuthHelper.logUserOff(this);
+        Toast.makeText(this, "Accounts permission denied, consider accepting to use this app", Toast.LENGTH_SHORT).show();
+    }
+
+    @OnNeverAskAgain(Manifest.permission.GET_ACCOUNTS)
+    void onAccountsNeverAskAgain() {
+        progressDialog.dismiss();
+        AuthHelper.logUserOff(this);
+        Toast.makeText(this, "Accounts permission denied with never ask again", Toast.LENGTH_SHORT).show();
     }
 
 }

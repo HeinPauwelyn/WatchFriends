@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 
+import com.facebook.login.LoginManager;
+
 public class AuthHelper {
 
     private static AccountManager mAccountManager;
@@ -49,6 +51,7 @@ public class AuthHelper {
     }
 
     private static void removeAccount(Context context, Account account) {
+        LoginManager.getInstance().logOut();
         if (Build.VERSION.SDK_INT >= 22) {
             mAccountManager.removeAccount(account, (Activity) context, null, null);
         } else {
