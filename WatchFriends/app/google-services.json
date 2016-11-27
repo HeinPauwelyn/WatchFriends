@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "955047814444",
+    "project_id": "firebase-watchfriends"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:955047814444:android:ea24baa4bf88938e",
+        "android_client_info": {
+          "package_name": "nmct.jaspernielsmichielhein.watchfriends"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "955047814444-dv865qc6shujva2oqe78en0431cko7hp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "nmct.jaspernielsmichielhein.watchfriends",
+            "certificate_hash": "544702C8D3D50D4EC3E91D4989AD6364180998DE"
+          }
+        },
+        {
+          "client_id": "955047814444-3e0u7iin8gka9r5htlcj38op04b3ga9c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWRrc8CXaCZcN7h8INLxnTiTLG61bmeiY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

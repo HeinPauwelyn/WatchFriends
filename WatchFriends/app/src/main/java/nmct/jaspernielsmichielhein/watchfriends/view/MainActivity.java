@@ -27,6 +27,8 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
 
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
@@ -35,6 +37,7 @@ import rx.functions.Action1;
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.api.MovieDBService;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.AuthHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
@@ -70,6 +73,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -106,7 +112,17 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        navigate(HomeFragment.newInstance(), "homeFragment", false);
+        if (AuthHelper.isUserLoggedIn(this)) {
+            navigate(HomeFragment.newInstance(), "homeFragment", false);
+        } else {
+            LoginManager.getInstance().logOut();
+            showLoginActivity();
+        }
+    }
+
+    private void showLoginActivity() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -170,7 +186,6 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -193,6 +208,8 @@ public class MainActivity extends AppCompatActivity
                 //navigate(new SettingsFragment());
                 break;
             case R.id.nav_logout:
+                AuthHelper.logUserOff(this);
+                showLoginActivity();
                 break;
             case R.id.nav_upgrade:
                 break;
@@ -261,4 +278,5 @@ public class MainActivity extends AppCompatActivity
     public void onEpisodeSelected(Episode episode) {
         navigate(EpisodeFragment.newInstance(episode), "episodeFragment", true);
     }
+
 }
