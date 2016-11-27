@@ -7,14 +7,13 @@ import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -23,30 +22,41 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
 
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
+import rx.functions.Action1;
+
 import nmct.jaspernielsmichielhein.watchfriends.R;
+import nmct.jaspernielsmichielhein.watchfriends.api.MovieDBService;
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.AuthHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
-import nmct.jaspernielsmichielhein.watchfriends.model.Season;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         SearchView.OnQueryTextListener,
-        Interfaces.onHeaderChanged,
+        Interfaces.headerChangedListener,
         Interfaces.onSeriesSelectedListener,
+        Interfaces.onSeasonSelectedListener,
         Interfaces.onEpisodeSelectedListener {
-
 
     private ImageView headerImage;
     private FloatingActionButton actionButton;
     private CollapsingToolbarLayout toolbarLayout;
     private AppBarLayout appBarLayout;
+    private View headerView;
+    private ImageView profilePicture;
+    private MovieDBService movieDBService;
 
     public void setTitle(String title){
         toolbarLayout.setTitle(title);
@@ -63,6 +73,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -74,19 +87,42 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        headerView = navigationView.getHeaderView(0);
+        profilePicture = (ImageView) headerView.findViewById(R.id.profilePicture);
+
+        profilePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigate(ProfileFragment.newInstance(), "profileFragment", false);
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
+            }
+        });
 
         headerImage = (ImageView) findViewById(R.id.header_image);
+
         actionButton = (FloatingActionButton) findViewById(R.id.fab);
         toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
 
-        collapseToolbar();
+        movieDBService = ApiMovieDbHelper.getMoviedbServiceInstance();
+        //collapseToolbar();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        navigate(HomeFragment.newInstance(), "homeFragment", false);
+        if (AuthHelper.isUserLoggedIn(this)) {
+            navigate(HomeFragment.newInstance(), "homeFragment", false);
+        } else {
+            LoginManager.getInstance().logOut();
+            showLoginActivity();
+        }
+    }
+
+    private void showLoginActivity() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -95,6 +131,17 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            FragmentManager fmgr = getFragmentManager();
+            if(fmgr.getBackStackEntryCount() == 1) //home fragment
+                fmgr.popBackStack();
+            else{
+                //search fragment
+                int index = fmgr.getBackStackEntryCount() - 1;
+                FragmentManager.BackStackEntry backEntry = fmgr.getBackStackEntryAt(index);
+                //if("searchFragment" == backEntry.getName())
+                //    fmgr.popBackStackImmediate();
+            }
+
             super.onBackPressed();
         }
     }
@@ -146,7 +193,13 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_watching:
                 break;
             case R.id.nav_watchlist:
-                navigate(SeasonFragment.newInstance("The Flash", 60735, 2), "seasonFragment", true);
+                ApiHelper.subscribe(movieDBService.getSeries(63174),
+                        new Action1<Series>() {
+                            @Override
+                            public void call(Series series) {
+                                navigate(SeriesFragment.newInstance(series), "seasonFragment", true);
+                            }
+                        });
                 break;
             case R.id.nav_watched:
                 break;
@@ -155,6 +208,8 @@ public class MainActivity extends AppCompatActivity
                 //navigate(new SettingsFragment());
                 break;
             case R.id.nav_logout:
+                AuthHelper.logUserOff(this);
+                showLoginActivity();
                 break;
             case R.id.nav_upgrade:
                 break;
@@ -170,23 +225,25 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void collapseToolbar(){
+    public void collapseToolbar(){
         appBarLayout.setExpanded(false, true);
         //todo ook disablen
+        actionButton.setVisibility(View.GONE);
     }
 
+    public void expandToolbar(){
+        appBarLayout.setExpanded(true, true);
+        //todo ook enablen
+        actionButton.setVisibility(View.VISIBLE);
+    }
 
     private void navigate(Fragment fragment, String tag, boolean collapsing){
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_frame, fragment, tag);
+        fragmentTransaction.addToBackStack(tag);
         fragmentTransaction.commit();
-        if(collapsing){
-            appBarLayout.setExpanded(true, true);
-            //todo ook enablen
-        }
-        else{
-            collapseToolbar();
-        }
+        if(collapsing) expandToolbar();
+        else collapseToolbar();
     }
 
     @Override
@@ -202,28 +259,24 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
-    @Override
-    public void onSetTitle(String title) {
-        setTitle(title);
-    }
-
-    @Override
-    public void onSetImage(Uri uri) {
+    public void setImage(Uri uri) {
         Picasso.with(this).load(uri).into(getHeaderImage());
     }
 
+
     @Override
-    public FloatingActionButton onGetActionButton() {
-        return getActionButton();
-    }
-
     public void onSeriesSelected(Series series) {
-
+        navigate(SeriesFragment.newInstance(series), "seriesFragment", true);
     }
 
+    @Override
+    public void onSeasonSelected(String seriesName, int seriesId, int seasonNumber) {
+        navigate(SeasonFragment.newInstance(seriesName, seriesId, seasonNumber), "seasonFragment", true);
+    }
+
+    @Override
     public void onEpisodeSelected(Episode episode) {
         navigate(EpisodeFragment.newInstance(episode), "episodeFragment", true);
     }
-    //todo search back button -> navigate(HomeFragment)
 
 }

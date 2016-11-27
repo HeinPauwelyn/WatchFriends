@@ -41,9 +41,8 @@ public class EpisodesAdapter extends ArrayAdapter<Episode> implements View.OnCli
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final RowEpisodeBinding rowEpisodeBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.row_episode, parent, false);
+        final RowEpisodeBinding rowEpisodeBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.row_episode, parent, false);
         Episode episode = getItem(position);
-        episode.initExtraFields();
         rowEpisodeBinding.setEpisode(episode);
 
         ImageButton imgViewed = (ImageButton) rowEpisodeBinding.getRoot().findViewById(R.id.imgViewed);

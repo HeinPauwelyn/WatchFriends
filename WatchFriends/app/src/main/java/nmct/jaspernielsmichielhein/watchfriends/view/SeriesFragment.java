@@ -18,16 +18,13 @@ public class SeriesFragment extends Fragment {
 
     private SeriesFragmentViewModel seriesFragmentViewModel;
 
-    private int seriesId = 0;
     private Series series = null;
 
-    public SeriesFragment() {
-        // Required empty public constructor
-    }
+    public SeriesFragment() { }
 
-    public static SeriesFragment newInstance(int seriesId) {
+    public static SeriesFragment newInstance(Series series) {
         Bundle args = new Bundle();
-        args.putInt(ARG_series, seriesId);
+        args.putParcelable(ARG_series,series);
 
         SeriesFragment fragment = new SeriesFragment();
         fragment.setArguments(args);
@@ -39,14 +36,18 @@ public class SeriesFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
         if (arguments != null) {
-            seriesId = arguments.getInt(ARG_series);
+            series = arguments.getParcelable(ARG_series);
+            series.initExtraFields();
+            if(series.getStatus() != null && series.getSeasons().get(0).getSeason_number() == 0) {
+                series.getSeasons().remove(0);
+            }
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragmentSeriesBinding fragmentSeriesBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_series, container, false);
-        seriesFragmentViewModel = new SeriesFragmentViewModel(getActivity(), fragmentSeriesBinding, seriesId);
+        seriesFragmentViewModel = new SeriesFragmentViewModel(getActivity(), fragmentSeriesBinding, series);
         return fragmentSeriesBinding.getRoot();
     }
 
