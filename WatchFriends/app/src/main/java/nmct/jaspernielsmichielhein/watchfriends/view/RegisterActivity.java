@@ -1,15 +1,18 @@
 package nmct.jaspernielsmichielhein.watchfriends.view;
 
+import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
 import android.accounts.OnAccountsUpdateListener;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.Log;
@@ -108,11 +111,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         mAccountManager = AccountManager.get(this);
         mAccountAuthenticatorResponse = this.getIntent().getParcelableExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE);
 
-        if(mAccountAuthenticatorResponse != null) {
+        if (mAccountAuthenticatorResponse != null) {
             mAccountAuthenticatorResponse.onRequestContinued();
         }
 
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             mIsResolving = savedInstanceState.getBoolean(KEY_IS_RESOLVING);
             mShouldResolve = savedInstanceState.getBoolean(KEY_SHOULD_RESOLVE);
         }
@@ -140,7 +143,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private void showDialog() {
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating ...");
+        progressDialog.setMessage("Registering ...");
         progressDialog.show();
     }
 
@@ -186,6 +189,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }
         };
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
         mAccountManager.addOnAccountsUpdatedListener(mOnAccountsUpdateListener, null, true);
     }
 

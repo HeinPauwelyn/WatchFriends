@@ -26,7 +26,6 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
 
@@ -158,7 +157,6 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -203,7 +201,6 @@ public class MainActivity extends AppCompatActivity
         actionButton.setVisibility(View.GONE);
         //todo ook disablen
     }
-
 
     private void navigate(Fragment fragment, String tag, boolean collapsing){
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
@@ -264,4 +261,5 @@ public class MainActivity extends AppCompatActivity
     public void onEpisodeSelected(Episode episode) {
         navigate(EpisodeFragment.newInstance(episode), "episodeFragment", true);
     }
+
 }

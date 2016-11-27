@@ -7,17 +7,14 @@ import android.accounts.AccountManager;
 import android.accounts.OnAccountsUpdateListener;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.Log;
 import android.view.View;
@@ -81,7 +78,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mContext = this;
 
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken("955047814444-3e0u7iin8gka9r5htlcj38op04b3ga9c.apps.googleusercontent.com").requestEmail().build();
@@ -295,7 +291,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onAccountRegistered(String mUsername) {
-        addAccount(mUsername);
+        LoginActivityPermissionsDispatcher.addAccountWithCheck(this, mUsername);
     }
 
     // PERMISSIONS
@@ -306,29 +302,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         LoginActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
-    private void showRationaleDialog(String message, final PermissionRequest request) {
-        new AlertDialog.Builder(this, R.style.customDialog)
-                .setPositiveButton("Allow", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        request.proceed();
-                    }
-                })
-                .setNegativeButton("Deny", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        request.cancel();
-                    }
-                })
-                .setCancelable(false)
-                .setTitle("Permission denied")
-                .setMessage(message)
-                .show();
-    }
-
     @OnShowRationale(Manifest.permission.GET_ACCOUNTS)
     void showRationaleForAccounts(PermissionRequest request) {
-        showRationaleDialog("Accounts permission needed to log in", request);
+        Utils.showRationaleDialog(this, "Accounts permission needed to log in", request);
     }
 
     @OnPermissionDenied(Manifest.permission.GET_ACCOUNTS)

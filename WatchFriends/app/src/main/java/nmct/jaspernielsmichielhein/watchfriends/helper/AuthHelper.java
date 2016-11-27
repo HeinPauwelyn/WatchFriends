@@ -1,13 +1,19 @@
 package nmct.jaspernielsmichielhein.watchfriends.helper;
 
+import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.annotation.RequiresPermission;
+import android.support.v4.app.ActivityCompat;
 
 import com.facebook.login.LoginManager;
+
+import permissions.dispatcher.NeedsPermission;
 
 public class AuthHelper {
 
@@ -17,6 +23,9 @@ public class AuthHelper {
     public static String getUsername(Context context) {
         mAccountManager = AccountManager.get(context);
 
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
+            return null;
+        }
         Account[] accounts = mAccountManager.getAccountsByType(nmct.jaspernielsmichielhein.watchfriends.helper.Contract.ACCOUNT_TYPE);
 
         if (accounts.length > 0) {
@@ -29,6 +38,9 @@ public class AuthHelper {
     public static Boolean isUserLoggedIn(Context context) {
         mAccountManager = AccountManager.get(context);
 
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
+            return false;
+        }
         Account[] accounts = mAccountManager.getAccountsByType(nmct.jaspernielsmichielhein.watchfriends.helper.Contract.ACCOUNT_TYPE);
 
         return accounts.length > 0;
@@ -37,6 +49,9 @@ public class AuthHelper {
     public static void logUserOff(Context context) {
         mAccountManager = AccountManager.get(context);
 
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
         Account[] accounts = mAccountManager.getAccountsByType(nmct.jaspernielsmichielhein.watchfriends.helper.Contract.ACCOUNT_TYPE);
 
         for (Account account : accounts) {
