@@ -1,23 +1,25 @@
 <resources>
-    <!-- API KEY -->
+    <!-- global -->
     <string name="moviedb_api_key">1447c9e70c5784fbe8a492a4d5f37c8b</string>
+
     <string name="facebook_app_id">610786829108817</string>
 
-    <string name="title_activity_main">WatchFriends</string>
 
+    <string name="studio_name">Cross Platform Apps - NMCT</string>
+    <string name="developer_name">Hein Jasper Michiel Niels</string>
+    <string name="app_name">WatchFriends</string>
+    <!-- MainActivity -->
+    <string name="title_activity_main">WatchFriends</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
     <string name="action_settings">Settings</string>
-
-    <string name="app_name">WatchFriends</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- fragments -->
     <string name="title_activity_login">Sign in</string>
-    <string name="studio_name">Cross Platform Apps - NMCT</string>
-    <string name="developer_name">Hein Jasper Michiel Niels</string>
-    <string name="menu_search_hint">search series</string>
+    <string name="menu_search_hint">search seriesLists</string>
     <string name="episodeHeaderDescription">episodeHeader</string>
     <string name="air_date_icon_description">airDateIcon</string>
     <string name="overview_icon_description">overviewIcon</string>
@@ -42,6 +44,7 @@
     <string name="number_of_episodes">Episodes:</string>
     <string name="recommended_by_friends">Recommended by friends</string>
     <string name="popular">Popular</string>
+
     <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
     <string name="login">Login</string>
@@ -50,4 +53,9 @@
     <string name="register">Register</string>
     <string name="facebook_login_protocol_scheme">fb610786829108817</string>
     <string name="confirm_password_hint">Confirm password</string>
+
+    <string name="profile_picture">Profile Picture</string>
+    <string name="achievements">Achievements</string>
+    <string name="watchlist">Watchlist</string>
+
 </resources>

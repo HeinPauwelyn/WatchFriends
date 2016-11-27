@@ -25,9 +25,7 @@ public class SeasonFragment extends Fragment {
     private int seriesId = 0;
     private int seasonNumber = 0;
 
-    public SeasonFragment() {
-        // Required empty public constructor
-    }
+    public SeasonFragment() { }
 
     public static SeasonFragment newInstance(String seriesName, int seriesId, int seasonNumber) {
         Bundle args = new Bundle();

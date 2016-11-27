@@ -79,6 +79,18 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
+        <provider
+            android:name=".provider.FavoritesProvider"
+            android:authorities="nmct.jaspernielsmichielhein.watchfriends"
+            android:exported="false" />
+        <provider
+            android:name=".provider.WatchedProvider"
+            android:authorities="nmct.jaspernielsmichielhein.watchfriends"
+            android:exported="false" />
+        <provider
+            android:name=".provider.FollowedSeriesProvider"
+            android:authorities="nmct.jaspernielsmichielhein.watchfriends"
+            android:exported="false" />
     </application>
 
 </manifest>
