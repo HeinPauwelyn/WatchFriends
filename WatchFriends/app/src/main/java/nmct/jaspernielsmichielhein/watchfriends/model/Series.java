@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
+import nmct.jaspernielsmichielhein.watchfriends.api.SimilarSeriesResult;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;
 
 import java.util.Arrays;
@@ -46,6 +47,7 @@ public class Series implements Parcelable {
     private float rating = 0;
     private ObservableArrayList<Season> seasons = new ObservableArrayList<Season>();
     private String showed_on = "";
+    private SimilarSeriesResult similar;
     private String status = "";
     private String time_period = "";
     private String type = "";
@@ -109,6 +111,9 @@ public class Series implements Parcelable {
     }
 
     public String getHomepage() {
+        if (homepage.equals("")) {
+            return "Not available";
+        }
         return homepage;
     }
 
@@ -286,6 +291,14 @@ public class Series implements Parcelable {
         this.showed_on = showed_on;
     }
 
+    public SimilarSeriesResult getSimilar() {
+        return similar;
+    }
+
+    public void setSimilar(SimilarSeriesResult similar) {
+        this.similar = similar;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -409,7 +422,7 @@ public class Series implements Parcelable {
 
     public void makeTime_period() {
 
-        if (getStatus() != null) {
+        if (getStatus() != null && getFirst_air_date() != null) {
 
             if (getStatus().equals("Ended")) {
                 setTime_period(getFirst_air_date().substring(0, 4) + " - " + getLast_air_date().substring(0, 3));

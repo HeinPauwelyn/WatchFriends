@@ -27,14 +27,14 @@ public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.SeriesView
     private Context context;
     private ObservableArrayList<Series> series = null;
 
-    public SeriesAdapter(ObservableArrayList<Series> series, Context context) {
+    public SeriesAdapter(Context context, ObservableArrayList<Series> series) {
         this.context = context;
         this.series = series;
     }
 
     @Override
     public SeriesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        PosterSeriesBinding posterSeriesBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.poster_series, parent, false);
+        PosterSeriesBinding posterSeriesBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.poster_series, parent, false);
         SeriesAdapter.SeriesViewHolder seriesViewHolder = new SeriesAdapter.SeriesViewHolder(posterSeriesBinding);
         return seriesViewHolder;
     }

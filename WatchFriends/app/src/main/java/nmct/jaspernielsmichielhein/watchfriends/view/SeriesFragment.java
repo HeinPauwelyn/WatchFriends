@@ -4,6 +4,8 @@ import android.app.Fragment;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +22,12 @@ public class SeriesFragment extends Fragment {
 
     private Series series = null;
 
-    public SeriesFragment() { }
+    public SeriesFragment() {
+    }
 
     public static SeriesFragment newInstance(Series series) {
         Bundle args = new Bundle();
-        args.putParcelable(ARG_series,series);
+        args.putParcelable(ARG_series, series);
 
         SeriesFragment fragment = new SeriesFragment();
         fragment.setArguments(args);
@@ -38,7 +41,7 @@ public class SeriesFragment extends Fragment {
         if (arguments != null) {
             series = arguments.getParcelable(ARG_series);
             series.initExtraFields();
-            if(series.getStatus() != null && series.getSeasons().get(0).getSeason_number() == 0) {
+            if (series.getStatus() != null && series.getSeasons().size() != 0 && series.getSeasons().get(0).getSeason_number() == 0) {
                 series.getSeasons().remove(0);
             }
         }
@@ -47,6 +50,8 @@ public class SeriesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragmentSeriesBinding fragmentSeriesBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_series, container, false);
+        fragmentSeriesBinding.rvSimilar.setLayoutManager(new LinearLayoutManager(this.getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        fragmentSeriesBinding.rvSimilar.setItemAnimator(new DefaultItemAnimator());
         seriesFragmentViewModel = new SeriesFragmentViewModel(getActivity(), fragmentSeriesBinding, series);
         return fragmentSeriesBinding.getRoot();
     }

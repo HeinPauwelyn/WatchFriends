@@ -107,11 +107,20 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/txtNoSeasons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/no_seasons_available"
+            android:layout_below="@id/llSeasons"
+            android:layout_marginBottom="5dp"
+            android:visibility="gone"/>
+
         <ListView
             android:id="@+id/lvSeasons"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_below="@id/llSeasons"
+            android:layout_below="@id/txtNoSeasons"
             android:layout_marginBottom="10dp"
             app:items="@{viewmodel}" >
 
@@ -408,21 +417,31 @@
 
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/lvSimilar"
+        <TextView
+            android:id="@+id/txtNoSimilar"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/no_similar_series_found"
             android:layout_below="@id/llSimilar"
+            android:layout_marginBottom="5dp"
+            android:visibility="gone"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvSimilar"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@id/txtNoSimilar"
+            android:orientation="vertical"
             android:layout_marginBottom="10dp"
             app:items="@{viewmodel.similarSeries}">
 
-        </ListView>
+        </android.support.v7.widget.RecyclerView>
 
         <LinearLayout
             android:id="@+id/llVisit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/lvSimilar"
+            android:layout_below="@id/rvSimilar"
             android:layout_marginBottom="10dp"
             android:orientation="vertical">
 
