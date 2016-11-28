@@ -57,5 +57,7 @@
     <string name="profile_picture">Profile Picture</string>
     <string name="achievements">Achievements</string>
     <string name="watchlist">Watchlist</string>
+    <string name="no_similar_series_found">No similar series found</string>
+    <string name="no_seasons_available">No seasons available</string>
 
 </resources>

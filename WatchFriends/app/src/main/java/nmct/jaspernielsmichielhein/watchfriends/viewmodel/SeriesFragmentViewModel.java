@@ -56,6 +56,14 @@ public class SeriesFragmentViewModel extends BaseObservable {
         this.context = context;
         this.fragmentSeriesBinding = fragmentSeriesBinding;
         this.series = series;
+        this.similarSeries = series.getSimilar().getResults();
+        if (series.getSeasons().size() == 0) {
+            fragmentSeriesBinding.txtNoSeasons.setVisibility(View.VISIBLE);
+        }
+        if (series.getSimilar().getResults().size() == 0) {
+            fragmentSeriesBinding.txtNoSimilar.setVisibility(View.VISIBLE);
+            fragmentSeriesBinding.rvSimilar.setVisibility(View.GONE);
+        }
         if (context instanceof Interfaces.headerChangedListener) {
             listener = (Interfaces.headerChangedListener) context;
         } else {
@@ -67,7 +75,6 @@ public class SeriesFragmentViewModel extends BaseObservable {
         fragmentSeriesBinding.setViewmodel(this);
         notifyPropertyChanged(BR.viewmodel);
         setHeader();
-        loadSimilarSeries();
     }
 
     private void setHeader() {
@@ -104,33 +111,4 @@ public class SeriesFragmentViewModel extends BaseObservable {
         });
     }
 
-    private void loadSimilarSeries() {
-        setSimilarSeries(new ObservableArrayList<Series>());
-        ApiHelper.subscribe(ApiMovieDbHelper.getMoviedbServiceInstance().getSimilarSeries(series.getId()),
-            new Action1<SimilarSeriesResult>() {
-                @Override
-                public void call(SimilarSeriesResult similarSeriesResult) {
-                    ObservableArrayList<Series> series = similarSeriesResult.getResults();
-                    int maxTeller = 5;
-
-                    if (series.size() < 5) {
-                        maxTeller = series.size();
-                    }
-
-                    if (series.size() != 0) {
-                        for (int i = 0; i < maxTeller; i++) {
-                            ApiHelper.subscribe(
-                                    ApiMovieDbHelper.getMoviedbServiceInstance().getSeries(series.get(i).getId()),
-                                new Action1<Series>() {
-                                    @Override
-                                    public void call(Series series) {
-                                        similarSeries.add(series);
-                                        notifyPropertyChanged(BR.viewmodel);
-                                    }
-                                });
-                        }
-                    }
-                }
-            });
-    }
 }

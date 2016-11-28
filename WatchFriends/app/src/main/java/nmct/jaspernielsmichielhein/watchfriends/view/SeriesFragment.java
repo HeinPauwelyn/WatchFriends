@@ -22,11 +22,12 @@ public class SeriesFragment extends Fragment {
 
     private Series series = null;
 
-    public SeriesFragment() { }
+    public SeriesFragment() {
+    }
 
     public static SeriesFragment newInstance(Series series) {
         Bundle args = new Bundle();
-        args.putParcelable(ARG_series,series);
+        args.putParcelable(ARG_series, series);
 
         SeriesFragment fragment = new SeriesFragment();
         fragment.setArguments(args);
@@ -40,7 +41,7 @@ public class SeriesFragment extends Fragment {
         if (arguments != null) {
             series = arguments.getParcelable(ARG_series);
             series.initExtraFields();
-            if(series.getStatus() != null && series.getSeasons().get(0).getSeason_number() == 0) {
+            if (series.getStatus() != null && series.getSeasons().size() != 0 && series.getSeasons().get(0).getSeason_number() == 0) {
                 series.getSeasons().remove(0);
             }
         }
