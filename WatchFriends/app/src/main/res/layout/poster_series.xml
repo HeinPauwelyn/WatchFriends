@@ -18,7 +18,7 @@
         <ImageView
             android:id="@+id/imgSeriesPoster"
             android:layout_width="110dp"
-            android:layout_height="193dp" />
+            android:layout_height="165dp" />
 
         <TextView
             android:id="@+id/teName"

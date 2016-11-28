@@ -3,24 +3,26 @@ package nmct.jaspernielsmichielhein.watchfriends.adapter;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableArrayList;
-import android.media.Image;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.PosterSeriesBinding;
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
+import nmct.jaspernielsmichielhein.watchfriends.view.MainActivity;
+import rx.functions.Action1;
 
 public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.SeriesViewHolder> {
-    public Interfaces.onSeriesSelectedListener mListener;
+    //public Interfaces.onSeriesSelectedListener listener;
 
     private Context context;
     private ObservableArrayList<Series> series = null;
@@ -28,7 +30,6 @@ public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.SeriesView
     public SeriesAdapter(ObservableArrayList<Series> series, Context context) {
         this.context = context;
         this.series = series;
-        mListener = (Interfaces.onSeriesSelectedListener) context;
     }
 
     @Override
@@ -73,6 +74,25 @@ public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.SeriesView
         @Override
         public void onClick(View v) {
             Series selectedSeries = series.get(getAdapterPosition());
+
+            if (v.getContext() instanceof Interfaces.onSeriesSelectedListener) {
+
+                final Interfaces.onSeriesSelectedListener listener = (Interfaces.onSeriesSelectedListener) v.getContext();
+
+                ApiHelper.subscribe(ApiMovieDbHelper.getMoviedbServiceInstance().getSeries(selectedSeries.getId()), new Action1<Series>() {
+                    @Override
+                    public void call(Series series) {
+                        if (series != null) {
+                            listener.onSeriesSelected(series);
+                        }
+                    }
+                });
+
+            }
+            else {
+
+                Snackbar.make(v, "v is not an instance of Interfaces.onSeriesSelectedListener", Snackbar.LENGTH_LONG).show();
+            }
         }
     }
 }

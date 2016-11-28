@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable type="nmct.jaspernielsmichielhein.watchfriends.model.SeriesList" name="seriesList"/>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="265dp"
+        android:orientation="vertical"
+        android:layout_margin="0dp">
+
+        <TextView
+            android:id="@+id/txtListName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="10dp"
+            android:text="@{seriesList.name}"
+            style="?android:attr/listSeparatorTextViewStyle" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvListItems"
+            android:layout_width="match_parent"
+            android:layout_margin="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtListName"
+            app:items="@{seriesList.items}" />
+
+    </RelativeLayout>
+
+</layout>
