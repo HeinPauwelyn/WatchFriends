@@ -408,21 +408,22 @@
 
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/lvSimilar"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvSimilar"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="200dp"
             android:layout_below="@id/llSimilar"
+            android:orientation="vertical"
             android:layout_marginBottom="10dp"
             app:items="@{viewmodel.similarSeries}">
 
-        </ListView>
+        </android.support.v7.widget.RecyclerView>
 
         <LinearLayout
             android:id="@+id/llVisit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/lvSimilar"
+            android:layout_below="@id/rvSimilar"
             android:layout_marginBottom="10dp"
             android:orientation="vertical">
 
