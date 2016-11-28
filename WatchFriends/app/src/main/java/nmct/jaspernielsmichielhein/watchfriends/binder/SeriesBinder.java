@@ -24,7 +24,7 @@ public class SeriesBinder {
     @BindingAdapter("items")
     public static void setSeries(RecyclerView recyclerView, ObservableArrayList<Series> series) {
         if(series != null) {
-            SeriesAdapter seriesAdapter = new SeriesAdapter(series, recyclerView.getContext());
+            SeriesAdapter seriesAdapter = new SeriesAdapter(recyclerView.getContext(), series);
             recyclerView.setAdapter(seriesAdapter);
             seriesAdapter.notifyDataSetChanged();
             //Utils.setListViewHeightBasedOnChildren(listView);
