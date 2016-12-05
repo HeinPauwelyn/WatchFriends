@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
+import nmct.jaspernielsmichielhein.watchfriends.api.SimilarSeriesResult;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;
 
 import java.util.Arrays;
@@ -46,6 +47,7 @@ public class Series implements Parcelable {
     private float rating = 0;
     private ObservableArrayList<Season> seasons = new ObservableArrayList<Season>();
     private String showed_on = "";
+    private SimilarSeriesResult similar;
     private String status = "";
     private String time_period = "";
     private String type = "";
@@ -100,6 +102,24 @@ public class Series implements Parcelable {
         this.first_air_date = first_air_date;
     }
 
+    public String getFullBackdrop_path() {
+
+        if (poster_path != null && poster_path != "") {
+            return Contract.MOVIEDB_IMAGE_BASE_URL + backdrop_path;
+        }
+
+        return "https://www.themoviedb.org/assets/e2dd052f141e33392eb749aab2414ec0/images/no-poster-w300_and_h450_bestv2-v2.png";
+    }
+
+    public String getFullPoster_path() {
+
+        if (poster_path != null && poster_path != "") {
+            return Contract.MOVIEDB_IMAGE_BASE_URL + poster_path;
+        }
+
+        return "https://www.themoviedb.org/assets/e2dd052f141e33392eb749aab2414ec0/images/no-poster-w300_and_h450_bestv2-v2.png";
+    }
+
     public ObservableArrayList<Genre> getGenres() {
         return genres;
     }
@@ -109,6 +129,9 @@ public class Series implements Parcelable {
     }
 
     public String getHomepage() {
+        if (homepage.equals("")) {
+            return "Not available";
+        }
         return homepage;
     }
 
@@ -232,24 +255,6 @@ public class Series implements Parcelable {
         return poster_path;
     }
 
-    public String getFullPoster_path() {
-
-        if (poster_path != null && poster_path != "") {
-            return Contract.MOVIEDB_IMAGE_BASE_URL + poster_path;
-        }
-
-        return "https://www.themoviedb.org/assets/e2dd052f141e33392eb749aab2414ec0/images/no-poster-w300_and_h450_bestv2-v2.png";
-    }
-
-    public String getFullBackdrop_path() {
-
-        if (poster_path != null && poster_path != "") {
-            return Contract.MOVIEDB_IMAGE_BASE_URL + backdrop_path;
-        }
-
-        return "https://www.themoviedb.org/assets/e2dd052f141e33392eb749aab2414ec0/images/no-poster-w300_and_h450_bestv2-v2.png";
-    }
-
     public void setPoster_path(String poster_path) {
         this.poster_path = poster_path;
     }
@@ -284,6 +289,14 @@ public class Series implements Parcelable {
 
     public void setShowed_on(String showed_on) {
         this.showed_on = showed_on;
+    }
+
+    public SimilarSeriesResult getSimilar() {
+        return similar;
+    }
+
+    public void setSimilar(SimilarSeriesResult similar) {
+        this.similar = similar;
     }
 
     public String getStatus() {
@@ -408,9 +421,7 @@ public class Series implements Parcelable {
     }
 
     public void makeTime_period() {
-
-        if (getStatus() != null) {
-
+        if (getStatus() != null && getFirst_air_date() != null && getLast_air_date() != null) {
             if (getStatus().equals("Ended")) {
                 setTime_period(getFirst_air_date().substring(0, 4) + " - " + getLast_air_date().substring(0, 3));
             } else if (getStatus().equals("")) {

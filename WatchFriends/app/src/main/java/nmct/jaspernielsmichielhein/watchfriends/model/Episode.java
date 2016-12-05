@@ -24,6 +24,9 @@ public class Episode extends BaseObservable implements Parcelable {
     private int vote_count = 0;
 
     public String getAir_date() {
+        if (air_date == null || air_date.equals("")) {
+            return "Not available";
+        }
         return air_date;
     }
 
@@ -40,6 +43,9 @@ public class Episode extends BaseObservable implements Parcelable {
     }
 
     public String getName() {
+        if (name.equals("")) {
+            return getShortcode();
+        }
         return name;
     }
 
@@ -48,6 +54,9 @@ public class Episode extends BaseObservable implements Parcelable {
     }
 
     public String getOverview() {
+        if (overview.equals("")) {
+            return "Not available";
+        }
         return overview;
     }
 
@@ -133,11 +142,11 @@ public class Episode extends BaseObservable implements Parcelable {
         setRating((float) getVote_average() / 2);
     }
 
-    public void makeImage_uri() {
+    private void makeImage_uri() {
         setImage_uri(Uri.parse(Contract.MOVIEDB_IMAGE_BASE_URL + getStill_path()));
     }
 
-    public void makeShortcode() {
+    private void makeShortcode() {
         setShortcode(SeriesHelper.getShortcode(this.getSeason_number(), this.getEpisode_number()));
     }
 

@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_watching:
                 break;
             case R.id.nav_watchlist:
-                ApiHelper.subscribe(movieDBService.getSeries(63174),
+                ApiHelper.subscribe(movieDBService.getSeries(11431),
                         new Action1<Series>() {
                             @Override
                             public void call(Series series) {
