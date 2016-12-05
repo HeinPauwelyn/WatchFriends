@@ -62,6 +62,14 @@ public class SeriesFragmentViewModel extends BaseObservable {
         this.context = context;
         this.fragmentSeriesBinding = fragmentSeriesBinding;
         this.series = series;
+        this.similarSeries = series.getSimilar().getResults();
+        if (series.getSeasons().size() == 0) {
+            fragmentSeriesBinding.txtNoSeasons.setVisibility(View.VISIBLE);
+        }
+        if (series.getSimilar().getResults().size() == 0) {
+            fragmentSeriesBinding.txtNoSimilar.setVisibility(View.VISIBLE);
+            fragmentSeriesBinding.rvSimilar.setVisibility(View.GONE);
+        }
         if (context instanceof Interfaces.headerChangedListener) {
             listener = (Interfaces.headerChangedListener) context;
         } else {
@@ -73,7 +81,6 @@ public class SeriesFragmentViewModel extends BaseObservable {
         fragmentSeriesBinding.setViewmodel(this);
         notifyPropertyChanged(BR.viewmodel);
         setHeader();
-        loadSimilarSeries();
     }
 
     private void setHeader() {
