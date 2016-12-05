@@ -2,8 +2,8 @@ package nmct.jaspernielsmichielhein.watchfriends.adapter;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.databinding.DataBindingUtil;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
@@ -51,6 +50,8 @@ public class EpisodesAdapter extends ArrayAdapter<Episode> implements View.OnCli
         final RowEpisodeBinding rowEpisodeBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.row_episode, parent, false);
         Episode episode = getItem(position);
         rowEpisodeBinding.setEpisode(episode);
+
+        watched = isWatched(episode);
 
         ImageButton imgViewed = (ImageButton) rowEpisodeBinding.getRoot().findViewById(R.id.imgViewed);
         imgViewed.setTag(position);
@@ -101,6 +102,19 @@ public class EpisodesAdapter extends ArrayAdapter<Episode> implements View.OnCli
         values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NR, e.getEpisode_number());
 
         executeAsyncTask(new DeleteWatchedEpisodeFromDBTask(context), values);
+    }
+
+    //todo backend should provide if user watched episode or not, now it just happens synchronously
+    private boolean isWatched(Episode e) {
+        Cursor c = context.getContentResolver().query(
+                nmct.jaspernielsmichielhein.watchfriends.provider.Contract.WATCHED_URI, null,
+                Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR + " = " + e.getId() + " AND " +
+                        Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SEASON_NR + " = " + e.getSeason_number() + " AND " +
+                        Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NR + " = " + e.getEpisode_number(),
+                null,
+                null);
+        c.close();
+        return c.getCount() > 0;
     }
 
     static private <T> void executeAsyncTask(AsyncTask<T, ?, ?> task, T... params) {
