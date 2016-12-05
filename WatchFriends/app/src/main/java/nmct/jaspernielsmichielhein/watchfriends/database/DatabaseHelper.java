@@ -41,7 +41,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     oldVersion++;
                     break;
                 case 1:
-                    //upgrade logic from version 1 to 2
                 case 2:
                     //upgrade logic from version 2 to 3
                 case 3:
@@ -56,6 +55,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private void upgradeTo1(SQLiteDatabase db) {
         db.execSQL(Contract.FavoritesDB.CREATE_TABLE);
+        db.execSQL(Contract.FollowedSeriesDB.CREATE_TABLE);
+        db.execSQL(Contract.WatchedDB.CREATE_TABLE);
     }
 
 

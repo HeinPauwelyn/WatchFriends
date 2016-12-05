@@ -1,10 +1,13 @@
 package nmct.jaspernielsmichielhein.watchfriends.viewmodel;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -15,6 +18,9 @@ import com.squareup.picasso.Picasso;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.api.SimilarSeriesResult;
+import nmct.jaspernielsmichielhein.watchfriends.database.Contract;
+import nmct.jaspernielsmichielhein.watchfriends.database.DeleteFollowedSerieFromDBTask;
+import nmct.jaspernielsmichielhein.watchfriends.database.SaveFollowedSerieToDBTask;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentSeriesBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
@@ -94,43 +100,71 @@ public class SeriesFragmentViewModel extends BaseObservable {
                     fab.setImageResource(R.drawable.ic_add_white_24dp);
                     fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.themeAccent)));
                     Snackbar.make(v, "No longer following " + series.getName(), Snackbar.LENGTH_LONG).show();
+
+                    unfollow(series);
+
                 } else {
                     fab.setImageResource(R.drawable.ic_clear_white_24dp);
                     fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.themeBlack)));
                     Snackbar.make(v, "Following " + series.getName(), Snackbar.LENGTH_LONG).show();
+
+                    follow(series);
                 }
                 followed = !followed;
             }
         });
     }
 
+    private void follow(Series serie) {
+        ContentValues values = new ContentValues();
+        values.put(Contract.FollowedSeriesColumns.COLUMN_FOLLOWEDSERIES_NR, serie.getId());
+        values.put(Contract.FollowedSeriesColumns.COLUMN_FOLLOWEDSERIES_NAME, series.getName());
+
+        executeAsyncTask(new SaveFollowedSerieToDBTask(context), values);
+    }
+
+    private void unfollow(Series serie){
+        ContentValues values = new ContentValues();
+        values.put(Contract.FollowedSeriesColumns.COLUMN_FOLLOWEDSERIES_NR, serie.getId());
+
+        executeAsyncTask(new DeleteFollowedSerieFromDBTask(context), values);
+    }
+
+    static private <T> void executeAsyncTask(AsyncTask<T, ?, ?> task, T... params) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, params);
+        } else {
+            task.execute(params);
+        }
+    }
+
     private void loadSimilarSeries() {
         setSimilarSeries(new ObservableArrayList<Series>());
         ApiHelper.subscribe(ApiMovieDbHelper.getMoviedbServiceInstance().getSimilarSeries(series.getId()),
-            new Action1<SimilarSeriesResult>() {
-                @Override
-                public void call(SimilarSeriesResult similarSeriesResult) {
-                    ObservableArrayList<Series> series = similarSeriesResult.getResults();
-                    int maxTeller = 5;
+                new Action1<SimilarSeriesResult>() {
+                    @Override
+                    public void call(SimilarSeriesResult similarSeriesResult) {
+                        ObservableArrayList<Series> series = similarSeriesResult.getResults();
+                        int maxTeller = 5;
 
-                    if (series.size() < 5) {
-                        maxTeller = series.size();
-                    }
+                        if (series.size() < 5) {
+                            maxTeller = series.size();
+                        }
 
-                    if (series.size() != 0) {
-                        for (int i = 0; i < maxTeller; i++) {
-                            ApiHelper.subscribe(
-                                    ApiMovieDbHelper.getMoviedbServiceInstance().getSeries(series.get(i).getId()),
-                                new Action1<Series>() {
-                                    @Override
-                                    public void call(Series series) {
-                                        similarSeries.add(series);
-                                        notifyPropertyChanged(BR.viewmodel);
-                                    }
-                                });
+                        if (series.size() != 0) {
+                            for (int i = 0; i < maxTeller; i++) {
+                                ApiHelper.subscribe(
+                                        ApiMovieDbHelper.getMoviedbServiceInstance().getSeries(series.get(i).getId()),
+                                        new Action1<Series>() {
+                                            @Override
+                                            public void call(Series series) {
+                                                similarSeries.add(series);
+                                                notifyPropertyChanged(BR.viewmodel);
+                                            }
+                                        });
+                            }
                         }
                     }
-                }
-            });
+                });
     }
 }

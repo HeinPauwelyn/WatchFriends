@@ -3,14 +3,15 @@ package nmct.jaspernielsmichielhein.watchfriends.provider;
 import android.net.Uri;
 
 public class Contract {
-    public static final String AUTHORITY = "nmct.jaspernielsmichielhein.watchfriends";
+    public static final String AUTHORITY = "nmct.jaspernielsmichielhein.watchfriends.favorites";
+    public static final String AUTHORITY_FOLLOWED = "nmct.jaspernielsmichielhein.watchfriends.followedseries";
 
     //CONTENT-URIS
     public static final Uri FAVORITES_URI = Uri.parse("content://" + AUTHORITY + "/favorites");
     public static final Uri FAVORITES_ITEM_URI = Uri.parse("content://" + AUTHORITY + "/favorites/");
 
-    public static final Uri FOLLOWEDSERIES_URI = Uri.parse("content://" + AUTHORITY + "/followedseries");
-    public static final Uri FOLLOWEDSERIES_ITEM_URI = Uri.parse("content://" + AUTHORITY + "/followedseries/");
+    public static final Uri FOLLOWEDSERIES_URI = Uri.parse("content://" + AUTHORITY_FOLLOWED + "/followedseries");
+    public static final Uri FOLLOWEDSERIES_ITEM_URI = Uri.parse("content://" + AUTHORITY_FOLLOWED + "/followedseries/");
 
     public static final Uri WATCHED_URI = Uri.parse("content://" + AUTHORITY + "/watched");
     public static final Uri WATCHED_ITEM_URI = Uri.parse("content://" + AUTHORITY + "/watched/");

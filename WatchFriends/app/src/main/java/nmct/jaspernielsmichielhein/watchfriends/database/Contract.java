@@ -5,7 +5,7 @@ import android.provider.BaseColumns;
 public class Contract {
 
     public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "database.db";
+    public static final String DATABASE_NAME = "watchfriends.db";
     private static final String TEXT_TYPE = " TEXT";
 
     //interface uitbreiden
