@@ -29,9 +29,11 @@ public class WatchedLoader extends AsyncTaskLoader<Cursor> {
     @Override
     public Cursor loadInBackground() {
         String[] columns = new String[]{
-                Contract.WatchedColumns._ID,
-                Contract.WatchedColumns.COLUMN_WATCHED_NR,
-                Contract.WatchedColumns.COLUMN_WATCHED_NAME
+                Contract.WatchedEpisodeColumns._ID,
+                Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR,
+                Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SEASON_NR,
+                Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NR,
+                Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NAME
         };
 
         mData = mContext.getContentResolver().query(nmct.jaspernielsmichielhein.watchfriends.provider.Contract.WATCHED_URI, columns, null, null, null);

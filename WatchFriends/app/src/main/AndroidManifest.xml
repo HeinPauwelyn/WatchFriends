@@ -80,17 +80,13 @@
             android:value="@string/facebook_app_id" />
 
         <provider
-            android:name=".provider.FavoritesProvider"
-            android:authorities="nmct.jaspernielsmichielhein.watchfriends"
-            android:exported="false" />
-        <provider
             android:name=".provider.WatchedProvider"
-            android:authorities="nmct.jaspernielsmichielhein.watchfriends"
+            android:authorities="nmct.jaspernielsmichielhein.watchfriends.watchedepisodes"
             android:exported="false" />
         <provider
             android:name=".provider.FollowedSeriesProvider"
-            android:authorities="nmct.jaspernielsmichielhein.watchfriends"
-            android:exported="false" />
+            android:authorities="nmct.jaspernielsmichielhein.watchfriends.followedseries"
+            android:exported="true" />
     </application>
 
 </manifest>

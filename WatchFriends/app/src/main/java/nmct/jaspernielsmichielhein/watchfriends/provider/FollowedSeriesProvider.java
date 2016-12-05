@@ -28,8 +28,8 @@ public class FollowedSeriesProvider extends ContentProvider {
 
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(Contract.AUTHORITY, "followedseries", FOLLOWEDSERIES);
-        uriMatcher.addURI(Contract.AUTHORITY, "followedseries/#", FOLLOWEDSERIES_ID);
+        uriMatcher.addURI(Contract.AUTHORITY_FOLLOWED, "followedseries", FOLLOWEDSERIES);
+        uriMatcher.addURI(Contract.AUTHORITY_FOLLOWED, "followedseries/#", FOLLOWEDSERIES_ID);
     }
 
     @Override
