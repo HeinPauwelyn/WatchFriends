@@ -54,8 +54,12 @@ public class SeasonFragmentViewModel extends BaseObservable {
         ApiHelper.subscribe(ApiMovieDbHelper.getMoviedbServiceInstance().getSeason(seriesId, seasonNumber),
             new Action1<Season>() {
                 @Override
-                public void call(Season season) {
-                    setSeason(season);
+                public void call(Season returnedSeason) {
+                    setSeason(returnedSeason);
+                    season.initExtraFields();
+                    if (season.getEpisodes().size() == 0) {
+                        fragmentSeasonBinding.txtNoEpisodes.setVisibility(View.VISIBLE);
+                    }
                     fragmentSeasonBinding.setViewmodel(that);
                     notifyPropertyChanged(BR.viewmodel);
                     setHeader();
