@@ -59,5 +59,6 @@
     <string name="watchlist">Watchlist</string>
     <string name="no_similar_series_found">No similar series found</string>
     <string name="no_seasons_available">No seasons available</string>
+    <string name="no_episodes_available">No episodes available</string>
 
 </resources>

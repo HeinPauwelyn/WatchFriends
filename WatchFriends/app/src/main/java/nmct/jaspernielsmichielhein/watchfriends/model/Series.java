@@ -102,6 +102,24 @@ public class Series implements Parcelable {
         this.first_air_date = first_air_date;
     }
 
+    public String getFullBackdrop_path() {
+
+        if (poster_path != null && poster_path != "") {
+            return Contract.MOVIEDB_IMAGE_BASE_URL + backdrop_path;
+        }
+
+        return "https://www.themoviedb.org/assets/e2dd052f141e33392eb749aab2414ec0/images/no-poster-w300_and_h450_bestv2-v2.png";
+    }
+
+    public String getFullPoster_path() {
+
+        if (poster_path != null && poster_path != "") {
+            return Contract.MOVIEDB_IMAGE_BASE_URL + poster_path;
+        }
+
+        return "https://www.themoviedb.org/assets/e2dd052f141e33392eb749aab2414ec0/images/no-poster-w300_and_h450_bestv2-v2.png";
+    }
+
     public ObservableArrayList<Genre> getGenres() {
         return genres;
     }
@@ -235,24 +253,6 @@ public class Series implements Parcelable {
 
     public String getPoster_path() {
         return poster_path;
-    }
-
-    public String getFullPoster_path() {
-
-        if (poster_path != null && poster_path != "") {
-            return Contract.MOVIEDB_IMAGE_BASE_URL + poster_path;
-        }
-
-        return "https://www.themoviedb.org/assets/e2dd052f141e33392eb749aab2414ec0/images/no-poster-w300_and_h450_bestv2-v2.png";
-    }
-
-    public String getFullBackdrop_path() {
-
-        if (poster_path != null && poster_path != "") {
-            return Contract.MOVIEDB_IMAGE_BASE_URL + backdrop_path;
-        }
-
-        return "https://www.themoviedb.org/assets/e2dd052f141e33392eb749aab2414ec0/images/no-poster-w300_and_h450_bestv2-v2.png";
     }
 
     public void setPoster_path(String poster_path) {
@@ -421,9 +421,7 @@ public class Series implements Parcelable {
     }
 
     public void makeTime_period() {
-
-        if (getStatus() != null && getFirst_air_date() != null) {
-
+        if (getStatus() != null && getFirst_air_date() != null && getLast_air_date() != null) {
             if (getStatus().equals("Ended")) {
                 setTime_period(getFirst_air_date().substring(0, 4) + " - " + getLast_air_date().substring(0, 3));
             } else if (getStatus().equals("")) {
