@@ -50,7 +50,7 @@ public class ProfileFragment extends Fragment {
         fragmentProfileBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false);
         profileFragmentViewModel = new ProfileFragmentViewModel(getActivity(), fragmentProfileBinding);
 
-        fragmentProfileBinding.rvWatchlist.setAdapter(new SeriesAdapter(profileFragmentViewModel.getWatchlist(), context));
+        fragmentProfileBinding.rvWatchlist.setAdapter(new SeriesAdapter(context, profileFragmentViewModel.getWatchlist()));
         fragmentProfileBinding.rvWatchlist.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false));
         fragmentProfileBinding.rvWatchlist.setItemAnimator(new DefaultItemAnimator());
         return fragmentProfileBinding.getRoot();
