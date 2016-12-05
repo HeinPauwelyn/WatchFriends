@@ -1,4 +1,4 @@
-package nmct.jaspernielsmichielhein.watchfriends.database;
+package nmct.jaspernielsmichielhein.watchfriends.database.tasks;
 
 import android.content.ContentValues;
 import android.content.Context;

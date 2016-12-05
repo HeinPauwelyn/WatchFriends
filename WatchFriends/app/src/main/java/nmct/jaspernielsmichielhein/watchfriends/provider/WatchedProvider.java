@@ -28,17 +28,20 @@ public class WatchedProvider extends ContentProvider {
 
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(Contract.AUTHORITY, "watched", WATCHED);
-        uriMatcher.addURI(Contract.AUTHORITY, "watched/#", WATCHED_ID);
+        uriMatcher.addURI(Contract.AUTHORITY_WATCHED, "watched", WATCHED);
+        uriMatcher.addURI(Contract.AUTHORITY_WATCHED, "watched/#", WATCHED_ID);
     }
 
     @Override
     public boolean onCreate() {
         databaseHelper = DatabaseHelper.getInstance(getContext());
         WATCHED_PROJECTION_MAP = new HashMap<>();
-        WATCHED_PROJECTION_MAP.put(nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedColumns._ID, nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedColumns._ID);
-        WATCHED_PROJECTION_MAP.put(nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedColumns.COLUMN_WATCHED_NR, nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedColumns.COLUMN_WATCHED_NR);
-        WATCHED_PROJECTION_MAP.put(nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedColumns.COLUMN_WATCHED_NAME, nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedColumns.COLUMN_WATCHED_NAME);
+        WATCHED_PROJECTION_MAP.put(nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns._ID, nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns._ID);
+        WATCHED_PROJECTION_MAP.put(nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR, nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR);
+        WATCHED_PROJECTION_MAP.put(nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SEASON_NR, nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SEASON_NR);
+        WATCHED_PROJECTION_MAP.put(nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NR, nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NR);
+        WATCHED_PROJECTION_MAP.put(nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NAME, nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NAME);
+
         return true;
     }
 
@@ -48,15 +51,15 @@ public class WatchedProvider extends ContentProvider {
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
         switch (uriMatcher.match(uri)) {
             case WATCHED:
-                queryBuilder.setTables(nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedDB.TABLE_NAME);
+                queryBuilder.setTables(nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeDB.TABLE_NAME);
                 queryBuilder.setProjectionMap(WATCHED_PROJECTION_MAP);
                 break;
             case WATCHED_ID:
-                queryBuilder.setTables(nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedDB.TABLE_NAME);
+                queryBuilder.setTables(nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeDB.TABLE_NAME);
                 queryBuilder.setProjectionMap(WATCHED_PROJECTION_MAP);
 
                 String watchedid = uri.getPathSegments().get(Contract.WATCHED_ID_PATH_POSITION);
-                DatabaseUtils.concatenateWhere(selection, "( " + nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedColumns._ID + " = ?" + ")");
+                DatabaseUtils.concatenateWhere(selection, "( " + nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns._ID + " = ?" + ")");
                 selectionArgs = DatabaseUtils.appendSelectionArgs(selectionArgs, new String[]{"" + watchedid});
                 break;
             default:
@@ -91,7 +94,7 @@ public class WatchedProvider extends ContentProvider {
         switch (uriMatcher.match(uri)) {
             case WATCHED:
                 long newRowId = db.insert(
-                        nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedDB.TABLE_NAME, null, values);
+                        nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeDB.TABLE_NAME, null, values);
                 if (newRowId > 0) {
                     Uri productItemUri = ContentUris.withAppendedId(Contract.WATCHED_ITEM_URI, newRowId);
                     getContext().getContentResolver().notifyChange(productItemUri, null);
@@ -115,7 +118,7 @@ public class WatchedProvider extends ContentProvider {
         switch (uriMatcher.match(uri)) {
             case WATCHED:
                 count = db.delete(
-                        nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedDB.TABLE_NAME,
+                        nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeDB.TABLE_NAME,
                         selection,
                         selectionArgs
                 );
@@ -129,7 +132,7 @@ public class WatchedProvider extends ContentProvider {
                 }
 
                 count = db.delete(
-                        nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedDB.TABLE_NAME,
+                        nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeDB.TABLE_NAME,
                         finalWhere,
                         selectionArgs
                 );
@@ -151,7 +154,7 @@ public class WatchedProvider extends ContentProvider {
         switch (uriMatcher.match(uri)) {
             case WATCHED:
                 count = db.update(
-                        nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedDB.TABLE_NAME,
+                        nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeDB.TABLE_NAME,
                         values,
                         selection,
                         selectionArgs
@@ -167,7 +170,7 @@ public class WatchedProvider extends ContentProvider {
                 }
 
                 count = db.update(
-                        nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedDB.TABLE_NAME,
+                        nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeDB.TABLE_NAME,
                         values,
                         finalWhere,
                         selectionArgs

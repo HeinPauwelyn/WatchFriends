@@ -1,4 +1,4 @@
-package nmct.jaspernielsmichielhein.watchfriends.database;
+package nmct.jaspernielsmichielhein.watchfriends.database.tasks;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,14 +7,14 @@ import android.os.AsyncTask;
 
 import nmct.jaspernielsmichielhein.watchfriends.provider.Contract;
 
-public class SaveFollowedSerieToDBTask extends AsyncTask<ContentValues, Void, Void> {
+public class SaveWatchedEpisodeToDBTask extends AsyncTask<ContentValues, Void, Void> {
 
     private Context mContext;
-    public SaveFollowedSerieToDBTask(Context context) {mContext = context; }
+    public SaveWatchedEpisodeToDBTask(Context context) {mContext = context; }
 
     @Override
     protected Void doInBackground(ContentValues... params) {
-        Uri newUri = mContext.getContentResolver().insert(Contract.FOLLOWEDSERIES_URI, params[0]);
+        mContext.getContentResolver().insert(Contract.WATCHED_URI, params[0]);
         return null;
     }
 

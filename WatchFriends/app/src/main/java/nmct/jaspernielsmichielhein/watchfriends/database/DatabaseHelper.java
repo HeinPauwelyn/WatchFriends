@@ -4,8 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import nmct.jaspernielsmichielhein.watchfriends.database.Contract;
-
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static DatabaseHelper INSTANCE;
     private static Object object = new Object();
@@ -54,9 +52,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void upgradeTo1(SQLiteDatabase db) {
-        db.execSQL(Contract.FavoritesDB.CREATE_TABLE);
         db.execSQL(Contract.FollowedSeriesDB.CREATE_TABLE);
-        db.execSQL(Contract.WatchedDB.CREATE_TABLE);
+        db.execSQL(Contract.WatchedEpisodeDB.CREATE_TABLE);
     }
 
 
