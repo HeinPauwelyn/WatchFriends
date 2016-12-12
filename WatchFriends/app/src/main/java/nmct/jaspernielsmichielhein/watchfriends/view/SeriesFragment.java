@@ -3,7 +3,6 @@ package nmct.jaspernielsmichielhein.watchfriends.view;
 import android.app.Fragment;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;

@@ -1,6 +1,5 @@
 package nmct.jaspernielsmichielhein.watchfriends.helper;
 
-import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.widget.ImageView;
 

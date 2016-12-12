@@ -7,13 +7,10 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.RowSeriesListBinding;
-import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
-import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import nmct.jaspernielsmichielhein.watchfriends.model.SeriesList;
 
 public class SeriesListAdapter extends RecyclerView.Adapter<SeriesListAdapter.SeriesListViewHolder> {

@@ -7,8 +7,6 @@ import android.databinding.ObservableArrayList;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
-import com.android.databinding.library.baseAdapters.BR;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -18,11 +16,7 @@ import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Page;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
-import nmct.jaspernielsmichielhein.watchfriends.model.SeriesList;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 public class ProfileFragmentViewModel extends BaseObservable {
 
