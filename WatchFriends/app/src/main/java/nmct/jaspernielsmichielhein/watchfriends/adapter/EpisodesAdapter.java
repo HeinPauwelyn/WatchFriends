@@ -27,12 +27,13 @@ public class EpisodesAdapter extends ArrayAdapter<Episode> implements View.OnCli
     private Interfaces.onEpisodeSelectedListener mListener;
 
     private Context context;
-
-    private boolean watched = false;
+    private int mSeriesID;
 
     public EpisodesAdapter(Context context, ListView listView) {
         super(context, R.layout.row_episode);
         this.context = context;
+        //todo get series id
+        mSeriesID = 0;
         mListener = (Interfaces.onEpisodeSelectedListener) context;
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -51,10 +52,11 @@ public class EpisodesAdapter extends ArrayAdapter<Episode> implements View.OnCli
         Episode episode = getItem(position);
         rowEpisodeBinding.setEpisode(episode);
 
-        watched = isWatched(episode);
+        boolean watched = isWatched(episode);
 
         ImageButton imgViewed = (ImageButton) rowEpisodeBinding.getRoot().findViewById(R.id.imgViewed);
         imgViewed.setTag(position);
+
         if (watched) {
             imgViewed.setImageResource(R.drawable.ic_visibility_off_white_24dp);
         } else {
@@ -70,19 +72,17 @@ public class EpisodesAdapter extends ArrayAdapter<Episode> implements View.OnCli
         int position = (int) imgViewed.getTag();
         Episode e = getItem(position);
 
+        boolean watched = isWatched(e);
+
         if (watched) {
             imgViewed.setImageResource(R.drawable.ic_visibility_white_24dp);
-            Snackbar.make(v, "Marked episode as not watched", Snackbar.LENGTH_LONG).show();
-
             unWatch(e);
-
+            Snackbar.make(v, "Marked episode as not watched", Snackbar.LENGTH_LONG).show();
         } else {
             imgViewed.setImageResource(R.drawable.ic_visibility_off_white_24dp);
-            Snackbar.make(v, "Marked episode as watched", Snackbar.LENGTH_LONG).show();
-
             watch(e);
+            Snackbar.make(v, "Marked episode as watched", Snackbar.LENGTH_LONG).show();
         }
-        watched = !watched;
     }
 
     private void watch(Episode e) {
