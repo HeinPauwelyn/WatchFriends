@@ -72,7 +72,7 @@ public class Season extends BaseObservable implements Parcelable {
     }
 
     public String getOverview() {
-        if (overview.equals("")) {
+        if (overview == null || overview.equals("")) {
             return "Not available";
         }
         return overview;
