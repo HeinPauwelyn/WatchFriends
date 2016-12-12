@@ -4,7 +4,7 @@ import android.databinding.ObservableArrayList;
 
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 
-public class SimilarSeriesResult {
+public class SearchResult {
     private int page = 0;
     private ObservableArrayList<Series> results;
     private int total_pages = 0;
