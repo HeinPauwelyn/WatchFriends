@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/themeAccent</item>
         <item name="android:textColor">@color/themeWhite</item>
         <item name="android:textColorPrimary">@color/themeWhite</item>
+        <item name="android:textColorSecondary">@color/themeWhite</item>
         <item name="android:windowBackground">@color/themePrimaryDark</item>
     </style>
 

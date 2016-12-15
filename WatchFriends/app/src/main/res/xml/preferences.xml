@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:key="switch_notifications"
+        android:title="Notifications"
+        android:summary="Receive notifications"
+        android:defaultValue="true" >
+
+    </SwitchPreference>
+
+    <CheckBoxPreference
+        android:key="switch_notifications2"
+        android:title="Notifications"
+        android:summary="Receive notifications"
+        android:defaultValue="true" >
+
+    </CheckBoxPreference>
+
+    <!--<PreferenceCategory android:title="Notifications">
+
+
+
+    </PreferenceCategory>-->
+
+</PreferenceScreen>
