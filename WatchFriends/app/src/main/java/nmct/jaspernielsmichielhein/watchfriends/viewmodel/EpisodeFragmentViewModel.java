@@ -3,6 +3,7 @@ package nmct.jaspernielsmichielhein.watchfriends.viewmodel;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.database.Cursor;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.os.AsyncTask;
@@ -28,7 +29,6 @@ public class EpisodeFragmentViewModel extends BaseObservable {
 
     private Context context;
     private FragmentEpisodeBinding fragmentEpisodeBinding;
-
     private Episode episode = null;
 
     @Bindable
@@ -68,6 +68,7 @@ public class EpisodeFragmentViewModel extends BaseObservable {
     }
 
     private void initFloatingActionButton(final FloatingActionButton fab) {
+        watched = isWatched(episode);
         if (watched) {
             fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.themeBlack)));
             fab.setImageResource(R.drawable.ic_visibility_off_white_24dp);
@@ -79,6 +80,7 @@ public class EpisodeFragmentViewModel extends BaseObservable {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                watched = isWatched(episode);
                 if (watched) {
                     fab.setImageResource(R.drawable.ic_visibility_white_24dp);
                     fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.themeAccent)));
@@ -92,11 +94,24 @@ public class EpisodeFragmentViewModel extends BaseObservable {
 
                     watch();
                 }
-                watched = !watched;
             }
         });
     }
 
+    //todo backend should provide if user watched episode or not, now it just happens synchronously
+    private boolean isWatched(Episode e) {
+        Cursor c = context.getContentResolver().query(
+                nmct.jaspernielsmichielhein.watchfriends.provider.Contract.WATCHED_URI, null,
+                Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR + " = " + e.getId() + " AND " +
+                        Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SEASON_NR + " = " + e.getSeason_number() + " AND " +
+                        Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NR + " = " + e.getEpisode_number(),
+                null,
+                null);
+        c.close();
+        return c.getCount() > 0;
+    }
+
+    //todo duplicate code across files, centralise code
     private void watch() {
         ContentValues values = new ContentValues();
         values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR, episode.getId());

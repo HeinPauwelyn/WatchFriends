@@ -2,7 +2,6 @@ package nmct.jaspernielsmichielhein.watchfriends.database.tasks;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.net.Uri;
 import android.os.AsyncTask;
 
 import nmct.jaspernielsmichielhein.watchfriends.provider.Contract;
