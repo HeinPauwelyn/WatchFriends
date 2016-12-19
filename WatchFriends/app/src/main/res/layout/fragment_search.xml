@@ -1,13 +1,39 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="nmct.jaspernielsmichielhein.watchfriends.view.SearchFragment">
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+        <variable
+            name="viewmodel"
+            type="nmct.jaspernielsmichielhein.watchfriends.viewmodel.SearchFragmentViewModel" />
+    </data>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello blank search fragment" />
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/txtNoResults"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/no_search_results"/>
+
+        <ListView
+            android:id="@+id/lvSearchResults"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_below="@id/txtNoResults"
+            android:layout_marginBottom="10dp"
+            app:items="@{viewmodel.searchResults}" >
+
+        </ListView>
+
+    </RelativeLayout>
+
+</layout>

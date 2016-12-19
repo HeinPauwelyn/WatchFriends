@@ -60,5 +60,8 @@
     <string name="no_similar_series_found">No similar series found</string>
     <string name="no_seasons_available">No seasons available</string>
     <string name="no_episodes_available">No episodes available</string>
+    <string name="no_search_results">No search results</string>
+    <string name="rating_title">Rating:</string>
+    <string name="first_air_date">First air date:</string>
 
 </resources>

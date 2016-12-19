@@ -5,10 +5,11 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.Arrays;
 
-import nmct.jaspernielsmichielhein.watchfriends.api.SimilarSeriesResult;
+import nmct.jaspernielsmichielhein.watchfriends.api.SearchResult;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;
+
+import java.util.Arrays;
 
 public class Series implements Parcelable {
     private String all_creators;
@@ -38,7 +39,7 @@ public class Series implements Parcelable {
     private float rating = 0;
     private ObservableArrayList<Season> seasons = new ObservableArrayList<Season>();
     private String showed_on = "";
-    private SimilarSeriesResult similar;
+    private SearchResult similar;
     private String status = "";
     private String time_period = "";
     private String type = "";
@@ -282,11 +283,11 @@ public class Series implements Parcelable {
         this.showed_on = showed_on;
     }
 
-    public SimilarSeriesResult getSimilar() {
+    public SearchResult getSimilar() {
         return similar;
     }
 
-    public void setSimilar(SimilarSeriesResult similar) {
+    public void setSimilar(SearchResult similar) {
         this.similar = similar;
     }
 

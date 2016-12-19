@@ -18,7 +18,7 @@ import com.android.databinding.library.baseAdapters.BR;
 import com.squareup.picasso.Picasso;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
-import nmct.jaspernielsmichielhein.watchfriends.api.SimilarSeriesResult;
+import nmct.jaspernielsmichielhein.watchfriends.api.SearchResult;
 import nmct.jaspernielsmichielhein.watchfriends.database.Contract;
 import nmct.jaspernielsmichielhein.watchfriends.database.tasks.DeleteFollowedSerieFromDBTask;
 import nmct.jaspernielsmichielhein.watchfriends.database.tasks.SaveFollowedSerieToDBTask;
@@ -162,9 +162,9 @@ public class SeriesFragmentViewModel extends BaseObservable {
     private void loadSimilarSeries() {
         setSimilarSeries(new ObservableArrayList<Series>());
         ApiHelper.subscribe(ApiMovieDbHelper.getMoviedbServiceInstance().getSimilarSeries(series.getId()),
-                new Action1<SimilarSeriesResult>() {
+                new Action1<SearchResult>() {
                     @Override
-                    public void call(SimilarSeriesResult similarSeriesResult) {
+                    public void call(SearchResult similarSeriesResult) {
                         ObservableArrayList<Series> series = similarSeriesResult.getResults();
                         int maxTeller = 5;
 
