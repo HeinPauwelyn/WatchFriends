@@ -11,6 +11,5 @@ public class Contract {
     public static final String ACCOUNT_TYPE = "nmct.jaspernielsmichielhein.watchfriends.account";
 
     //TODO: url aanpassen!
-    public static final String WATCHFRIENDS_BASE_URL = "https://raw.githubusercontent.com/WatchFriends/Backend/master/data/";
-
+    public static final String WATCHFRIENDS_BASE_URL = "https://www.watchfriends.me/api/";
 }
