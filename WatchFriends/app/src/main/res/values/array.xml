@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="notificationEntries">
+        <item>New episode</item>
+        <item>New follower</item>
+        <item>Achievement unlocked</item>
+    </string-array>
+    <string-array name="notificationEntryValues">
+        <item>episode</item>
+        <item>follower</item>
+        <item>achievement</item>
+    </string-array>
+</resources>

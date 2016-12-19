@@ -2,25 +2,57 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <SwitchPreference
-        android:key="switch_notifications"
-        android:title="Notifications"
-        android:summary="Receive notifications"
-        android:defaultValue="true" >
+        android:defaultValue="true"
+        android:key="pref_sync"
+        android:summary="Synchronize your activity with our services"
+        android:title="Sync" >
 
     </SwitchPreference>
 
-    <CheckBoxPreference
-        android:key="switch_notifications2"
-        android:title="Notifications"
-        android:summary="Receive notifications"
-        android:defaultValue="true" >
+    <PreferenceCategory android:title="Notifications">
 
-    </CheckBoxPreference>
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="pref_notifications"
+            android:summary="Receive notifications"
+            android:title="Notifications" >
 
-    <!--<PreferenceCategory android:title="Notifications">
+        </SwitchPreference>
 
+        <MultiSelectListPreference
+            android:key="pref_notification_types"
+            android:title="Notification types"
+            android:summary="Choose which notifications to receive"
+            android:dialogTitle="Notifications"
+            android:entries="@array/notificationEntries"
+            android:entryValues="@array/notificationEntryValues">
 
+        </MultiSelectListPreference>
 
-    </PreferenceCategory>-->
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Account">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="pref_private"
+            android:summary="Don't share your activity with friends"
+            android:title="Private account" >
+
+        </SwitchPreference>
+
+    </PreferenceCategory>
+
+    <PreferenceScreen android:title="About &amp; feedback">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="pref_test"
+            android:summary="testy"
+            android:title="testy">
+
+        </SwitchPreference>
+
+    </PreferenceScreen>
 
 </PreferenceScreen>
