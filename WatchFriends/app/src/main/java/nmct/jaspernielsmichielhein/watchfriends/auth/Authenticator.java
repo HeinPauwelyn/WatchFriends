@@ -11,7 +11,6 @@ import android.os.Bundle;
 
 import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;
 import nmct.jaspernielsmichielhein.watchfriends.view.LoginActivity;
-import nmct.jaspernielsmichielhein.watchfriends.view.MainActivity;
 
 public class Authenticator extends AbstractAccountAuthenticator {
 

@@ -9,14 +9,12 @@ import android.databinding.ObservableArrayList;
 import com.android.databinding.library.baseAdapters.BR;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentHomeBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
-import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;
 import nmct.jaspernielsmichielhein.watchfriends.model.MediaItem;
 import nmct.jaspernielsmichielhein.watchfriends.model.Page;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;

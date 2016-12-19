@@ -3,6 +3,7 @@ package nmct.jaspernielsmichielhein.watchfriends.viewmodel;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.database.Cursor;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
@@ -75,6 +76,8 @@ public class SeriesFragmentViewModel extends BaseObservable {
         } else {
             throw new RuntimeException(context.toString() + " must implement headerChangedListener");
         }
+
+        followed = isFollowed(series);
     }
 
     public void loadSeries() {
@@ -135,6 +138,17 @@ public class SeriesFragmentViewModel extends BaseObservable {
         values.put(Contract.FollowedSeriesColumns.COLUMN_FOLLOWEDSERIES_NR, serie.getId());
 
         executeAsyncTask(new DeleteFollowedSerieFromDBTask(context), values);
+    }
+
+    //todo backend should provide if user follows the series or not, now it just happens synchronously
+    private boolean isFollowed(Series s) {
+        Cursor c = context.getContentResolver().query(
+                nmct.jaspernielsmichielhein.watchfriends.provider.Contract.FOLLOWEDSERIES_URI, null,
+                Contract.FollowedSeriesColumns.COLUMN_FOLLOWEDSERIES_NR + " = " + s.getId(),
+                null,
+                null);
+        c.close();
+        return c.getCount() > 0;
     }
 
     static private <T> void executeAsyncTask(AsyncTask<T, ?, ?> task, T... params) {
