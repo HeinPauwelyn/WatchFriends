@@ -1,16 +1,14 @@
 package nmct.jaspernielsmichielhein.watchfriends.api;
 
-import android.databinding.ObservableArrayList;
-
 import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;
 import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
-import nmct.jaspernielsmichielhein.watchfriends.model.MediaPackage;
 import nmct.jaspernielsmichielhein.watchfriends.model.Page;
 import nmct.jaspernielsmichielhein.watchfriends.model.Season;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import nmct.jaspernielsmichielhein.watchfriends.model.SeriesList;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 public interface MovieDBService {
@@ -22,7 +20,7 @@ public interface MovieDBService {
     //SIMILAR SERIES
     //https://api.themoviedb.org/3/tv/63174/similar?api_key=1447c9e70c5784fbe8a492a4d5f37c8b&language=en-US
     @GET("tv/{series}/similar?language=en-US&api_key=" + Contract.MOVIEDB_API_KEY)
-    Observable<SimilarSeriesResult> getSimilarSeries(@Path("series") int seriesId);
+    Observable<SearchResult> getSimilarSeries(@Path("series") int seriesId);
 
     //SEASON
     //https://api.themoviedb.org/3/tv/63174/season/2?api_key=1447c9e70c5784fbe8a492a4d5f37c8b&language=en-US
@@ -33,6 +31,11 @@ public interface MovieDBService {
     //https://api.themoviedb.org/3/tv/63174/season/2/episode/2?api_key=1447c9e70c5784fbe8a492a4d5f37c8b&language=en-US
     @GET("tv/{series}/season/{season}/episode/{episode}?language=en-US&api_key=" + Contract.MOVIEDB_API_KEY)
     Observable<Episode> getEpisode(@Path("series") int seriesId, @Path("season") int season, @Path("episode") int episode);
+
+    //SEARCH
+    //https://api.themoviedb.org/3/search/tv?api_key=1447c9e70c5784fbe8a492a4d5f37c8b&language=en-US&query=suits&page=1
+    @GET("search/tv?append_to_response=images,similar&language=en-US&api_key=" + Contract.MOVIEDB_API_KEY)
+    Observable<SearchResult> getSearchResults(@Query("query") String query);
 
     @GET("list/{id}?api_key=" + Contract.MOVIEDB_API_KEY)
     Observable<SeriesList> getSeriesList(@Path("id") int id);
