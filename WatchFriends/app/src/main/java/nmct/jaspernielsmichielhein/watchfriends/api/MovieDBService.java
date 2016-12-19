@@ -36,10 +36,4 @@ public interface MovieDBService {
     //https://api.themoviedb.org/3/search/tv?api_key=1447c9e70c5784fbe8a492a4d5f37c8b&language=en-US&query=suits&page=1
     @GET("search/tv?append_to_response=images,similar&language=en-US&api_key=" + Contract.MOVIEDB_API_KEY)
     Observable<SearchResult> getSearchResults(@Query("query") String query);
-
-    @GET("list/{id}?api_key=" + Contract.MOVIEDB_API_KEY)
-    Observable<SeriesList> getSeriesList(@Path("id") int id);
-
-    @GET("tv/popular?language=en-us&api_key=" + Contract.MOVIEDB_API_KEY)
-    Observable<Page<Series>> getPopular();
 }
