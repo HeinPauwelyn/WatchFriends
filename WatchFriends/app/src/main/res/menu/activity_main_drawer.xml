@@ -3,13 +3,17 @@
 
     <group android:checkableBehavior="single" android:id="@+id/nav_group_1">
         <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_white_24dp"
+            android:title="Home" />
+        <item
             android:id="@+id/nav_watching"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Watching" />
+            android:title="Following" />
         <item
             android:id="@+id/nav_watchlist"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Watchlist" />
+            android:title="To Watch" />
         <item
             android:id="@+id/nav_watched"
             android:icon="@drawable/ic_menu_slideshow"
@@ -41,6 +45,6 @@
             android:title="Help &amp; feedback" />
         <item
             android:id="@+id/nav_about"
-            android:title="Watchlist" />
+            android:title="About" />
     </group>
 </menu>

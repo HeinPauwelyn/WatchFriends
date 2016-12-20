@@ -63,5 +63,7 @@
     <string name="no_search_results">No search results</string>
     <string name="rating_title">Rating:</string>
     <string name="first_air_date">First air date:</string>
+    <string name="missedepisodes">Missed Episodes</string>
+    <string name="nextepisodes">Episodes to watch</string>
 
 </resources>
