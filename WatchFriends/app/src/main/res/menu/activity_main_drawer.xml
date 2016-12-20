@@ -11,13 +11,9 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="Following" />
         <item
-            android:id="@+id/nav_watchlist"
+            android:id="@+id/nav_towatch"
             android:icon="@drawable/ic_menu_gallery"
             android:title="To Watch" />
-        <item
-            android:id="@+id/nav_watched"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Watched" />
     </group>
 
     <item

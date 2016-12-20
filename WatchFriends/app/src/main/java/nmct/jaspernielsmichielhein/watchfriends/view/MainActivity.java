@@ -218,10 +218,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_following:
                 navigate(FollowedSeriesFragment.newInstance(), "followedseriesFragment", true);
                 break;
-            case R.id.nav_watchlist:
-                navigate(WatchlistFragment.newInstance(), "watchlistFragment", true);
-                break;
-            case R.id.nav_watched:
+            case R.id.nav_towatch:
                 ApiHelper.subscribe(movieDBService.getSeries(11431),
                         new Action1<Series>() {
                             @Override
