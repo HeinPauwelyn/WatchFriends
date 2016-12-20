@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="viewmodel"
             type="nmct.jaspernielsmichielhein.watchfriends.viewmodel.FollowedSeriesFragmentViewModel" />
@@ -11,11 +10,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <!-- TODO: Update blank fragment layout -->
-        <TextView
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment" />
+            android:layout_margin="0dp"
+            android:orientation="vertical"
+            android:id="@+id/rvLists"
+            app:items="@{viewmodel.seriesList}"/>
     </LinearLayout>
 </layout>

@@ -215,7 +215,8 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_home:
                 navigate(HomeFragment.newInstance(), "homeFragment", true);
                 break;
-            case R.id.nav_watching:
+            case R.id.nav_following:
+                navigate(FollowedSeriesFragment.newInstance(), "followedseriesFragment", true);
                 break;
             case R.id.nav_watchlist:
                 navigate(WatchlistFragment.newInstance(), "watchlistFragment", true);
