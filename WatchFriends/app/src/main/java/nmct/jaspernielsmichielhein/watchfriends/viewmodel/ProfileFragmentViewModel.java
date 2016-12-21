@@ -12,11 +12,10 @@ import java.util.Random;
 
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentProfileBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
-import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
-import nmct.jaspernielsmichielhein.watchfriends.model.Page;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
+import nmct.jaspernielsmichielhein.watchfriends.model.SeriesList;
 import rx.functions.Action1;
 
 public class ProfileFragmentViewModel extends BaseObservable {
