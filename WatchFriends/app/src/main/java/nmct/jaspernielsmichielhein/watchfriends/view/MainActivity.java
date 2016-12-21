@@ -7,9 +7,6 @@ import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -22,8 +19,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,13 +31,9 @@ import com.facebook.login.LoginManager;
 import com.facebook.stetho.Stetho;
 import com.squareup.picasso.Picasso;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 import nmct.jaspernielsmichielhein.watchfriends.R;
-import nmct.jaspernielsmichielhein.watchfriends.api.MovieDBService;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
-import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.AuthHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
@@ -63,7 +54,6 @@ public class MainActivity extends AppCompatActivity
     private AppBarLayout appBarLayout;
     private View headerView;
     private ImageView profilePicture;
-    private MovieDBService movieDBService;
 
     public void setTitle(String title) {
         toolbarLayout.setTitle(title);
@@ -112,23 +102,7 @@ public class MainActivity extends AppCompatActivity
         toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
 
-        movieDBService = ApiMovieDbHelper.getMoviedbServiceInstance();
-        //collapseToolbar();
-
         Stetho.initializeWithDefaults(this);
-
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo("nmct.jaspernielsmichielhein.watchfriends", PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.e("MY KEY HASH:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-
-        } catch (NoSuchAlgorithmException e) {
-
-        }
     }
 
     @Override
@@ -219,7 +193,7 @@ public class MainActivity extends AppCompatActivity
                 navigate(FollowedSeriesFragment.newInstance(), "followedseriesFragment", true);
                 break;
             case R.id.nav_towatch:
-                ApiHelper.subscribe(movieDBService.getSeries(11431),
+                ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getSeries(11431),
                         new Action1<Series>() {
                             @Override
                             public void call(Series series) {

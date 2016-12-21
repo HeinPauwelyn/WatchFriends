@@ -154,6 +154,9 @@ public class SeasonsAdapter extends ArrayAdapter<Season> implements View.OnClick
                 null,
                 null
         );
-        return s.getEpisode_count() <= c.getCount();
+        int count = c.getCount();
+        c.close();
+
+        return s.getEpisode_count() <= count;
     }
 }

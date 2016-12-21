@@ -21,6 +21,7 @@ import nmct.jaspernielsmichielhein.watchfriends.adapter.SeriesListAdapter;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentHomeBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import nmct.jaspernielsmichielhein.watchfriends.model.SeriesList;
@@ -87,7 +88,7 @@ public class HomeFragment extends Fragment implements HomeFragmentViewModel.ISer
 
                             Integer id = Integer.valueOf(v.getTag().toString());
 
-                            ApiHelper.subscribe(ApiMovieDbHelper.getMoviedbServiceInstance().getSeries(id), new Action1<Series>() {
+                            ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getSeries(id), new Action1<Series>() {
                                 @Override
                                 public void call(Series series) {
                                     ((MainActivity)getActivity()).onSeriesSelected(series);

@@ -7,10 +7,10 @@ import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
 import android.support.design.widget.FloatingActionButton;
 
-import nmct.jaspernielsmichielhein.watchfriends.api.MovieDBService;
+import nmct.jaspernielsmichielhein.watchfriends.api.WatchFriendsService;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentFollowedSeriesBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
-import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import nmct.jaspernielsmichielhein.watchfriends.model.SeriesList;
@@ -24,7 +24,7 @@ public class FollowedSeriesFragmentViewModel extends BaseObservable {
     private Interfaces.headerChangedListener headerListener;
     private Context context;
     private FragmentFollowedSeriesBinding fragmentFollowedSeriesBinding;
-    private MovieDBService movieDBService;
+    private WatchFriendsService service;
 
     @Bindable
     private ObservableArrayList<SeriesList> seriesList = null;
@@ -45,7 +45,7 @@ public class FollowedSeriesFragmentViewModel extends BaseObservable {
         this.fragmentFollowedSeriesBinding = fragmentFollowedSeriesBinding;
         seriesAddedListener = listener;
 
-        movieDBService = ApiMovieDbHelper.getMoviedbServiceInstance();
+        service = ApiWatchFriendsHelper.getWatchFriendsServiceInstance();
 
         setSeriesList(new ObservableArrayList<SeriesList>());
 
@@ -80,7 +80,7 @@ public class FollowedSeriesFragmentViewModel extends BaseObservable {
     }
 
     private void loadSerie(int id) {
-        ApiHelper.subscribe(movieDBService.getSeries(id),
+        ApiHelper.subscribe(service.getSeries(id),
                 new Action1<Series>() {
                     @Override
                     public void call(Series serie) {

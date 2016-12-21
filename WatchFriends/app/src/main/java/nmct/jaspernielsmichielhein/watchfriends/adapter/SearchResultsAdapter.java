@@ -2,7 +2,6 @@ package nmct.jaspernielsmichielhein.watchfriends.adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +10,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.google.android.gms.common.api.Api;
 import com.squareup.picasso.Picasso;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.SearchResultBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
-import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import rx.functions.Action1;
@@ -35,7 +33,7 @@ public class SearchResultsAdapter extends ArrayAdapter<Series> {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Series selectedSeries = getItem(position);
-                ApiHelper.subscribe(ApiMovieDbHelper.getMoviedbServiceInstance().getSeries(selectedSeries.getId()), new Action1<Series>() {
+                ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getSeries(selectedSeries.getId()), new Action1<Series>() {
                     @Override
                     public void call(Series returnedSeries) {
                         if (returnedSeries != null) {
