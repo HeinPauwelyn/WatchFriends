@@ -74,8 +74,8 @@ public class FollowedSeriesFragmentViewModel extends BaseObservable {
             for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
                 loadSerie(c.getInt(c.getColumnIndex("followingseriesnr")));
             }
-            c.close();
         }
+        c.close();
         setHeader();
     }
 
@@ -100,5 +100,6 @@ public class FollowedSeriesFragmentViewModel extends BaseObservable {
         headerListener.setTitle("Following");
         final FloatingActionButton fab = headerListener.getActionButton();
         fab.hide();
+        headerListener.setAppBarBehavior(false);
     }
 }

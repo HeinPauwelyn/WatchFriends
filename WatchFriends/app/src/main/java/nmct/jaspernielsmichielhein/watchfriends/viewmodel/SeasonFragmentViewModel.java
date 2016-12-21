@@ -73,5 +73,6 @@ public class SeasonFragmentViewModel extends BaseObservable {
         Picasso.with(context).load(season.getImage_uri()).into(listener.getHeaderImage());
         final FloatingActionButton fab = listener.getActionButton();
         fab.setVisibility(View.INVISIBLE);
+        listener.setAppBarBehavior(true);
     }
 }

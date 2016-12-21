@@ -13,6 +13,7 @@ public class Interfaces {
         ImageView getHeaderImage();
         FloatingActionButton getActionButton();
         void setTitle(String title);
+        void setAppBarBehavior(Boolean enabled);
     }
 
     public interface onSeriesSelectedListener {

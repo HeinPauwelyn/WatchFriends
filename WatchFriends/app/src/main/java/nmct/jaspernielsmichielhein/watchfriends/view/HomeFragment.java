@@ -20,7 +20,6 @@ import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.adapter.SeriesListAdapter;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentHomeBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
-import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
@@ -60,7 +59,7 @@ public class HomeFragment extends Fragment implements HomeFragmentViewModel.ISer
     public void onStart() {
         super.onStart();
 
-        homeFragmentViewModel.getData();
+        homeFragmentViewModel.loadSeries();
 
         if (listener != null) {
             listener.collapseToolbar();

@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -35,6 +36,7 @@ import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.AuthHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.DisableAppBarLayoutBehavior;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
@@ -233,6 +235,11 @@ public class MainActivity extends AppCompatActivity
         //todo ook enablen
         actionButton.setVisibility(View.VISIBLE);
     }
+
+    public void setAppBarBehavior(Boolean enabled){
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+        ((DisableAppBarLayoutBehavior) layoutParams.getBehavior()).setEnabled(enabled);
+    };
 
     private void navigate(Fragment fragment, String tag, boolean collapsing) {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();

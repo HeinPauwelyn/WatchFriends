@@ -88,6 +88,7 @@ public class SeriesFragmentViewModel extends BaseObservable {
         Picasso.with(context).load(series.getImage_uri()).into(listener.getHeaderImage());
         final FloatingActionButton fab = listener.getActionButton();
         initFloatingActionButton(fab);
+        listener.setAppBarBehavior(true);
     }
 
     private void initFloatingActionButton(final FloatingActionButton fab) {

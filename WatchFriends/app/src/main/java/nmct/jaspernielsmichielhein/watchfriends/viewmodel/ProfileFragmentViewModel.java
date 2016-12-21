@@ -57,6 +57,7 @@ public class ProfileFragmentViewModel extends BaseObservable {
         mListener.setTitle("UserName");
         final FloatingActionButton fab = mListener.getActionButton();
         fab.setVisibility(View.INVISIBLE);
+        mListener.setAppBarBehavior(false);
     }
 
     public void generateFakeDate() {
