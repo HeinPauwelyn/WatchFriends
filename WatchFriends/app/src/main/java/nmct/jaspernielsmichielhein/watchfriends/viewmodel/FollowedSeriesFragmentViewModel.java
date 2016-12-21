@@ -36,7 +36,7 @@ public class FollowedSeriesFragmentViewModel extends BaseObservable {
     private void setSeriesList(ObservableArrayList<SeriesList> seriesList) {
         seriesList.add(0, new SeriesList());
         seriesList.get(0).setName("Following Series");
-        seriesList.get(0).setItems(new ObservableArrayList<Series>());
+        seriesList.get(0).setSeries(new ObservableArrayList<Series>());
         this.seriesList = seriesList;
     }
 
@@ -57,7 +57,7 @@ public class FollowedSeriesFragmentViewModel extends BaseObservable {
     }
 
     private void addToSeriesList(Series serie) {
-        seriesList.get(0).getItems().add(serie);
+        seriesList.get(0).getSeries().add(serie);
     }
 
     public void getData() {
