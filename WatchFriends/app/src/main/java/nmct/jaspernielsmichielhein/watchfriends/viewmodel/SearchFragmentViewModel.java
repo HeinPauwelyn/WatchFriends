@@ -61,9 +61,13 @@ public class SearchFragmentViewModel extends BaseObservable {
         ApiHelper.subscribe(ApiMovieDbHelper.getMoviedbServiceInstance().getSearchResults(query), new Action1<SearchResult>() {
             @Override
             public void call(SearchResult searchResult) {
-                ObservableArrayList<Series> series = searchResult.getResults();
+                ObservableArrayList<Series> series = new ObservableArrayList<Series>();
+                if (searchResult != null) {
+                    series = searchResult.getResults();
+                }
+
                 if (series.size() != 0) {
-                    fragmentSearchBinding.txtNoResults.setVisibility(View.INVISIBLE);
+                    fragmentSearchBinding.txtNoResults.setVisibility(View.GONE);
                     fragmentSearchBinding.lvSearchResults.setVisibility(View.VISIBLE);
                     for (int i = 0; i < series.size(); i++) {
                         searchResults.add(series.get(i));
@@ -71,7 +75,7 @@ public class SearchFragmentViewModel extends BaseObservable {
                     }
                 } else {
                     fragmentSearchBinding.txtNoResults.setVisibility(View.VISIBLE);
-                    fragmentSearchBinding.lvSearchResults.setVisibility(View.INVISIBLE);
+                    fragmentSearchBinding.lvSearchResults.setVisibility(View.GONE);
                 }
             }
         });

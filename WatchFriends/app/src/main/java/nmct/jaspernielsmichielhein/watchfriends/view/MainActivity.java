@@ -12,13 +12,16 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -27,6 +30,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -55,7 +60,8 @@ public class MainActivity extends AppCompatActivity
         Interfaces.headerChangedListener,
         Interfaces.onSeriesSelectedListener,
         Interfaces.onSeasonSelectedListener,
-        Interfaces.onEpisodeSelectedListener {
+        Interfaces.onEpisodeSelectedListener,
+        Interfaces.onProfileSelectedListener {
 
     private ImageView headerImage;
     private FloatingActionButton actionButton;
@@ -63,7 +69,10 @@ public class MainActivity extends AppCompatActivity
     private AppBarLayout appBarLayout;
     private View headerView;
     private ImageView profilePicture;
+    private CoordinatorLayout coordinatorLayout;
+    private FrameLayout frameLayout;
     private MovieDBService movieDBService;
+    private boolean isStartup = true;
 
     public void setTitle(String title) {
         toolbarLayout.setTitle(title);
@@ -115,9 +124,11 @@ public class MainActivity extends AppCompatActivity
         movieDBService = ApiMovieDbHelper.getMoviedbServiceInstance();
         //collapseToolbar();
 
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
         Stetho.initializeWithDefaults(this);
 
-        try {
+        /*try {
             PackageInfo info = getPackageManager().getPackageInfo("nmct.jaspernielsmichielhein.watchfriends", PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
@@ -128,7 +139,7 @@ public class MainActivity extends AppCompatActivity
 
         } catch (NoSuchAlgorithmException e) {
 
-        }
+        }*/
     }
 
     @Override
@@ -172,13 +183,50 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_search, menu);
 
-        MenuItem searchItem = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        final MenuItem searchItem = menu.findItem(R.id.search);
+        searchItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                return false;
+            }
+        });
+
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(this);
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(this, MainActivity.class)));
         searchView.setIconifiedByDefault(false);
+
+        // Handle keyboard events
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_main);
+        frameLayout = (FrameLayout) findViewById(R.id.fragment_frame);
+
+        coordinatorLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                if (!searchView.isIconified()) {
+                    MenuItemCompat.collapseActionView(searchItem);
+                    searchView.setIconified(true);
+                }
+            }
+        });
+
+        frameLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                if (!searchView.isIconified()) {
+                    MenuItemCompat.collapseActionView(searchItem);
+                    searchView.setIconified(true);
+                }
+            }
+        });
 
         return true;
     }
@@ -211,6 +259,12 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+
+        if (isStartup) {
+            ((FrameLayout) findViewById(R.id.fragment_frame)).removeAllViews();
+            isStartup = false;
+        }
+
         switch (item.getItemId()) {
             case R.id.nav_home:
                 navigate(HomeFragment.newInstance(), "homeFragment", true);
@@ -228,7 +282,7 @@ public class MainActivity extends AppCompatActivity
                         });
                 break;
             case R.id.nav_settings:
-                //navigate(new SettingsFragment());
+                navigate(new SettingsFragment(), "settingsFragment", false);
                 break;
             case R.id.nav_logout:
                 AuthHelper.logUserOff(this);
@@ -236,7 +290,6 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_upgrade:
                 break;
-
             case R.id.nav_help:
                 break;
             case R.id.nav_about:
@@ -263,7 +316,7 @@ public class MainActivity extends AppCompatActivity
     private void navigate(Fragment fragment, String tag, boolean collapsing) {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_frame, fragment, tag);
-        fragmentTransaction.addToBackStack(tag);
+        fragmentTransaction.addToBackStack("navigation_to_" + tag);
         fragmentTransaction.commit();
         if (collapsing) expandToolbar();
         else collapseToolbar();
@@ -277,7 +330,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onQueryTextChange(String newText) {
+    public boolean onQueryTextChange(String query) {
         //search query changed
         return false;
     }
@@ -285,7 +338,6 @@ public class MainActivity extends AppCompatActivity
     public void setImage(Uri uri) {
         Picasso.with(this).load(uri).into(getHeaderImage());
     }
-
 
     @Override
     public void onSeriesSelected(Series series) {
@@ -302,4 +354,8 @@ public class MainActivity extends AppCompatActivity
         navigate(EpisodeFragment.newInstance(episode), "episodeFragment", true);
     }
 
+    @Override
+    public void onProfileSelected(String userId) {
+        navigate(ProfileFragment.newInstance(), "profileFragment", false);
+    }
 }

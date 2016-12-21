@@ -213,6 +213,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         setResult(RESULT_OK, intent);
         mContext = null;
+        progressDialog.dismiss();
         finish();
     }
 
