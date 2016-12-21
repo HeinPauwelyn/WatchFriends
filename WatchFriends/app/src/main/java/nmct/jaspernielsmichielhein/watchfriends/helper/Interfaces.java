@@ -28,6 +28,10 @@ public class Interfaces {
         void onEpisodeSelected(Episode episode);
     }
 
+    public interface onProfileSelectedListener {
+        void onProfileSelected(String userId);
+    }
+
     public interface onAccountRegisteredListener {
         void onAccountRegistered(String mUsername);
     }

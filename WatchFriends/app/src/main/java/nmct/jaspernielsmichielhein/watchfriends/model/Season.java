@@ -83,7 +83,7 @@ public class Season extends BaseObservable implements Parcelable {
     }
 
     public String getName() {
-        if (overview.equals("")) {
+        if (name == null || name.equals("")) {
             return "Season " + getSeason_number();
         }
         return name;

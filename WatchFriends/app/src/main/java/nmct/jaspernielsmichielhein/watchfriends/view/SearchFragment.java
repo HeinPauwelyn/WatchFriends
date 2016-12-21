@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentSearchBinding;
@@ -49,5 +51,10 @@ public class SearchFragment extends Fragment {
     public void onStart() {
         super.onStart();
         searchFragmentViewModel.search();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 }
