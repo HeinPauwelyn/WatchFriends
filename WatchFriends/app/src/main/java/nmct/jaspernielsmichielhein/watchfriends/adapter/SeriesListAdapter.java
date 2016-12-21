@@ -39,7 +39,7 @@ public class SeriesListAdapter extends RecyclerView.Adapter<SeriesListAdapter.Se
         holder.getRowSeriesListBinding().setSeriesList(seriesObject);
         holder.getRowSeriesListBinding().executePendingBindings();
 
-        holder.getRowSeriesListBinding().rvListItems.setAdapter(new SeriesAdapter(context, seriesLists.get(position).getItems()));
+        holder.getRowSeriesListBinding().rvListItems.setAdapter(new SeriesAdapter(context, seriesLists.get(position).getSeries()));
         holder.getRowSeriesListBinding().rvListItems.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
         holder.getRowSeriesListBinding().rvListItems.setItemAnimator(new DefaultItemAnimator());
     }
