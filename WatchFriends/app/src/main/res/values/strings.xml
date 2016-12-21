@@ -63,5 +63,16 @@
     <string name="no_search_results">No search results</string>
     <string name="rating_title">Rating:</string>
     <string name="first_air_date">First air date:</string>
+    <string name="missedepisodes">Missed Episodes</string>
+    <string name="nextepisodes">Episodes to watch</string>
+    <string name="home">Home</string>
+    <string name="following">Following</string>
+    <string name="to_watch">To Watch</string>
+    <string name="account">Account</string>
+    <string name="settings">Settings</string>
+    <string name="logout">Logout</string>
+    <string name="upgrade">Upgrade to premium</string>
+    <string name="feedback"><![CDATA[Help & feedback]]></string>
+    <string name="about">About</string>
 
 </resources>
