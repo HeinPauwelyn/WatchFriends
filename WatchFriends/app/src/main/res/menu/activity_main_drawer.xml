@@ -3,44 +3,44 @@
 
     <group android:checkableBehavior="single" android:id="@+id/nav_group_1">
         <item
-            android:id="@+id/nav_watching"
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_white_24dp"
+            android:title="@string/home" />
+        <item
+            android:id="@+id/nav_following"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Watching" />
+            android:title="@string/following" />
         <item
-            android:id="@+id/nav_watchlist"
+            android:id="@+id/nav_towatch"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Watchlist" />
-        <item
-            android:id="@+id/nav_watched"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Watched" />
+            android:title="@string/to_watch" />
     </group>
 
     <item
-        android:title="Account"
+        android:title="@string/account"
         android:icon="@drawable/ic_menu_camera" >
         <menu>
             <item
                 android:id="@+id/nav_settings"
                 android:icon="@drawable/ic_menu_manage"
-                android:title="Settings" />
+                android:title="@string/settings" />
             <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Logout" />
+                android:title="@string/logout" />
             <item
                 android:id="@+id/nav_upgrade"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Upgrade to premium" />
+                android:title="@string/upgrade" />
         </menu>
     </item>
 
     <group android:checkableBehavior="single" android:id="@+id/nav_group_2">
         <item
             android:id="@+id/nav_help"
-            android:title="Help &amp; feedback" />
+            android:title="@string/feedback" />
         <item
             android:id="@+id/nav_about"
-            android:title="Watchlist" />
+            android:title="@string/about" />
     </group>
 </menu>

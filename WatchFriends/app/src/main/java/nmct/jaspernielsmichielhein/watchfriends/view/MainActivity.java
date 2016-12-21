@@ -74,15 +74,15 @@ public class MainActivity extends AppCompatActivity
     private MovieDBService movieDBService;
     private boolean isStartup = true;
 
-    public void setTitle(String title){
+    public void setTitle(String title) {
         toolbarLayout.setTitle(title);
     }
 
-    public ImageView getHeaderImage(){
+    public ImageView getHeaderImage() {
         return headerImage;
     }
 
-    public FloatingActionButton getActionButton(){
+    public FloatingActionButton getActionButton() {
         return actionButton;
     }
 
@@ -165,9 +165,9 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             FragmentManager fmgr = getFragmentManager();
-            if(fmgr.getBackStackEntryCount() == 1) //home fragment
+            if (fmgr.getBackStackEntryCount() == 1) //home fragment
                 fmgr.popBackStack();
-            else{
+            else {
                 //search fragment
                 int index = fmgr.getBackStackEntryCount() - 1;
                 FragmentManager.BackStackEntry backEntry = fmgr.getBackStackEntryAt(index);
@@ -237,11 +237,11 @@ public class MainActivity extends AppCompatActivity
         super.onNewIntent(intent);
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            Toast.makeText(this, "Searching by: "+ query, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Searching by: " + query, Toast.LENGTH_SHORT).show();
 
         } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             String uri = intent.getDataString();
-            Toast.makeText(this, "Suggestion: "+ uri, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Suggestion: " + uri, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -259,15 +259,20 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+
         if (isStartup) {
             ((FrameLayout) findViewById(R.id.fragment_frame)).removeAllViews();
             isStartup = false;
         }
 
-        switch (item.getItemId()){
-            case R.id.nav_watching:
+        switch (item.getItemId()) {
+            case R.id.nav_home:
+                navigate(HomeFragment.newInstance(), "homeFragment", true);
                 break;
-            case R.id.nav_watchlist:
+            case R.id.nav_following:
+                navigate(FollowedSeriesFragment.newInstance(), "followedseriesFragment", true);
+                break;
+            case R.id.nav_towatch:
                 ApiHelper.subscribe(movieDBService.getSeries(11431),
                         new Action1<Series>() {
                             @Override
@@ -275,8 +280,6 @@ public class MainActivity extends AppCompatActivity
                                 navigate(SeriesFragment.newInstance(series), "seasonFragment", true);
                             }
                         });
-                break;
-            case R.id.nav_watched:
                 break;
             case R.id.nav_settings:
                 navigate(new SettingsFragment(), "settingsFragment", false);
@@ -287,7 +290,6 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_upgrade:
                 break;
-
             case R.id.nav_help:
                 break;
             case R.id.nav_about:
@@ -299,24 +301,24 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void collapseToolbar(){
+    public void collapseToolbar() {
         appBarLayout.setExpanded(false, true);
         //todo ook disablen
         actionButton.setVisibility(View.GONE);
     }
 
-    public void expandToolbar(){
+    public void expandToolbar() {
         appBarLayout.setExpanded(true, true);
         //todo ook enablen
         actionButton.setVisibility(View.VISIBLE);
     }
 
-    private void navigate(Fragment fragment, String tag, boolean collapsing){
+    private void navigate(Fragment fragment, String tag, boolean collapsing) {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_frame, fragment, tag);
         fragmentTransaction.addToBackStack("navigation_to_" + tag);
         fragmentTransaction.commit();
-        if(collapsing) expandToolbar();
+        if (collapsing) expandToolbar();
         else collapseToolbar();
     }
 

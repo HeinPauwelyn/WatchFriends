@@ -3,6 +3,7 @@ package nmct.jaspernielsmichielhein.watchfriends.viewmodel;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import rx.Observable;
 import android.databinding.ObservableArrayList;
 
 import com.android.databinding.library.baseAdapters.BR;
@@ -18,7 +19,6 @@ import nmct.jaspernielsmichielhein.watchfriends.model.MediaItem;
 import nmct.jaspernielsmichielhein.watchfriends.model.Page;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import nmct.jaspernielsmichielhein.watchfriends.model.SeriesList;
-import nmct.jaspernielsmichielhein.watchfriends.model.SeriesListData;
 import rx.functions.Action1;
 
 public class HomeFragmentViewModel extends BaseObservable {
@@ -53,53 +53,21 @@ public class HomeFragmentViewModel extends BaseObservable {
 
     public void getData() {
 
-        ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getLists(), new Action1<SeriesListData>() {
+        ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getLists(), new Action1<ArrayList<SeriesList>>() {
             @Override
-            public void call(SeriesListData seriesListData) {
-                if (seriesListData != null) {
-                    for (int id : seriesListData.getSeriesLists()) {
-                        loadSeriesList(id);
-                    }
-                }
-            }
-        });
+            public void call(ArrayList<SeriesList> seriesList) {
+                if (seriesList != null) {
 
-        ApiHelper.subscribe(ApiMovieDbHelper.getMoviedbServiceInstance().getPopular(), new Action1<Page<Series>>() {
-            @Override
-            public void call(Page<Series> seriesPage) {
-                if (seriesPage != null) {
-
-                    ObservableArrayList<Series> series = new ObservableArrayList<Series>();
-                    Random rnd = new Random();
-                    int size = seriesPage.getResults().size();
-                    ArrayList<Integer> takenSeries = new ArrayList<Integer>();
-
-                    for (int i = 0; i < 5; i++) {
-                        Integer number = rnd.nextInt(size);
-
-                        if (takenSeries.contains(number)) {
-                            i--;
-                        }
-                        else {
-                            takenSeries.add(number);
-                            series.add(seriesPage.getResults().get(number));
+                    for (SeriesList list : seriesList) {
+                        if (list.getName().equals("Popular")) {
+                            seriesAddedListener.updateCarousel(list.getSeries());
                         }
                     }
-                    seriesAddedListener.updateCarousel(series);
+
+                    ObservableArrayList<SeriesList> obList = new ObservableArrayList<SeriesList>();
+                    obList.addAll(seriesList);
+                    seriesAddedListener.updateLists(obList);
                 }
-            }
-        });
-    }
-
-    private void loadSeriesList(int id) {
-
-        ApiHelper.subscribe(ApiMovieDbHelper.getMoviedbServiceInstance().getSeriesList(id), new Action1<SeriesList>() {
-            @Override
-            public void call(SeriesList seriesList) {
-                seriesLists.add(seriesList);
-                notifyPropertyChanged(BR.viewmodel);
-
-                seriesAddedListener.updateLists(seriesLists);
             }
         });
     }
