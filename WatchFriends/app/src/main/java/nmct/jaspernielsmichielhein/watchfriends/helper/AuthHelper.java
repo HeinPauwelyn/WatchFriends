@@ -8,12 +8,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.support.annotation.RequiresPermission;
 import android.support.v4.app.ActivityCompat;
 
 import com.facebook.login.LoginManager;
-
-import permissions.dispatcher.NeedsPermission;
 
 public class AuthHelper {
 

@@ -1,13 +1,10 @@
 package nmct.jaspernielsmichielhein.watchfriends.binder;
 
 import android.databinding.BindingAdapter;
-import android.databinding.ObservableList;
 import android.widget.ListView;
 
 import nmct.jaspernielsmichielhein.watchfriends.adapter.SeasonsAdapter;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Utils;
-import nmct.jaspernielsmichielhein.watchfriends.model.Season;
-import nmct.jaspernielsmichielhein.watchfriends.model.Season;
 import nmct.jaspernielsmichielhein.watchfriends.viewmodel.SeriesFragmentViewModel;
 
 public class SeasonsBinder {

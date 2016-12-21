@@ -3,7 +3,6 @@ package nmct.jaspernielsmichielhein.watchfriends.model;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
-import android.databinding.ObservableField;
 
 public class SeriesList extends BaseObservable {
 

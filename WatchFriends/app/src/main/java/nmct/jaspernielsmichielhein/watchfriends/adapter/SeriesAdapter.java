@@ -18,7 +18,6 @@ import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
-import nmct.jaspernielsmichielhein.watchfriends.view.MainActivity;
 import rx.functions.Action1;
 
 public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.SeriesViewHolder> {

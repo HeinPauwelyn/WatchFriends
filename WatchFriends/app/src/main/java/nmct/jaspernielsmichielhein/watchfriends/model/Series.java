@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+
 import nmct.jaspernielsmichielhein.watchfriends.api.SearchResult;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;
 

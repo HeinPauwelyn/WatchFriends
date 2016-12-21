@@ -6,7 +6,6 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableArrayList;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -17,13 +16,11 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.ImageListener;
 
-
+import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.adapter.SeriesListAdapter;
+import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentHomeBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
-import nmct.jaspernielsmichielhein.watchfriends.model.MediaItem;
-import nmct.jaspernielsmichielhein.watchfriends.R;
-import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentHomeBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import nmct.jaspernielsmichielhein.watchfriends.model.SeriesList;
