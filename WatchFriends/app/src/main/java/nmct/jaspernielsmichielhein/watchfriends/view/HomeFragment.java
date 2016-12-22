@@ -62,7 +62,6 @@ public class HomeFragment extends Fragment implements HomeFragmentViewModel.ISer
         homeFragmentViewModel.loadSeries();
 
         if (listener != null) {
-            listener.collapseToolbar();
             listener.setTitle(getResources().getString(R.string.app_name));
             listener.getActionButton().setVisibility(View.GONE);
         }

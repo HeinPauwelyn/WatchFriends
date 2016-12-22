@@ -2,4 +2,5 @@
 <resources>
     <item name="llMissedEpisodes" type="id" />
     <item name="llNextEpisodes" type="id" />
+    <item name="coordinator_appbar" type="id" />
 </resources>

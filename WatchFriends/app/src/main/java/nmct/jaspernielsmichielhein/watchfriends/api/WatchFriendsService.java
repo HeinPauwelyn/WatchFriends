@@ -21,12 +21,10 @@ public interface WatchFriendsService {
     Observable<Series> getSeries(@Path("series") int seriesId);
 
     //SEASON
-    //todo after deployment update change seasonS to season
-    @GET("series/{series}/seasons/{season}")
+    @GET("series/{series}/season/{season}")
     Observable<Season> getSeason(@Path("series") int seriesId, @Path("season") int season);
 
     //EPISODE
-    //todo after deployment update change seasonS to season
-    @GET("tv/{series}/seasons/{season}/episode/{episode}")
+    @GET("tv/{series}/season/{season}/episode/{episode}")
     Observable<Episode> getEpisode(@Path("series") int seriesId, @Path("season") int season, @Path("episode") int episode);
 }

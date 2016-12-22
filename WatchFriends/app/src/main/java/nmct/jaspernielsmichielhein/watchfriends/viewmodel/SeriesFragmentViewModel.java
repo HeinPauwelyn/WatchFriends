@@ -83,12 +83,10 @@ public class SeriesFragmentViewModel extends BaseObservable {
     }
 
     private void setHeader() {
-        listener.expandToolbar();
         listener.setTitle(series.getName());
+        listener.enableAppBarScroll(true);
+        initFloatingActionButton(listener.getActionButton());
         Picasso.with(context).load(series.getImage_uri()).into(listener.getHeaderImage());
-        final FloatingActionButton fab = listener.getActionButton();
-        initFloatingActionButton(fab);
-        listener.setAppBarBehavior(true);
     }
 
     private void initFloatingActionButton(final FloatingActionButton fab) {

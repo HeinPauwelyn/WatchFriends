@@ -35,7 +35,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         } else {
             throw new RuntimeException(context.toString() + " must implement headerChangedListener");
         }
-
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -59,6 +58,12 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     @Override
     public void onStart() {
         super.onStart();
-        headerListener.setAppBarBehavior(false);
+        setHeader();
+    }
+
+    private void setHeader() {
+        headerListener.setTitle(getResources().getString(R.string.settings));
+        headerListener.enableAppBarScroll(false);
+        headerListener.getHeaderImage().setImageResource(0);
     }
 }

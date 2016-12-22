@@ -52,8 +52,9 @@ public class SearchFragmentViewModel extends BaseObservable {
     }
 
     private void setHeader() {
-        listener.collapseToolbar();
         listener.setTitle("Search results");
+        listener.enableAppBarScroll(false);
+        listener.getHeaderImage().setImageResource(0);
     }
 
     private void loadSearchResults() {

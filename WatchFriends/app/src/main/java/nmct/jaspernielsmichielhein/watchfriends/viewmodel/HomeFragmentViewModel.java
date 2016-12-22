@@ -7,6 +7,7 @@ import android.databinding.ObservableArrayList;
 
 import java.util.ArrayList;
 
+import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentHomeBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
@@ -79,8 +80,9 @@ public class HomeFragmentViewModel extends BaseObservable {
     }
 
     private void setHeader(){
-        headerListener.collapseToolbar();
-        headerListener.setAppBarBehavior(false);
+        headerListener.setTitle(context.getResources().getString(R.string.title_activity_main));
+        headerListener.enableAppBarScroll(false);
+        headerListener.getHeaderImage().setImageResource(0);
     }
 
     public interface ISeriesAddedListener {

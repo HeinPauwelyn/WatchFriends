@@ -5,8 +5,8 @@ import android.database.Cursor;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
-import android.support.design.widget.FloatingActionButton;
 
+import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.api.WatchFriendsService;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentFollowedSeriesBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
@@ -96,10 +96,8 @@ public class FollowedSeriesFragmentViewModel extends BaseObservable {
     }
 
     private void setHeader() {
-        headerListener.collapseToolbar();
-        headerListener.setTitle("Following");
-        final FloatingActionButton fab = headerListener.getActionButton();
-        fab.hide();
-        headerListener.setAppBarBehavior(false);
+        headerListener.setTitle(context.getResources().getString(R.string.following));
+        headerListener.enableAppBarScroll(false);
+        headerListener.getHeaderImage().setImageResource(0);
     }
 }
