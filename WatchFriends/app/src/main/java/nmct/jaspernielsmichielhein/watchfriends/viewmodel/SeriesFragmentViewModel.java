@@ -18,16 +18,12 @@ import com.android.databinding.library.baseAdapters.BR;
 import com.squareup.picasso.Picasso;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
-import nmct.jaspernielsmichielhein.watchfriends.api.SearchResult;
 import nmct.jaspernielsmichielhein.watchfriends.database.Contract;
 import nmct.jaspernielsmichielhein.watchfriends.database.tasks.DeleteFollowedSerieFromDBTask;
 import nmct.jaspernielsmichielhein.watchfriends.database.tasks.SaveFollowedSerieToDBTask;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentSeriesBinding;
-import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
-import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
-import rx.functions.Action1;
 
 public class SeriesFragmentViewModel extends BaseObservable {
     private Interfaces.headerChangedListener listener;
@@ -87,11 +83,10 @@ public class SeriesFragmentViewModel extends BaseObservable {
     }
 
     private void setHeader() {
-        listener.expandToolbar();
         listener.setTitle(series.getName());
+        listener.enableAppBarScroll(true);
+        initFloatingActionButton(listener.getActionButton());
         Picasso.with(context).load(series.getImage_uri()).into(listener.getHeaderImage());
-        final FloatingActionButton fab = listener.getActionButton();
-        initFloatingActionButton(fab);
     }
 
     private void initFloatingActionButton(final FloatingActionButton fab) {
@@ -157,35 +152,5 @@ public class SeriesFragmentViewModel extends BaseObservable {
         } else {
             task.execute(params);
         }
-    }
-
-    private void loadSimilarSeries() {
-        setSimilarSeries(new ObservableArrayList<Series>());
-        ApiHelper.subscribe(ApiMovieDbHelper.getMoviedbServiceInstance().getSimilarSeries(series.getId()),
-                new Action1<SearchResult>() {
-                    @Override
-                    public void call(SearchResult similarSeriesResult) {
-                        ObservableArrayList<Series> series = similarSeriesResult.getResults();
-                        int maxTeller = 5;
-
-                        if (series.size() < 5) {
-                            maxTeller = series.size();
-                        }
-
-                        if (series.size() != 0) {
-                            for (int i = 0; i < maxTeller; i++) {
-                                ApiHelper.subscribe(
-                                        ApiMovieDbHelper.getMoviedbServiceInstance().getSeries(series.get(i).getId()),
-                                        new Action1<Series>() {
-                                            @Override
-                                            public void call(Series series) {
-                                                similarSeries.add(series);
-                                                notifyPropertyChanged(BR.viewmodel);
-                                            }
-                                        });
-                            }
-                        }
-                    }
-                });
     }
 }

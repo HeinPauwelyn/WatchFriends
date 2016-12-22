@@ -74,5 +74,6 @@
     <string name="upgrade">Upgrade to premium</string>
     <string name="feedback"><![CDATA[Help & feedback]]></string>
     <string name="about">About</string>
+    <string name="disableAppBarLayoutBehavior">nmct.jaspernielsmichielhein.watchfriends.helper.DisableAppBarLayoutBehavior</string>
 
 </resources>

@@ -3,26 +3,23 @@ package nmct.jaspernielsmichielhein.watchfriends.viewmodel;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import rx.Observable;
 import android.databinding.ObservableArrayList;
 
-import com.android.databinding.library.baseAdapters.BR;
-
 import java.util.ArrayList;
-import java.util.Random;
 
+import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentHomeBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
-import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.MediaItem;
-import nmct.jaspernielsmichielhein.watchfriends.model.Page;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import nmct.jaspernielsmichielhein.watchfriends.model.SeriesList;
 import rx.functions.Action1;
 
 public class HomeFragmentViewModel extends BaseObservable {
 
+    private Interfaces.headerChangedListener headerListener;
     private ISeriesAddedListener seriesAddedListener;
     private Context context;
     private FragmentHomeBinding fragmentHomeBinding;
@@ -49,10 +46,20 @@ public class HomeFragmentViewModel extends BaseObservable {
         seriesAddedListener = listener;
 
         setSeriesLists(new ObservableArrayList<SeriesList>());
+
+        if (context instanceof Interfaces.headerChangedListener) {
+            headerListener = (Interfaces.headerChangedListener) context;
+        } else {
+            throw new RuntimeException(context.toString() + " must implement headerChangedListener");
+        }
     }
 
-    public void getData() {
+    public void loadSeries(){
+        getData();
+        setHeader();
+    }
 
+    private void getData() {
         ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getLists(), new Action1<ArrayList<SeriesList>>() {
             @Override
             public void call(ArrayList<SeriesList> seriesList) {
@@ -70,6 +77,12 @@ public class HomeFragmentViewModel extends BaseObservable {
                 }
             }
         });
+    }
+
+    private void setHeader(){
+        headerListener.setTitle(context.getResources().getString(R.string.title_activity_main));
+        headerListener.enableAppBarScroll(false);
+        headerListener.getHeaderImage().setImageResource(0);
     }
 
     public interface ISeriesAddedListener {

@@ -44,13 +44,14 @@ public class FollowedSeriesFragment extends Fragment implements FollowedSeriesFr
         fragmentFollowedSeriesBinding.rvLists.setLayoutManager(new LinearLayoutManager(context));
         fragmentFollowedSeriesBinding.rvLists.setItemAnimator(new DefaultItemAnimator());
 
+        followedSeriesFragmentViewModel.getData();
+
         return fragmentFollowedSeriesBinding.getRoot();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        followedSeriesFragmentViewModel.getData();
     }
 
     @Override

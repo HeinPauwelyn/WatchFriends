@@ -7,12 +7,8 @@ import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -21,12 +17,10 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
-import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +28,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
@@ -41,13 +36,9 @@ import com.facebook.login.LoginManager;
 import com.facebook.stetho.Stetho;
 import com.squareup.picasso.Picasso;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 import nmct.jaspernielsmichielhein.watchfriends.R;
-import nmct.jaspernielsmichielhein.watchfriends.api.MovieDBService;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
-import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.AuthHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
@@ -65,17 +56,19 @@ public class MainActivity extends AppCompatActivity
 
     private ImageView headerImage;
     private FloatingActionButton actionButton;
-    private CollapsingToolbarLayout toolbarLayout;
     private AppBarLayout appBarLayout;
     private View headerView;
     private ImageView profilePicture;
     private CoordinatorLayout coordinatorLayout;
     private FrameLayout frameLayout;
-    private MovieDBService movieDBService;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
     private boolean isStartup = true;
+    private TextView titleTextView;
 
     public void setTitle(String title) {
-        toolbarLayout.setTitle(title);
+        //title not showing when collapses --> bug in android
+        titleTextView.setText(title);
+        //collapsingToolbarLayout.setTitle(title);
     }
 
     public ImageView getHeaderImage() {
@@ -96,6 +89,9 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+        titleTextView = (TextView) findViewById(R.id.titleTextView);
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -109,7 +105,7 @@ public class MainActivity extends AppCompatActivity
         profilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navigate(ProfileFragment.newInstance(), "profileFragment", false);
+                navigate(ProfileFragment.newInstance(), "profileFragment");
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
             }
@@ -118,35 +114,16 @@ public class MainActivity extends AppCompatActivity
         headerImage = (ImageView) findViewById(R.id.header_image);
 
         actionButton = (FloatingActionButton) findViewById(R.id.fab);
-        toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
 
-        movieDBService = ApiMovieDbHelper.getMoviedbServiceInstance();
-        //collapseToolbar();
-
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-
         Stetho.initializeWithDefaults(this);
-
-        /*try {
-            PackageInfo info = getPackageManager().getPackageInfo("nmct.jaspernielsmichielhein.watchfriends", PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.e("MY KEY HASH:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-
-        } catch (NoSuchAlgorithmException e) {
-
-        }*/
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         if (AuthHelper.isUserLoggedIn(this)) {
-            navigate(HomeFragment.newInstance(), "homeFragment", false);
+            navigate(HomeFragment.newInstance(), "homeFragment");
         } else {
             LoginManager.getInstance().logOut();
             showLoginActivity();
@@ -267,22 +244,22 @@ public class MainActivity extends AppCompatActivity
 
         switch (item.getItemId()) {
             case R.id.nav_home:
-                navigate(HomeFragment.newInstance(), "homeFragment", true);
+                navigate(HomeFragment.newInstance(), "homeFragment");
                 break;
             case R.id.nav_following:
-                navigate(FollowedSeriesFragment.newInstance(), "followedseriesFragment", true);
+                navigate(FollowedSeriesFragment.newInstance(), "followedseriesFragment");
                 break;
             case R.id.nav_towatch:
-                ApiHelper.subscribe(movieDBService.getSeries(11431),
+                ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getSeries(11431),
                         new Action1<Series>() {
                             @Override
                             public void call(Series series) {
-                                navigate(SeriesFragment.newInstance(series), "seasonFragment", true);
+                                navigate(SeriesFragment.newInstance(series), "seasonFragment");
                             }
                         });
                 break;
             case R.id.nav_settings:
-                navigate(new SettingsFragment(), "settingsFragment", false);
+                navigate(new SettingsFragment(), "settingsFragment");
                 break;
             case R.id.nav_logout:
                 AuthHelper.logUserOff(this);
@@ -303,29 +280,45 @@ public class MainActivity extends AppCompatActivity
 
     public void collapseToolbar() {
         appBarLayout.setExpanded(false, true);
-        //todo ook disablen
-        actionButton.setVisibility(View.GONE);
+        //actionButton.setVisibility(View.GONE);
     }
 
     public void expandToolbar() {
-        appBarLayout.setExpanded(true, true);
-        //todo ook enablen
-        actionButton.setVisibility(View.VISIBLE);
+        //appBarLayout.setExpanded(true, true);
+        //actionButton.setVisibility(View.VISIBLE);
     }
 
-    private void navigate(Fragment fragment, String tag, boolean collapsing) {
+    public void enableAppBarScroll(Boolean enable) {
+        AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) collapsingToolbarLayout.getLayoutParams();
+        CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+        if (!enable) {
+            params.setScrollFlags(0);
+            lp.height = calculateHeight(76);
+            actionButton.setVisibility(View.GONE);
+        } else {
+            params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
+            lp.height = calculateHeight(200);
+            actionButton.setVisibility(View.VISIBLE);
+        }
+        collapsingToolbarLayout.setLayoutParams(params);
+    }
+
+    private int calculateHeight(int dp) {
+        float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+        return (int) pixels;
+    }
+
+    private void navigate(Fragment fragment, String tag) {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_frame, fragment, tag);
         fragmentTransaction.addToBackStack("navigation_to_" + tag);
         fragmentTransaction.commit();
-        if (collapsing) expandToolbar();
-        else collapseToolbar();
     }
 
     @Override
     public boolean onQueryTextSubmit(String query) {
         //search button press
-        navigate(SearchFragment.newInstance(query), "searchFragment", false);
+        navigate(SearchFragment.newInstance(query), "searchFragment");
         return false;
     }
 
@@ -341,21 +334,21 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onSeriesSelected(Series series) {
-        navigate(SeriesFragment.newInstance(series), "seriesFragment", true);
+        navigate(SeriesFragment.newInstance(series), "seriesFragment");
     }
 
     @Override
     public void onSeasonSelected(String seriesName, int seriesId, int seasonNumber) {
-        navigate(SeasonFragment.newInstance(seriesName, seriesId, seasonNumber), "seasonFragment", true);
+        navigate(SeasonFragment.newInstance(seriesName, seriesId, seasonNumber), "seasonFragment");
     }
 
     @Override
     public void onEpisodeSelected(Episode episode) {
-        navigate(EpisodeFragment.newInstance(episode), "episodeFragment", true);
+        navigate(EpisodeFragment.newInstance(episode), "episodeFragment");
     }
 
     @Override
     public void onProfileSelected(String userId) {
-        navigate(ProfileFragment.newInstance(), "profileFragment", false);
+        navigate(ProfileFragment.newInstance(), "profileFragment");
     }
 }

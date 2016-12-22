@@ -60,11 +60,10 @@ public class EpisodeFragmentViewModel extends BaseObservable {
     }
 
     private void setHeader() {
-        listener.expandToolbar();
-        listener.setTitle(episode.getShortcode());
+        listener.setTitle(episode.getName());
+        listener.enableAppBarScroll(true);
         Picasso.with(context).load(episode.getImage_uri()).into(listener.getHeaderImage());
-        final FloatingActionButton fab = listener.getActionButton();
-        initFloatingActionButton(fab);
+        initFloatingActionButton(listener.getActionButton());
     }
 
     private void initFloatingActionButton(final FloatingActionButton fab) {

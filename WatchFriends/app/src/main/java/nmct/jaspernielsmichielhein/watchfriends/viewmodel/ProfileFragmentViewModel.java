@@ -4,8 +4,6 @@ import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
-import android.support.design.widget.FloatingActionButton;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -20,7 +18,7 @@ import rx.functions.Action1;
 
 public class ProfileFragmentViewModel extends BaseObservable {
 
-    private final Interfaces.headerChangedListener mListener;
+    private final Interfaces.headerChangedListener headerListener;
     private Context context;
     private FragmentProfileBinding fragmentProfileBinding;
     @Bindable
@@ -39,7 +37,7 @@ public class ProfileFragmentViewModel extends BaseObservable {
         this.fragmentProfileBinding = fragmentProfileBinding;
 
         if (context instanceof Interfaces.headerChangedListener) {
-            mListener = (Interfaces.headerChangedListener) context;
+            headerListener = (Interfaces.headerChangedListener) context;
         } else {
             throw new RuntimeException(context.toString() + " must implement onHeaderChanged");
         }
@@ -54,9 +52,9 @@ public class ProfileFragmentViewModel extends BaseObservable {
     }
 
     private void setHeader() {
-        mListener.setTitle("UserName");
-        final FloatingActionButton fab = mListener.getActionButton();
-        fab.setVisibility(View.INVISIBLE);
+        headerListener.enableAppBarScroll(false);
+        headerListener.setTitle("UserName");
+        headerListener.getHeaderImage().setImageResource(0);
     }
 
     public void generateFakeDate() {
