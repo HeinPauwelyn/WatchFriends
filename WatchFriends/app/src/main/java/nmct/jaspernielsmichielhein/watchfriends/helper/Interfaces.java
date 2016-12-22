@@ -8,8 +8,6 @@ import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 
 public class Interfaces {
     public interface headerChangedListener {
-        void collapseToolbar();
-        void expandToolbar();
         ImageView getHeaderImage();
         FloatingActionButton getActionButton();
         void setTitle(String title);
