@@ -10,8 +10,8 @@ public class Page<TObject> {
 
     private int page;
     private ObservableArrayList<TObject> results;
-    private int total_results;
-    private int total_pages;
+    private int totalResults;
+    private int totalPages;
 
     public int getPage() {
         return page;
@@ -27,17 +27,19 @@ public class Page<TObject> {
         this.results = results;
     }
 
-    public int getTotal_results() {
-        return total_results;
-    }
-    public void setTotal_results(int total_results) {
-        this.total_results = total_results;
+    public int getTotalResults() {
+        return totalResults;
     }
 
-    public int getTotal_pages() {
-        return total_pages;
+    public void setTotalResults(int totalResults) {
+        this.totalResults = totalResults;
     }
-    public void setTotal_pages(int total_pages) {
-        this.total_pages = total_pages;
+
+    public int getTotalPages() {
+        return totalPages;
+    }
+
+    public void setTotalPages(int totalPages) {
+        this.totalPages = totalPages;
     }
 }
