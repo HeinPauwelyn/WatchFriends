@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity
         Interfaces.onSeasonSelectedListener,
         Interfaces.onEpisodeSelectedListener {
 
+    private final String HOME_FRAGMENT_TAG = "homeFragment";
+
     private ImageView headerImage;
     private FloatingActionButton actionButton;
     private CollapsingToolbarLayout toolbarLayout;
@@ -135,7 +137,7 @@ public class MainActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
         if (AuthHelper.isUserLoggedIn(this)) {
-            navigate(HomeFragment.newInstance(), "homeFragment", false);
+            navigate(HomeFragment.newInstance(), HOME_FRAGMENT_TAG, false);
         } else {
             LoginManager.getInstance().logOut();
             showLoginActivity();
@@ -264,6 +266,11 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.fragment_frame, fragment, tag);
         fragmentTransaction.addToBackStack(tag);
         fragmentTransaction.commit();
+
+        if (tag.equals(HOME_FRAGMENT_TAG)) {
+
+        }
+
         if(collapsing) expandToolbar();
         else collapseToolbar();
     }
@@ -285,7 +292,6 @@ public class MainActivity extends AppCompatActivity
         Picasso.with(this).load(uri).into(getHeaderImage());
     }
 
-
     @Override
     public void onSeriesSelected(Series series) {
         navigate(SeriesFragment.newInstance(series), "seriesFragment", true);
@@ -300,5 +306,4 @@ public class MainActivity extends AppCompatActivity
     public void onEpisodeSelected(Episode episode) {
         navigate(EpisodeFragment.newInstance(episode), "episodeFragment", true);
     }
-
 }
