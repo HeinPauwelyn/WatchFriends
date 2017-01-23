@@ -5,7 +5,7 @@ import android.databinding.ObservableArrayList;
 
 public class UserData extends User {
 
-    //private achievements;
+    private ObservableArrayList<Achievement> achievements;
     private ObservableArrayList<Follower> followers;
     private ObservableArrayList<Follower> follows;
     private ObservableArrayList<Series> watchlist;
@@ -32,5 +32,13 @@ public class UserData extends User {
 
     public void setWatchlist(ObservableArrayList<Series> watchlist) {
         this.watchlist = watchlist;
+    }
+
+    public ObservableArrayList<Achievement> getAchievements() {
+        return achievements;
+    }
+
+    public void setAchievements(ObservableArrayList<Achievement> achievements) {
+        this.achievements = achievements;
     }
 }
