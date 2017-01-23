@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" >
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
         <variable
@@ -18,7 +17,7 @@
         <ImageView
             android:id="@+id/imgSeriesPoster"
             android:layout_width="110dp"
-            android:layout_height="193dp" />
+            android:layout_height="165dp" />
 
         <TextView
             android:id="@+id/teName"

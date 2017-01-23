@@ -15,6 +15,7 @@ public class Season extends BaseObservable implements Parcelable {
     private int episode_count = 0;
     private String overview = "";
     private String name = "";
+    private Uri image_uri;
     private int id = 0;
     private String poster_path = "";
     private int season_number = 0;
@@ -28,6 +29,9 @@ public class Season extends BaseObservable implements Parcelable {
     }
 
     public String getAir_date() {
+        if (air_date == null || air_date.equals("")) {
+            return "Not available";
+        }
         return air_date;
     }
 
@@ -59,7 +63,18 @@ public class Season extends BaseObservable implements Parcelable {
         this.id = id;
     }
 
+    public Uri getImage_uri() {
+        return image_uri;
+    }
+
+    public void setImage_uri(Uri image_uri) {
+        this.image_uri = image_uri;
+    }
+
     public String getOverview() {
+        if (overview == null || overview.equals("")) {
+            return "Not available";
+        }
         return overview;
     }
 
@@ -68,6 +83,9 @@ public class Season extends BaseObservable implements Parcelable {
     }
 
     public String getName() {
+        if (name == null || name.equals("")) {
+            return "Season " + getSeason_number();
+        }
         return name;
     }
 
@@ -91,8 +109,12 @@ public class Season extends BaseObservable implements Parcelable {
         this.season_number = season_number;
     }
 
-    public Uri getImage_uri() {
-        return Uri.parse(Contract.MOVIEDB_IMAGE_BASE_URL + getPoster_path());
+    public void initExtraFields() {
+        makeImage_uri();
+    }
+
+    private void makeImage_uri() {
+        setImage_uri(Uri.parse(Contract.MOVIEDB_IMAGE_BASE_URL + getPoster_path()));
     }
 
     // PARCELABLE

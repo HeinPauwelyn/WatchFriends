@@ -2,27 +2,27 @@ package nmct.jaspernielsmichielhein.watchfriends.view;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
+import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentSearchBinding;
+import nmct.jaspernielsmichielhein.watchfriends.viewmodel.SearchFragmentViewModel;
 
 public class SearchFragment extends Fragment {
     private static final String ARG_QUERY = "nmct.jaspernielsmichielhein.watchfriends.searchquery";
 
-    private String query;
+    private SearchFragmentViewModel searchFragmentViewModel;
+
+    private String query = "";
 
     public SearchFragment() { }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param query The search query entered in the search bar.
-     * @return A new instance of fragment SearchFragment.
-     */
     public static SearchFragment newInstance(String query) {
         Bundle args = new Bundle();
         args.putString(ARG_QUERY, query);
@@ -41,27 +41,20 @@ public class SearchFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_search, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        FragmentSearchBinding fragmentSearchBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false);
+        searchFragmentViewModel = new SearchFragmentViewModel(getActivity(), fragmentSearchBinding, query);
+        return fragmentSearchBinding.getRoot();
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        /*
-        if (context instanceof OnFragmentInteractionListener) {
-            listener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-        */
+    public void onStart() {
+        super.onStart();
+        searchFragmentViewModel.search();
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        //listener = null;
+    public void onResume() {
+        super.onResume();
     }
 }

@@ -3,6 +3,7 @@ package nmct.jaspernielsmichielhein.watchfriends.adapter;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableArrayList;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,24 +14,26 @@ import com.squareup.picasso.Picasso;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.PosterSeriesBinding;
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
+import rx.functions.Action1;
 
 public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.SeriesViewHolder> {
-    public Interfaces.onSeriesSelectedListener listener;
+    //public Interfaces.onSeriesSelectedListener listener;
 
     private Context context;
     private ObservableArrayList<Series> series = null;
 
-    public SeriesAdapter(ObservableArrayList<Series> series, Context context) {
+    public SeriesAdapter(Context context, ObservableArrayList<Series> series) {
         this.context = context;
         this.series = series;
-        listener = (Interfaces.onSeriesSelectedListener) context;
     }
 
     @Override
     public SeriesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        PosterSeriesBinding posterSeriesBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.poster_series, parent, false);
+        PosterSeriesBinding posterSeriesBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.poster_series, parent, false);
         SeriesAdapter.SeriesViewHolder seriesViewHolder = new SeriesAdapter.SeriesViewHolder(posterSeriesBinding);
         return seriesViewHolder;
     }
@@ -70,6 +73,25 @@ public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.SeriesView
         @Override
         public void onClick(View v) {
             Series selectedSeries = series.get(getAdapterPosition());
+
+            if (v.getContext() instanceof Interfaces.onSeriesSelectedListener) {
+
+                final Interfaces.onSeriesSelectedListener listener = (Interfaces.onSeriesSelectedListener) v.getContext();
+
+                ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getSeries(selectedSeries.getId()), new Action1<Series>() {
+                    @Override
+                    public void call(Series series) {
+                        if (series != null) {
+                            listener.onSeriesSelected(series);
+                        }
+                    }
+                });
+
+            }
+            else {
+
+                Snackbar.make(v, "v is not an instance of Interfaces.onSeriesSelectedListener", Snackbar.LENGTH_LONG).show();
+            }
         }
     }
 }

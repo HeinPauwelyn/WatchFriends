@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="pref_sync"
+        android:summary="Synchronize your activity with our services"
+        android:title="Sync" >
+
+    </SwitchPreference>
+
+    <PreferenceCategory android:title="Notifications">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="pref_notifications"
+            android:summary="Receive notifications"
+            android:title="Notifications" >
+
+        </SwitchPreference>
+
+        <MultiSelectListPreference
+            android:key="pref_notification_types"
+            android:title="Notification types"
+            android:summary="Choose which notifications to receive"
+            android:dialogTitle="Notifications"
+            android:entries="@array/notificationEntries"
+            android:entryValues="@array/notificationEntryValues">
+
+        </MultiSelectListPreference>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Account">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="pref_private"
+            android:summary="Don't share your activity with friends"
+            android:title="Private account" >
+
+        </SwitchPreference>
+
+    </PreferenceCategory>
+
+    <PreferenceScreen android:title="About &amp; feedback">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="pref_test"
+            android:summary="testy"
+            android:title="testy">
+
+        </SwitchPreference>
+
+    </PreferenceScreen>
+
+</PreferenceScreen>

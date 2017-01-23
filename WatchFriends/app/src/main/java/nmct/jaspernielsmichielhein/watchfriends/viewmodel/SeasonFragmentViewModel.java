@@ -3,7 +3,6 @@ package nmct.jaspernielsmichielhein.watchfriends.viewmodel;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
 import com.squareup.picasso.Picasso;
@@ -11,6 +10,7 @@ import com.squareup.picasso.Picasso;
 import nmct.jaspernielsmichielhein.watchfriends.BR;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentSeasonBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Season;
 import rx.functions.Action1;
@@ -50,11 +50,15 @@ public class SeasonFragmentViewModel extends BaseObservable {
 
     public void loadSeason() {
         final SeasonFragmentViewModel that = this;
-        ApiHelper.subscribe(ApiHelper.getMoviedbServiceInstance().getSeason(seriesId, seasonNumber),
+        ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getSeason(seriesId, seasonNumber),
             new Action1<Season>() {
                 @Override
-                public void call(Season season) {
-                    setSeason(season);
+                public void call(Season returnedSeason) {
+                    setSeason(returnedSeason);
+                    season.initExtraFields();
+                    if (season.getEpisodes().size() == 0) {
+                        fragmentSeasonBinding.txtNoEpisodes.setVisibility(View.VISIBLE);
+                    }
                     fragmentSeasonBinding.setViewmodel(that);
                     notifyPropertyChanged(BR.viewmodel);
                     setHeader();
@@ -63,10 +67,10 @@ public class SeasonFragmentViewModel extends BaseObservable {
     }
 
     private void setHeader() {
-        listener.expandToolbar();
-        listener.setTitle(seriesName);
+        listener.setTitle(seriesName + " - " + season.getName());
+        listener.enableAppBarScroll(true);
         Picasso.with(context).load(season.getImage_uri()).into(listener.getHeaderImage());
-        final FloatingActionButton fab = listener.getActionButton();
-        fab.setVisibility(View.INVISIBLE);
+        listener.getActionButton().setVisibility(View.GONE);
+        //todo: initfloatingactionbutton --> mark season as watched
     }
 }

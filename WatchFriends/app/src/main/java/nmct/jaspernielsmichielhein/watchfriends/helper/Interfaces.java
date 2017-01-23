@@ -1,6 +1,5 @@
 package nmct.jaspernielsmichielhein.watchfriends.helper;
 
-import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.widget.ImageView;
 
@@ -14,6 +13,7 @@ public class Interfaces {
         ImageView getHeaderImage();
         FloatingActionButton getActionButton();
         void setTitle(String title);
+        void enableAppBarScroll(Boolean enable);
     }
 
     public interface onSeriesSelectedListener {
@@ -28,4 +28,11 @@ public class Interfaces {
         void onEpisodeSelected(Episode episode);
     }
 
+    public interface onProfileSelectedListener {
+        void onProfileSelected(String userId);
+    }
+
+    public interface onAccountRegisteredListener {
+        void onAccountRegistered(String mUsername);
+    }
 }

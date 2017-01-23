@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/themeAccent</item>
         <item name="android:textColor">@color/themeWhite</item>
         <item name="android:textColorPrimary">@color/themeWhite</item>
+        <item name="android:textColorSecondary">@color/themeWhite</item>
         <item name="android:windowBackground">@color/themePrimaryDark</item>
     </style>
 
@@ -33,6 +34,18 @@
         <item name="colorControlActivated">@color/themeAccent</item>
         <item name="android:stepSize">0.1</item>
         <item name="android:isIndicator">true</item>
+    </style>
+
+    <style name="customDialog" parent="Theme.AppCompat.Dialog">
+        <item name="colorAccent">@color/themeAccent</item>
+        <item name="android:textColorPrimary">@color/themeWhite</item>
+        <item name="android:background">@color/themePrimary</item>
+    </style>
+
+    <style name="customEditText" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorControlNormal">#c5c5c5</item>
+        <item name="colorControlActivated">@color/themeAccent</item>
+        <item name="colorControlHighlight">@color/themeAccent</item>
     </style>
 
 </resources>

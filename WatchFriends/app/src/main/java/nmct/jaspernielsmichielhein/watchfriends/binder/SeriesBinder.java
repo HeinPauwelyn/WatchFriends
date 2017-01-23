@@ -2,12 +2,9 @@ package nmct.jaspernielsmichielhein.watchfriends.binder;
 
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableArrayList;
-import android.databinding.ObservableList;
 import android.support.v7.widget.RecyclerView;
-import android.widget.ListView;
 
 import nmct.jaspernielsmichielhein.watchfriends.adapter.SeriesAdapter;
-import nmct.jaspernielsmichielhein.watchfriends.helper.Utils;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 
 public class SeriesBinder {
@@ -24,7 +21,7 @@ public class SeriesBinder {
     @BindingAdapter("items")
     public static void setSeries(RecyclerView recyclerView, ObservableArrayList<Series> series) {
         if(series != null) {
-            SeriesAdapter seriesAdapter = new SeriesAdapter(series, recyclerView.getContext());
+            SeriesAdapter seriesAdapter = new SeriesAdapter(recyclerView.getContext(), series);
             recyclerView.setAdapter(seriesAdapter);
             seriesAdapter.notifyDataSetChanged();
             //Utils.setListViewHeightBasedOnChildren(listView);
