@@ -2,8 +2,6 @@ package nmct.jaspernielsmichielhein.watchfriends.model;
 
 import android.databinding.ObservableArrayList;
 
-/**
- */
 
 public class UserData extends User {
 

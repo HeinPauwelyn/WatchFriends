@@ -2,8 +2,6 @@ package nmct.jaspernielsmichielhein.watchfriends.model;
 
 import java.util.Date;
 
-/**
- */
 
 public class Follower {
     private String userId;

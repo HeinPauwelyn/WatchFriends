@@ -2,9 +2,6 @@ package nmct.jaspernielsmichielhein.watchfriends.model;
 
 import java.util.Date;
 
-/**
- * Created by jasper on 23/01/17.
- */
 
 public class WFEvent {
     private String userId;

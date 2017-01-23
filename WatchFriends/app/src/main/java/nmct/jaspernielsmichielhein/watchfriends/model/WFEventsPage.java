@@ -2,10 +2,6 @@ package nmct.jaspernielsmichielhein.watchfriends.model;
 
 import android.databinding.ObservableArrayList;
 
-/**
- * Created by jasper on 23/01/17.
- */
-
 public class WFEventsPage {
 
     private ObservableArrayList<WFEvent> docs;

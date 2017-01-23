@@ -1,8 +1,5 @@
 package nmct.jaspernielsmichielhein.watchfriends.model;
 
-/**
- * Created by jasper on 23/01/17.
- */
 
 public class Name {
     private String givenName;
