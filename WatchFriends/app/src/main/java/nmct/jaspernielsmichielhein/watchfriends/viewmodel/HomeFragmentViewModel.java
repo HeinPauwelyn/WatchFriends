@@ -11,6 +11,7 @@ import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentHomeBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.AuthHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.MediaItem;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
@@ -60,14 +61,14 @@ public class HomeFragmentViewModel extends BaseObservable {
     }
 
     private void getData() {
-        ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getLists(), new Action1<ArrayList<SeriesList>>() {
+        ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getLists(AuthHelper.getAuthToken(this.context)), new Action1<ArrayList<SeriesList>>() {
             @Override
             public void call(ArrayList<SeriesList> seriesList) {
                 if (seriesList != null) {
 
                     for (SeriesList list : seriesList) {
                         if (list.getName().equals("Popular")) {
-                            seriesAddedListener.updateCarousel(list.getSeries());
+                            seriesAddedListener.updateCarousel(list.getResults());
                         }
                     }
 
