@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 public class AuthHelper {
 
+    private static String mToken = "";
     private static Account mAccount;
     private static AccountManager mAccountManager;
     private static AccountAuthenticatorResponse mAccountAuthenticatorResponse;
@@ -41,25 +42,29 @@ public class AuthHelper {
     }
 
     public static String getAuthToken(Context context) {
-        mAccountManager = AccountManager.get(context);
+        if (mToken.equals("")) {
+            mAccountManager = AccountManager.get(context);
 
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
-            return null;
-        }
-        Account[] accounts = mAccountManager.getAccountsByType(Contract.ACCOUNT_TYPE);
-
-        if (accounts.length > 0) {
-            mAccount = accounts[0];
-            try {
-                return new TokenTask().execute().get();
-            } catch (Exception e) {
-                Log.d("Error: ", e.getMessage());
-                return "";
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
+                return null;
             }
+            Account[] accounts = mAccountManager.getAccountsByType(Contract.ACCOUNT_TYPE);
 
-        } else {
-            return null;
+            if (accounts.length > 0) {
+                mAccount = accounts[0];
+                try {
+                    String token = new TokenTask().execute().get();
+                    mToken = token;
+                } catch (Exception e) {
+                    Log.d("Error: ", e.getMessage());
+                    return "";
+                }
+            } else {
+                return null;
+            }
         }
+
+        return mToken;
     }
 
     private static class TokenTask extends AsyncTask<Void, Void, String> {

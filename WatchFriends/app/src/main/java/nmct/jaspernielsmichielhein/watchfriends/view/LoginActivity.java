@@ -35,7 +35,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.JsonObject;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
-import nmct.jaspernielsmichielhein.watchfriends.WatchfriendsApplication;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.AuthHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;

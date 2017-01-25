@@ -37,7 +37,6 @@ import com.facebook.stetho.Stetho;
 import com.squareup.picasso.Picasso;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
-import nmct.jaspernielsmichielhein.watchfriends.WatchfriendsApplication;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.AuthHelper;
@@ -124,7 +123,6 @@ public class MainActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
         if (AuthHelper.isUserLoggedIn(this) && !AuthHelper.isTokenExpired(this)) {
-            ((WatchfriendsApplication) this.getApplication()).setToken(AuthHelper.getAuthToken(this));
             navigate(HomeFragment.newInstance(), "homeFragment");
         } else {
             AuthHelper.logUserOff(this);
