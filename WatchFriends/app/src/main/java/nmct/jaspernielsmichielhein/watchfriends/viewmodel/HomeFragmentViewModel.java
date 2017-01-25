@@ -61,7 +61,7 @@ public class HomeFragmentViewModel extends BaseObservable {
     }
 
     private void getData() {
-        ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getLists(AuthHelper.getAuthToken(this.context)), new Action1<ArrayList<SeriesList>>() {
+        /*ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getLists(AuthHelper.getAuthToken(this.context)), new Action1<ArrayList<SeriesList>>() {
             @Override
             public void call(ArrayList<SeriesList> seriesList) {
                 if (seriesList != null) {
@@ -77,7 +77,7 @@ public class HomeFragmentViewModel extends BaseObservable {
                     seriesAddedListener.updateLists(obList);
                 }
             }
-        });
+        });*/
     }
 
     private void setHeader(){

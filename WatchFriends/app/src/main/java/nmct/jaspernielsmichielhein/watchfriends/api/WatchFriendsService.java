@@ -70,7 +70,7 @@ public interface WatchFriendsService {
 
     //SEASON
     @GET("series/{series}/season/{season}")
-    Observable<Season> getSeason(@Path("series") int seriesId, @Path("season") int season);
+    Observable<Season> getSeason(@Path("series") int seriesId, @Path("season") int season, @Header("Authorization") String token);
 
     //EPISODE
     @GET("series/{series}/season/{season}/episode/{episode}")
