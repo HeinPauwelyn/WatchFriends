@@ -251,7 +251,7 @@ public class MainActivity extends AppCompatActivity
                 navigate(FollowedSeriesFragment.newInstance(), "followedseriesFragment");
                 break;
             case R.id.nav_towatch:
-                ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getSeries(11431),
+                ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getSeries(11431, AuthHelper.getAuthToken(this)),
                         new Action1<Series>() {
                             @Override
                             public void call(Series series) {
