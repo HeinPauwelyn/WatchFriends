@@ -167,6 +167,7 @@ public class MainActivity extends AppCompatActivity
             public boolean onMenuItemClick(MenuItem menuItem) {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                searchItem.getActionView().requestFocus();
                 return false;
             }
         });
@@ -209,14 +210,12 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    //https://androidhub.intel.com/en/posts/nglauber/Android_Search.html
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             Toast.makeText(this, "Searching by: " + query, Toast.LENGTH_SHORT).show();
-
         } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             String uri = intent.getDataString();
             Toast.makeText(this, "Suggestion: " + uri, Toast.LENGTH_SHORT).show();

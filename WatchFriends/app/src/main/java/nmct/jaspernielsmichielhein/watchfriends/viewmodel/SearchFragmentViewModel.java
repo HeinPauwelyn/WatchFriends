@@ -3,6 +3,7 @@ package nmct.jaspernielsmichielhein.watchfriends.viewmodel;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.ObservableArrayList;
+import android.databinding.ObservableField;
 import android.view.View;
 
 import com.android.databinding.library.baseAdapters.BR;
@@ -20,6 +21,16 @@ public class SearchFragmentViewModel extends BaseObservable {
 
     private Context context;
     private FragmentSearchBinding fragmentSearchBinding;
+
+    private ObservableField<String> message = new ObservableField<String>();
+
+    public ObservableField<String> getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message.set(message);
+    }
 
     private ObservableArrayList<Series> searchResults = null;
 
@@ -46,9 +57,10 @@ public class SearchFragmentViewModel extends BaseObservable {
 
     public void search() {
         fragmentSearchBinding.setViewmodel(this);
-        notifyPropertyChanged(BR.viewmodel);
+        setMessage("Searching ...");
         setHeader();
         loadSearchResults();
+        notifyPropertyChanged(BR.viewmodel);
     }
 
     private void setHeader() {
@@ -75,10 +87,13 @@ public class SearchFragmentViewModel extends BaseObservable {
                         notifyPropertyChanged(BR.viewmodel);
                     }
                 } else {
+                    setMessage("No search results");
                     fragmentSearchBinding.txtNoResults.setVisibility(View.VISIBLE);
                     fragmentSearchBinding.lvSearchResults.setVisibility(View.GONE);
+                    notifyPropertyChanged(BR.viewmodel);
                 }
             }
         });
     }
+
 }
