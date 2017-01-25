@@ -18,6 +18,7 @@ import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.PUT;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -65,7 +66,7 @@ public interface WatchFriendsService {
     Observable<Series> getSeries(@Path("series") int seriesId, @Query("access_token") String token);
 
     @GET("series/search/{query}/{page}")
-    Observable<Page<Series>> searchSeries(@Path("query") String query, @Path("page") int page, @Query("access_token") String authToken);
+    Observable<Page<Series>> searchSeries(@Path("query") String query, @Path("page") int page, @Header("Authorization") String token);
 
     //SEASON
     @GET("series/{series}/season/{season}")
