@@ -75,5 +75,8 @@
     <string name="feedback"><![CDATA[Help & feedback]]></string>
     <string name="about">About</string>
     <string name="disableAppBarLayoutBehavior">nmct.jaspernielsmichielhein.watchfriends.helper.DisableAppBarLayoutBehavior</string>
+    <string name="lastname_hint">Lastname</string>
+    <string name="firstname_hint">Firstname</string>
+    <string name="email_hint">Email</string>
 
 </resources>

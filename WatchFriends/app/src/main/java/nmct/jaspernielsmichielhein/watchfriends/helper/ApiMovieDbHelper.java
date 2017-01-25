@@ -6,10 +6,6 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * Created by hein_ on 14-Nov-16.
- */
-
 public class ApiMovieDbHelper extends ApiHelper {
 
     private static Retrofit RETROFIT_INSTANCE;
