@@ -21,6 +21,7 @@ import nmct.jaspernielsmichielhein.watchfriends.adapter.SeriesListAdapter;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentHomeBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.AuthHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import nmct.jaspernielsmichielhein.watchfriends.model.SeriesList;
@@ -76,6 +77,7 @@ public class HomeFragment extends Fragment implements HomeFragmentViewModel.ISer
     @Override
     public void updateCarousel(final ObservableArrayList<Series> series) {
         if (series != null && fragmentHomeBinding != null) {
+            final Context context = this.context;
             fragmentHomeBinding.cvCarousel.setImageListener(new ImageListener() {
                 @Override
                 public void setImageForPosition(final int position, ImageView imageView) {
@@ -86,7 +88,7 @@ public class HomeFragment extends Fragment implements HomeFragmentViewModel.ISer
 
                             Integer id = Integer.valueOf(v.getTag().toString());
 
-                            ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getSeries(id), new Action1<Series>() {
+                            ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getSeries(id, AuthHelper.getAuthToken(context)), new Action1<Series>() {
                                 @Override
                                 public void call(Series series) {
                                     ((MainActivity)getActivity()).onSeriesSelected(series);

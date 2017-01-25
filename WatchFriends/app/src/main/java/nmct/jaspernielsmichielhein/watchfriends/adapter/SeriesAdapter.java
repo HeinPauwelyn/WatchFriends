@@ -16,6 +16,7 @@ import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.PosterSeriesBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.AuthHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import rx.functions.Action1;
@@ -73,12 +74,12 @@ public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.SeriesView
         @Override
         public void onClick(View v) {
             Series selectedSeries = series.get(getAdapterPosition());
-
-            if (v.getContext() instanceof Interfaces.onSeriesSelectedListener) {
+            Context context;
+            if ((context = v.getContext()) instanceof Interfaces.onSeriesSelectedListener) {
 
                 final Interfaces.onSeriesSelectedListener listener = (Interfaces.onSeriesSelectedListener) v.getContext();
 
-                ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getSeries(selectedSeries.getId()), new Action1<Series>() {
+                ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getSeries(selectedSeries.getId(), AuthHelper.getAuthToken(context)), new Action1<Series>() {
                     @Override
                     public void call(Series series) {
                         if (series != null) {
