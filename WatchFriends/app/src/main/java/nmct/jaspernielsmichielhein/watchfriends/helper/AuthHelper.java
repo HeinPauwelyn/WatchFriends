@@ -74,6 +74,10 @@ public class AuthHelper {
         }
     }
 
+    public static Boolean isTokenExpired(Context context) {
+        return false;
+    }
+
     public static Boolean isUserLoggedIn(Context context) {
         mAccountManager = AccountManager.get(context);
 
