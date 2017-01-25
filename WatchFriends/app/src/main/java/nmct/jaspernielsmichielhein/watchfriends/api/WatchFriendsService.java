@@ -1,9 +1,6 @@
 package nmct.jaspernielsmichielhein.watchfriends.api;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -12,7 +9,6 @@ import nmct.jaspernielsmichielhein.watchfriends.model.Season;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import nmct.jaspernielsmichielhein.watchfriends.model.SeriesList;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;

@@ -93,4 +93,5 @@ public class Authenticator extends AbstractAccountAuthenticator {
     public Bundle hasFeatures(AccountAuthenticatorResponse response, Account account, String[] features) throws NetworkErrorException {
         return null;
     }
+
 }
