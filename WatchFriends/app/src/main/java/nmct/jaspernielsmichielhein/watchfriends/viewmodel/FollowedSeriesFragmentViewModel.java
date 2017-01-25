@@ -11,6 +11,7 @@ import nmct.jaspernielsmichielhein.watchfriends.api.WatchFriendsService;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentFollowedSeriesBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.AuthHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import nmct.jaspernielsmichielhein.watchfriends.model.SeriesList;
@@ -36,7 +37,7 @@ public class FollowedSeriesFragmentViewModel extends BaseObservable {
     private void setSeriesList(ObservableArrayList<SeriesList> seriesList) {
         seriesList.add(0, new SeriesList());
         seriesList.get(0).setName("Following Series");
-        seriesList.get(0).setSeries(new ObservableArrayList<Series>());
+        seriesList.get(0).setResults(new ObservableArrayList<Series>());
         this.seriesList = seriesList;
     }
 
@@ -57,7 +58,7 @@ public class FollowedSeriesFragmentViewModel extends BaseObservable {
     }
 
     private void addToSeriesList(Series serie) {
-        seriesList.get(0).getSeries().add(serie);
+        seriesList.get(0).getResults().add(serie);
     }
 
     public void getData() {
@@ -72,15 +73,15 @@ public class FollowedSeriesFragmentViewModel extends BaseObservable {
 
         if (c != null) {
             for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
-                loadSerie(c.getInt(c.getColumnIndex("followingseriesnr")));
+                loadSeries(c.getInt(c.getColumnIndex("followingseriesnr")));
             }
         }
         c.close();
         setHeader();
     }
 
-    private void loadSerie(int id) {
-        ApiHelper.subscribe(service.getSeries(id),
+    private void loadSeries(int id) {
+        ApiHelper.subscribe(service.getSeries(id, AuthHelper.getAuthToken(this.context)),
                 new Action1<Series>() {
                     @Override
                     public void call(Series serie) {
