@@ -16,6 +16,7 @@ import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.SearchResultBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.AuthHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import rx.functions.Action1;
@@ -25,7 +26,7 @@ public class SearchResultsAdapter extends ArrayAdapter<Series> {
 
     private Context context;
 
-    public SearchResultsAdapter(Context context, ListView listView) {
+    public SearchResultsAdapter(final Context context, ListView listView) {
         super(context, R.layout.search_result);
         this.context = context;
         mListener = (Interfaces.onSeriesSelectedListener) context;
@@ -33,7 +34,7 @@ public class SearchResultsAdapter extends ArrayAdapter<Series> {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Series selectedSeries = getItem(position);
-                ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getSeries(selectedSeries.getId()), new Action1<Series>() {
+                ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getSeries(selectedSeries.getId(), AuthHelper.getAuthToken(context)), new Action1<Series>() {
                     @Override
                     public void call(Series returnedSeries) {
                         if (returnedSeries != null) {
