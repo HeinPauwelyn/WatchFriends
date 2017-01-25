@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
+import android.util.Patterns;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
@@ -69,6 +70,14 @@ public class Utils {
                 .setTitle("Permission denied")
                 .setMessage(message)
                 .show();
+    }
+
+    public static boolean isEmailValid(String email) {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    public static boolean isPasswordValid(String password) {
+        return password.length() >= 8;
     }
 
 }
