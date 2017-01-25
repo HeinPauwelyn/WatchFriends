@@ -22,6 +22,7 @@ import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import rx.functions.Action1;
 
 public class SearchResultsAdapter extends ArrayAdapter<Series> {
+
     private Interfaces.onSeriesSelectedListener mListener;
 
     private Context context;
@@ -57,4 +58,5 @@ public class SearchResultsAdapter extends ArrayAdapter<Series> {
 
         return searchResultBinding.getRoot();
     }
+
 }

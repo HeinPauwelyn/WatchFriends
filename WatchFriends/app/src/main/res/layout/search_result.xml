@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -10,97 +10,76 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:descendantFocusability="blocksDescendants"
         android:orientation="horizontal"
-        android:paddingTop="10dp"
-        android:paddingEnd="5dp"
         android:paddingBottom="10dp"
+        android:paddingEnd="5dp"
         android:paddingStart="5dp"
-        android:descendantFocusability="blocksDescendants">
+        android:paddingTop="10dp">
 
         <ImageView
             android:id="@+id/imgSeriesPoster"
             android:layout_width="80dp"
             android:layout_height="120dp"
-            android:layout_marginEnd="20dp"/>
+            android:layout_marginEnd="20dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:paddingEnd="20dp"
-                android:textStyle="bold"
+                android:text="@{series.name}"
                 android:textSize="20dp"
-                android:text="@{series.name}"/>
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:paddingEnd="20dp"
-                    android:textStyle="bold"
-                    android:text="@string/genre"/>
+                    android:text="@string/first_air_date"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:paddingEnd="20dp"
-                    android:text="some genre"/>
+                    android:text="@{series.first_air_date}" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:paddingEnd="20dp"
-                    android:textStyle="bold"
-                    android:text="@string/first_air_date"/>
+                    android:text="@string/rating_title"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:paddingEnd="20dp"
-                    android:text="@{series.first_air_date}"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:paddingEnd="20dp"
-                    android:textStyle="bold"
-                    android:text="@string/rating_title"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:paddingEnd="20dp"
-                    android:text="@{String.valueOf(series.vote_average)}"/>
+                    android:text="@{String.valueOf(series.vote_average)}" />
 
             </LinearLayout>
 
