@@ -1,5 +1,7 @@
 package nmct.jaspernielsmichielhein.watchfriends.api;
 
+import android.databinding.ObservableArrayList;
+
 import com.android.annotations.Nullable;
 import com.google.gson.JsonObject;
 
@@ -38,7 +40,7 @@ public interface WatchFriendsService {
 
     //LISTS
     @GET("list")
-    Observable<ArrayList<SeriesList>> getLists(@Query("access_token") String token);
+    Observable<ObservableArrayList<SeriesList>> getLists(@Query("access_token") String token);
 
     //USERS
     @GET("users/search/{query}")

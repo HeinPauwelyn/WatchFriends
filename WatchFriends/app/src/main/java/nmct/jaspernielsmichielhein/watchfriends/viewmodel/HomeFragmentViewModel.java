@@ -61,9 +61,9 @@ public class HomeFragmentViewModel extends BaseObservable {
     }
 
     private void getData() {
-        ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getLists(AuthHelper.getAuthToken(this.context)), new Action1<ArrayList<SeriesList>>() {
+        ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getLists(AuthHelper.getAuthToken(this.context)), new Action1<ObservableArrayList<SeriesList>>() {
             @Override
-            public void call(ArrayList<SeriesList> seriesList) {
+            public void call(ObservableArrayList<SeriesList> seriesList) {
                 if (seriesList != null) {
 
                     for (SeriesList list : seriesList) {
@@ -72,9 +72,9 @@ public class HomeFragmentViewModel extends BaseObservable {
                         }
                     }
 
-                    ObservableArrayList<SeriesList> obList = new ObservableArrayList<SeriesList>();
-                    obList.addAll(seriesList);
-                    seriesAddedListener.updateLists(obList);
+                    // ObservableArrayList<SeriesList> obList = new ObservableArrayList<SeriesList>();
+                    // obList.addAll(seriesList);
+                    seriesAddedListener.updateLists(seriesList);
                 }
             }
         });

@@ -63,9 +63,9 @@ public class ProfileFragmentViewModel extends BaseObservable {
     }
 
     private void getData(final ObservableArrayList<Series> series) {
-        ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getLists(AuthHelper.getAuthToken(this.context)), new Action1<ArrayList<SeriesList>>() {
+        ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getLists(AuthHelper.getAuthToken(this.context)), new Action1<ObservableArrayList<SeriesList>>() {
             @Override
-            public void call(ArrayList<SeriesList> seriesPage) {
+            public void call(ObservableArrayList<SeriesList> seriesPage) {
                 if (seriesPage != null) {
                     Random rnd = new Random();
                     int size = seriesPage.get(0).getResults().size();
