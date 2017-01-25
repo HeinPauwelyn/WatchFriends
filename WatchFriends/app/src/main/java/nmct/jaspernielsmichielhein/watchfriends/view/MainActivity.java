@@ -122,9 +122,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        if (AuthHelper.isUserLoggedIn(this)) {
+        if (AuthHelper.isUserLoggedIn(this) && !AuthHelper.isTokenExpired(this)) {
             navigate(HomeFragment.newInstance(), "homeFragment");
         } else {
+            AuthHelper.logUserOff(this);
             LoginManager.getInstance().logOut();
             showLoginActivity();
         }
@@ -149,7 +150,7 @@ public class MainActivity extends AppCompatActivity
                 int index = fmgr.getBackStackEntryCount() - 1;
                 FragmentManager.BackStackEntry backEntry = fmgr.getBackStackEntryAt(index);
                 //if("searchFragment" == backEntry.getName())
-                //    fmgr.popBackStackImmediate();
+                //fmgr.popBackStackImmediate();
             }
 
             super.onBackPressed();
@@ -351,4 +352,5 @@ public class MainActivity extends AppCompatActivity
     public void onProfileSelected(String userId) {
         navigate(ProfileFragment.newInstance(), "profileFragment");
     }
+
 }
