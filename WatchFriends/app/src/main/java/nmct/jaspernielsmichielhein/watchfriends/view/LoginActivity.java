@@ -32,11 +32,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
@@ -167,11 +163,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         progressDialog.show();
     }
 
-    private void showRegisterActivity() {
-        Intent intent = new Intent(this, RegisterActivity.class);
-        startActivity(intent);
-    }
-
     private void onSignInClicked() {
         mEmail = mTxbEmail.getText().toString();
         mPassword = mTxbPassword.getText().toString();
@@ -188,6 +179,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (email.equals("") || password.equals("")) {
             isValid = false;
             mValidation = "please fill in all fields";
+        } else if (!Utils.isEmailValid(email)) {
+            isValid = false;
+            mValidation = "not a valid email address";
         }
 
         return isValid;
@@ -273,6 +267,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mContext = null;
         progressDialog.dismiss();
         finish();
+    }
+
+    private void showRegisterActivity() {
+        Intent intent = new Intent(this, RegisterActivity.class);
+        startActivity(intent);
     }
 
     @Override
