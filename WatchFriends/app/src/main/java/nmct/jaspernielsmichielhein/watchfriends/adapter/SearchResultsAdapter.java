@@ -22,7 +22,9 @@ import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import rx.functions.Action1;
 
 public class SearchResultsAdapter extends ArrayAdapter<Series> {
+
     private Interfaces.onSeriesSelectedListener mListener;
+    private Interfaces.headerChangedListener mMain;
 
     private Context context;
 
@@ -30,6 +32,7 @@ public class SearchResultsAdapter extends ArrayAdapter<Series> {
         super(context, R.layout.search_result);
         this.context = context;
         mListener = (Interfaces.onSeriesSelectedListener) context;
+        mMain = (Interfaces.headerChangedListener) context;
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -39,6 +42,7 @@ public class SearchResultsAdapter extends ArrayAdapter<Series> {
                     public void call(Series returnedSeries) {
                         if (returnedSeries != null) {
                             mListener.onSeriesSelected(returnedSeries);
+                            mMain.closeSearchView();
                         }
                     }
                 });
@@ -57,4 +61,5 @@ public class SearchResultsAdapter extends ArrayAdapter<Series> {
 
         return searchResultBinding.getRoot();
     }
+
 }

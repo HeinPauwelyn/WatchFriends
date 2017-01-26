@@ -4,10 +4,6 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
 
-/**
- * Created by hein_ on 19-Nov-16.
- */
-
 public class Page<TObject> extends BaseObservable {
 
     private int page;
