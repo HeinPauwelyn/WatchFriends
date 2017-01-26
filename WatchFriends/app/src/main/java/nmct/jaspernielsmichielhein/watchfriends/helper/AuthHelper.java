@@ -4,20 +4,15 @@ import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
-import android.accounts.AccountManagerFuture;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.media.audiofx.AcousticEchoCanceler;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
 import com.facebook.login.LoginManager;
-
-import java.util.concurrent.TimeUnit;
 
 public class AuthHelper {
 
@@ -36,6 +31,21 @@ public class AuthHelper {
 
         if (accounts.length > 0) {
             return accounts[0].name;
+        } else {
+            return null;
+        }
+    }
+
+    public static Account getAccount(Context context) {
+        mAccountManager = AccountManager.get(context);
+
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
+            return null;
+        }
+        Account[] accounts = mAccountManager.getAccountsByType(Contract.ACCOUNT_TYPE);
+
+        if (accounts.length > 0) {
+            return accounts[0];
         } else {
             return null;
         }

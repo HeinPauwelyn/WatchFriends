@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -126,7 +127,7 @@ public class MainActivity extends AppCompatActivity
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
 
         Stetho.initializeWithDefaults(this);
-        if(savedInstanceState == null){ //started the app
+        if (savedInstanceState == null) { //started the app
             navigate(HomeFragment.newInstance(), "homeFragment");
         }
     }
@@ -138,6 +139,13 @@ public class MainActivity extends AppCompatActivity
             AuthHelper.logUserOff(this);
             LoginManager.getInstance().logOut();
             showLoginActivity();
+        } else {
+            if (AuthHelper.getAccount(getApplicationContext()) != null) {
+                Bundle settingsBundle = new Bundle();
+                settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+                settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+                ContentResolver.requestSync(AuthHelper.getAccount(getApplicationContext()), nmct.jaspernielsmichielhein.watchfriends.provider.Contract.AUTHORITY, settingsBundle);
+            }
         }
     }
 
@@ -322,6 +330,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onQueryTextSubmit(String query) {
         //search button press
         navigate(SearchFragment.newInstance(query), "searchFragment");
+        searchView.clearFocus();
         return false;
     }
 
@@ -354,5 +363,4 @@ public class MainActivity extends AppCompatActivity
     public void onProfileSelected(String userId) {
         navigate(ProfileFragment.newInstance(), "profileFragment");
     }
-
 }
