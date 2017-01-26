@@ -15,6 +15,7 @@ import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentSearchBindin
 import nmct.jaspernielsmichielhein.watchfriends.viewmodel.SearchFragmentViewModel;
 
 public class SearchFragment extends Fragment {
+
     private static final String ARG_QUERY = "nmct.jaspernielsmichielhein.watchfriends.searchquery";
 
     private SearchFragmentViewModel searchFragmentViewModel;
@@ -57,4 +58,5 @@ public class SearchFragment extends Fragment {
     public void onResume() {
         super.onResume();
     }
+
 }

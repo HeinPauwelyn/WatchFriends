@@ -45,6 +45,7 @@
                     android:layout_height="match_parent"
                     android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
                     android:gravity="center_vertical"/>
+
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -61,4 +62,5 @@
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
         app:srcCompat="@android:drawable/ic_dialog_email" />
+
 </android.support.design.widget.CoordinatorLayout>
