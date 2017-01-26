@@ -10,7 +10,6 @@ public class Contract {
     public interface FollowedSeriesColumns extends BaseColumns {
         public static final String TABLE_NAME = "followingseries";
         public static final String COLUMN_FOLLOWEDSERIES_NR = "followingseriesnr";
-        public static final String COLUMN_FOLLOWEDSERIES_NAME = "followingseriesname";
         public static final String COLUMN_FOLLOWEDSERIES_FOLLOWING = "following";
     }
 
@@ -19,7 +18,6 @@ public class Contract {
                 + TABLE_NAME + "(" + _ID
                 + " integer primary key autoincrement, "
                 + COLUMN_FOLLOWEDSERIES_NR + " integer, "
-                + COLUMN_FOLLOWEDSERIES_NAME + " text not null, "
                 + COLUMN_FOLLOWEDSERIES_FOLLOWING + " integer "
                 + ")";
 
@@ -31,7 +29,6 @@ public class Contract {
         public static final String COLUMN_WATCHED_SERIES_NR = "watchedseriesnr";
         public static final String COLUMN_WATCHED_SEASON_NR = "watchedseasonnr";
         public static final String COLUMN_WATCHED_EPISODE_NR = "watchedepisodenr";
-        public static final String COLUMN_WATCHED_EPISODE_NAME = "watchedname";
         public static final String COLUMN_WATCHED_EPISODE_WATCHED = "watched";
     }
 
@@ -42,7 +39,6 @@ public class Contract {
                 + COLUMN_WATCHED_SERIES_NR + " integer, "
                 + COLUMN_WATCHED_SEASON_NR + " integer, "
                 + COLUMN_WATCHED_EPISODE_NR + " integer, "
-                + COLUMN_WATCHED_EPISODE_NAME + " text not null,"
                 + COLUMN_WATCHED_EPISODE_WATCHED + " integer "
                 + ")";
 
