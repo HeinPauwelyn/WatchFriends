@@ -122,9 +122,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        if (AuthHelper.isUserLoggedIn(this)) {
+        if (AuthHelper.isUserLoggedIn(this) && !AuthHelper.isTokenExpired(this)) {
             navigate(HomeFragment.newInstance(), "homeFragment");
         } else {
+            AuthHelper.logUserOff(this);
             LoginManager.getInstance().logOut();
             showLoginActivity();
         }
@@ -149,7 +150,7 @@ public class MainActivity extends AppCompatActivity
                 int index = fmgr.getBackStackEntryCount() - 1;
                 FragmentManager.BackStackEntry backEntry = fmgr.getBackStackEntryAt(index);
                 //if("searchFragment" == backEntry.getName())
-                //    fmgr.popBackStackImmediate();
+                //fmgr.popBackStackImmediate();
             }
 
             super.onBackPressed();
@@ -250,7 +251,7 @@ public class MainActivity extends AppCompatActivity
                 navigate(FollowedSeriesFragment.newInstance(), "followedseriesFragment");
                 break;
             case R.id.nav_towatch:
-                ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getSeries(11431),
+                ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getSeries(11431, AuthHelper.getAuthToken(this)),
                         new Action1<Series>() {
                             @Override
                             public void call(Series series) {
@@ -341,4 +342,5 @@ public class MainActivity extends AppCompatActivity
     public void onProfileSelected(String userId) {
         navigate(ProfileFragment.newInstance(), "profileFragment");
     }
+
 }

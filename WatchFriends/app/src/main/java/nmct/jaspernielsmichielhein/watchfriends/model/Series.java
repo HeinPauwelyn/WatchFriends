@@ -12,6 +12,9 @@ import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;
 import java.util.Arrays;
 
 public class Series implements Parcelable {
+
+    private boolean following;
+
     private String all_creators;
     private String all_genres;
     private String backdrop_path = "";
@@ -331,6 +334,14 @@ public class Series implements Parcelable {
         this.vote_count = vote_count;
     }
 
+    public boolean getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(boolean following) {
+        this.following = following;
+    }
+
     public void initExtraFields() {
         makeAll_creators();
         makeAll_genres();
@@ -511,4 +522,5 @@ public class Series implements Parcelable {
         setVote_average(in.readDouble());
         setVote_count(in.readInt());
     }
+
 }

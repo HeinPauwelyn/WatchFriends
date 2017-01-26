@@ -30,10 +30,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.gson.JsonObject;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Utils;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener,
         GoogleApiClient.OnConnectionFailedListener {
@@ -44,19 +49,23 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private GoogleApiClient mGoogleApiClient;
 
     CallbackManager callbackManager;
+    ProgressDialog progressDialog;
 
     private boolean mIsResolving = false;
     private boolean mShouldResolve = false;
 
-    private AppCompatEditText mTxbUsername;
+    private AppCompatEditText mTxbEmail;
+    private AppCompatEditText mTxbLastname;
+    private AppCompatEditText mTxbFirstname;
     private AppCompatEditText mTxbPassword;
     private AppCompatEditText mTxbConfirmPassword;
 
-    private String mUsername;
+    private String mEmail;
+    private String mLastname;
+    private String mFirstname;
     private String mPassword;
     private String mConfirmPassword;
-
-    ProgressDialog progressDialog;
+    private String mValidation;
 
     private OnAccountsUpdateListener mOnAccountsUpdateListener;
 
@@ -85,7 +94,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                registerAccount("fb", loginResult.getAccessToken().getUserId());
+                registerAccount("fb", loginResult.getAccessToken().getUserId(), null, null, null, loginResult.getAccessToken().getToken());
             }
 
             @Override
@@ -99,7 +108,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
-        mTxbUsername = (AppCompatEditText) findViewById(R.id.txbUsername);
+        mTxbEmail = (AppCompatEditText) findViewById(R.id.txbEmail);
+        mTxbLastname = (AppCompatEditText) findViewById(R.id.txbLastname);
+        mTxbFirstname = (AppCompatEditText) findViewById(R.id.txbFirstname);
         mTxbPassword = (AppCompatEditText) findViewById(R.id.txbPassword);
         mTxbConfirmPassword = (AppCompatEditText) findViewById(R.id.txbConfirmPassword);
 
@@ -148,30 +159,85 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void onRegisterClicked() {
-        mUsername = mTxbUsername.getText().toString();
+        mEmail = mTxbEmail.getText().toString();
+        mLastname = mTxbLastname.getText().toString();
+        mFirstname = mTxbFirstname.getText().toString();
         mPassword = mTxbPassword.getText().toString();
         mConfirmPassword = mTxbConfirmPassword.getText().toString();
-        if (checkCredentials(mUsername, mPassword, mConfirmPassword)) {
-            registerAccount("default", mUsername);
+        if (checkCredentials(mEmail, mLastname, mFirstname, mPassword, mConfirmPassword)) {
+            registerAccount("default", mEmail, mLastname, mFirstname, mPassword, null);
         } else {
             showRegisterError();
         }
     }
 
-    private boolean checkCredentials(String mUsername, String mPassword, String mConfirmPassword) {
-        return !mUsername.equals("") && !mPassword.equals("") && !mConfirmPassword.equals("") && mPassword.equals(mConfirmPassword);
+    private boolean checkCredentials(String email, String lastname, String firstname, String password, String confirmPassword) {
+        boolean isValid = true;
+
+        if (email.equals("") || lastname.equals("") || firstname.equals("") || password.equals("") || confirmPassword.equals("")) {
+            isValid = false;
+            mValidation = "please fill in all fields";
+        } else if (!Utils.isEmailValid(email)) {
+            isValid = false;
+            mValidation = "not a valid email address";
+        } else if (!Utils.isPasswordValid(password)) {
+            isValid = false;
+            mValidation = "password should be at least 8 characters";
+        } else if (!password.equals(confirmPassword)) {
+            isValid = false;
+            mValidation = "passwords don't match";
+        }
+
+        return isValid;
     }
 
     private void showRegisterError() {
         progressDialog.dismiss();
-        Snackbar.make(mTxbUsername, "Error when registering", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(mTxbEmail, "Error when registering: " + mValidation, Snackbar.LENGTH_SHORT).show();
     }
 
-    private void registerAccount(String tag, String userName) {
-        Snackbar.make(mTxbUsername, "Account magically made", Snackbar.LENGTH_SHORT).show();
-        mListener.onAccountRegistered(userName);
-        finish();
+    private void registerAccount(String tag, String email, String lastname, String firstname, String password, String token) {
+        switch (tag) {
+            case "fb":
+                progressDialog.dismiss();
+                mListener.onAccountRegistered(email, token);
+                finish();
+                break;
+            case "google":
+                progressDialog.dismiss();
+                mListener.onAccountRegistered(email, token);
+                finish();
+                break;
+            default:
+                Call<JsonObject> call = ApiWatchFriendsHelper.getWatchFriendsServiceInstance().register(email, lastname, firstname, password);
+                call.enqueue(registerCallback);
+                break;
+        }
     }
+
+    Callback<JsonObject> registerCallback = new Callback<JsonObject>() {
+        @Override
+        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            if (response.isSuccessful()) {
+                JsonObject body = response.body();
+                String token = body.getAsJsonPrimitive("token").getAsString();
+                String email = body.getAsJsonObject("user").getAsJsonPrimitive("email").getAsString();
+                progressDialog.dismiss();
+                mListener.onAccountRegistered(email, token);
+                finish();
+            } else {
+                mValidation = "unknown error";
+                showRegisterError();
+            }
+        }
+
+        @Override
+        public void onFailure(Call<JsonObject> call, Throwable t) {
+            Log.d("Error", t.getMessage());
+            mValidation = "unknown error";
+            showRegisterError();
+        }
+    };
 
     @Override
     public void onBackPressed() {
@@ -233,13 +299,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         Log.d(LoginActivity.class.getName(), "Sign in result: " + result.isSuccess());
         if (result.isSuccess()) {
             GoogleSignInAccount account = result.getSignInAccount();
-            registerAccount("google", account.getEmail());
+            registerAccount("google", account.getEmail(), account.getGivenName(), account.getFamilyName(), null, account.getIdToken());
         }
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.d(LoginActivity.class.getName(), "Connection failed: " + connectionResult);
+        Log.d(RegisterActivity.class.getName(), "Connection failed: " + connectionResult);
     }
 
 }

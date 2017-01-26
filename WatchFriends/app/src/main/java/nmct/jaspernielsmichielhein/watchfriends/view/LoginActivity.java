@@ -32,8 +32,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.gson.JsonObject;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.AuthHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
@@ -44,6 +46,9 @@ import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.OnShowRationale;
 import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 @RuntimePermissions
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener,
@@ -62,11 +67,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private boolean mIsResolving = false;
     private boolean mShouldResolve = false;
 
-    private AppCompatEditText mTxbUsername;
+    private AppCompatEditText mTxbEmail;
     private AppCompatEditText mTxbPassword;
 
-    private String mUsername;
+    private String mEmail;
     private String mPassword;
+    private String mValidation;
 
     ProgressDialog progressDialog;
 
@@ -96,7 +102,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                LoginActivityPermissionsDispatcher.addAccountWithCheck(LoginActivity.this, loginResult.getAccessToken().getUserId());
+                LoginActivityPermissionsDispatcher.addAccountWithCheck(LoginActivity.this, loginResult.getAccessToken().getUserId(), loginResult.getAccessToken().getToken());
             }
 
             @Override
@@ -110,7 +116,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        mTxbUsername = (AppCompatEditText) findViewById(R.id.txbUsername);
+        mTxbEmail = (AppCompatEditText) findViewById(R.id.txbEmail);
         mTxbPassword = (AppCompatEditText) findViewById(R.id.txbPassword);
 
         findViewById(R.id.btnLogin).setOnClickListener(this);
@@ -157,32 +163,73 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         progressDialog.show();
     }
 
-    private void showRegisterActivity() {
-        Intent intent = new Intent(this, RegisterActivity.class);
-        startActivity(intent);
-    }
-
     private void onSignInClicked() {
-        mUsername = mTxbUsername.getText().toString();
+        mEmail = mTxbEmail.getText().toString();
         mPassword = mTxbPassword.getText().toString();
-        if (checkCredentials(mUsername, mPassword)) {
-            LoginActivityPermissionsDispatcher.addAccountWithCheck(this, mUsername);
+        if (checkCredentials(mEmail, mPassword)) {
+            LoginActivityPermissionsDispatcher.loginWithCheck(this, "default", mEmail, mPassword);
         } else {
             showLoginError();
         }
     }
 
-    private boolean checkCredentials(String mUsername, String mPassword) {
-        return !mUsername.equals("") && !mPassword.equals("");
+    private boolean checkCredentials(String email, String password) {
+        boolean isValid = true;
+
+        if (email.equals("") || password.equals("")) {
+            isValid = false;
+            mValidation = "please fill in all fields";
+        } else if (!Utils.isEmailValid(email)) {
+            isValid = false;
+            mValidation = "not a valid email address";
+        }
+
+        return isValid;
     }
 
     private void showLoginError() {
         progressDialog.dismiss();
-        Snackbar.make(mTxbUsername, "Error when logging in", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(mTxbEmail, "Error when logging in: " + mValidation, Snackbar.LENGTH_SHORT).show();
     }
 
     @NeedsPermission(Manifest.permission.GET_ACCOUNTS)
-    public void addAccount(String userName) {
+    public void login(String tag, String email, String password) {
+        switch (tag) {
+            case "fb":
+                break;
+            case "google":
+                break;
+            default:
+                Call<JsonObject> call = ApiWatchFriendsHelper.getWatchFriendsServiceInstance().login(email, password);
+                call.enqueue(loginCallback);
+                break;
+        }
+    }
+
+    Callback<JsonObject> loginCallback = new Callback<JsonObject>() {
+        @Override
+        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            if (response.isSuccessful()) {
+                JsonObject body = response.body();
+                String token = body.getAsJsonPrimitive("token").getAsString();
+                String email = body.getAsJsonObject("user").getAsJsonPrimitive("email").getAsString();
+                LoginActivityPermissionsDispatcher.addAccountWithCheck((LoginActivity) mContext, email, token);
+            } else {
+                mValidation = "wrong credentials";
+                showLoginError();
+            }
+        }
+
+        @Override
+        public void onFailure(Call<JsonObject> call, Throwable t) {
+            Log.d("Error", t.getMessage());
+            mValidation = "unknown error";
+            showLoginError();
+        }
+    };
+
+    @NeedsPermission(Manifest.permission.GET_ACCOUNTS)
+    public void addAccount(String email, String token) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -190,23 +237,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Account account;
 
         if (accountsByType.length == 0) {
-            account = new Account(userName, Contract.ACCOUNT_TYPE);
+            account = new Account(email, Contract.ACCOUNT_TYPE);
             mAccountManager.addAccountExplicitly(account, null, null);
-        } else if (!userName.equals(accountsByType[0].name)) {
+            mAccountManager.setAuthToken(account, "access_token", token);
+        } else if (!email.equals(accountsByType[0].name)) {
             AuthHelper.logUserOff(this, accountsByType[0]);
-            account = new Account(userName, Contract.ACCOUNT_TYPE);
+            account = new Account(email, Contract.ACCOUNT_TYPE);
             mAccountManager.addAccountExplicitly(account, null, null);
+            mAccountManager.setAuthToken(account, "access_token", token);
         } else {
             account = accountsByType[0];
+            mAccountManager.setAuthToken(account, "access_token", token);
         }
 
         Intent intent = new Intent();
-        intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, userName);
+        intent.putExtra(AccountManager.KEY_AUTHTOKEN, token);
+        intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, email);
         intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, Contract.ACCOUNT_TYPE);
 
         if (mAccountAuthenticatorResponse != null) {
             Bundle bundle = intent.getExtras();
-            intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, userName);
+            intent.putExtra(AccountManager.KEY_AUTHTOKEN, token);
+            intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, email);
             intent.putExtra(AccountManager.KEY_ACCOUNT_TYPE, Contract.ACCOUNT_TYPE);
             mAccountAuthenticatorResponse.onResult(bundle);
         }
@@ -215,6 +267,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mContext = null;
         progressDialog.dismiss();
         finish();
+    }
+
+    private void showRegisterActivity() {
+        Intent intent = new Intent(this, RegisterActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -279,7 +336,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Log.d(LoginActivity.class.getName(), "Sign in result: " + result.isSuccess());
         if (result.isSuccess()) {
             GoogleSignInAccount account = result.getSignInAccount();
-            LoginActivityPermissionsDispatcher.addAccountWithCheck(this, account.getEmail());
+            LoginActivityPermissionsDispatcher.addAccountWithCheck(this, account.getEmail(), account.getIdToken());
         }
     }
 
@@ -291,8 +348,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     // REGISTER
 
     @Override
-    public void onAccountRegistered(String mUsername) {
-        LoginActivityPermissionsDispatcher.addAccountWithCheck(this, mUsername);
+    public void onAccountRegistered(String email, String token) {
+        LoginActivityPermissionsDispatcher.addAccountWithCheck(this, email, token);
     }
 
     // PERMISSIONS
@@ -304,19 +361,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @OnShowRationale(Manifest.permission.GET_ACCOUNTS)
-    void showRationaleForAccounts(PermissionRequest request) {
+    public void showRationaleForAccounts(PermissionRequest request) {
         Utils.showRationaleDialog(this, "Accounts permission needed to log in", request);
     }
 
     @OnPermissionDenied(Manifest.permission.GET_ACCOUNTS)
-    void onAccountsDenied() {
+    public void onAccountsDenied() {
         progressDialog.dismiss();
         AuthHelper.logUserOff(this);
         Toast.makeText(this, "Accounts permission denied, consider accepting to use this app", Toast.LENGTH_SHORT).show();
     }
 
     @OnNeverAskAgain(Manifest.permission.GET_ACCOUNTS)
-    void onAccountsNeverAskAgain() {
+    public void onAccountsNeverAskAgain() {
         progressDialog.dismiss();
         AuthHelper.logUserOff(this);
         Toast.makeText(this, "Accounts permission denied with never ask again", Toast.LENGTH_SHORT).show();

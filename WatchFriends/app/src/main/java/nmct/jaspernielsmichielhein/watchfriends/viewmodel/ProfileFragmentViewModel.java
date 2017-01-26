@@ -11,6 +11,7 @@ import java.util.Random;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentProfileBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.AuthHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import nmct.jaspernielsmichielhein.watchfriends.model.SeriesList;
@@ -62,12 +63,12 @@ public class ProfileFragmentViewModel extends BaseObservable {
     }
 
     private void getData(final ObservableArrayList<Series> series) {
-        ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getLists(), new Action1<ArrayList<SeriesList>>() {
+        ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getLists(AuthHelper.getAuthToken(this.context)), new Action1<ArrayList<SeriesList>>() {
             @Override
             public void call(ArrayList<SeriesList> seriesPage) {
                 if (seriesPage != null) {
                     Random rnd = new Random();
-                    int size = seriesPage.get(0).getSeries().size();
+                    int size = seriesPage.get(0).getResults().size();
                     ArrayList<Integer> takenSeries = new ArrayList<Integer>();
 
                     for (int i = 0; i < 5; i++) {
@@ -77,7 +78,7 @@ public class ProfileFragmentViewModel extends BaseObservable {
                             i--;
                         } else {
                             takenSeries.add(number);
-                            series.add(seriesPage.get(0).getSeries().get(number));
+                            series.add(seriesPage.get(0).getResults().get(number));
                         }
                     }
                 }

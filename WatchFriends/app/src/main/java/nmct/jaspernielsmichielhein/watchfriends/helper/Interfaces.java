@@ -31,6 +31,6 @@ public class Interfaces {
     }
 
     public interface onAccountRegisteredListener {
-        void onAccountRegistered(String mUsername);
+        void onAccountRegistered(String email, String token);
     }
 }

@@ -8,12 +8,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:orientation="vertical"
         android:paddingEnd="24dp"
         android:paddingStart="24dp"
-        android:paddingTop="56dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
+        android:paddingTop="56dp">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -30,15 +30,15 @@
             android:textColorHint="@color/themeWhite">
 
             <android.support.v7.widget.AppCompatEditText
-                android:id="@+id/txbUsername"
+                android:id="@+id/txbEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
                 android:ems="10"
-                android:hint="@string/username_hint"
-                android:inputType="text"
+                android:hint="@string/email_hint"
+                android:inputType="textEmailAddress"
                 app:backgroundTint="@color/themeAccent" />
 
         </android.support.design.widget.TextInputLayout>

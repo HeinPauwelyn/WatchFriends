@@ -1,25 +1,12 @@
 package nmct.jaspernielsmichielhein.watchfriends.model;
 
-import android.databinding.BaseObservable;
+
 import android.databinding.Bindable;
-import android.databinding.ObservableArrayList;
 
-import java.util.ArrayList;
-
-public class SeriesList extends BaseObservable {
-
+public class SeriesList extends Page<Series> {
     @Bindable
     private String name;
-    @Bindable
-    private ObservableArrayList<Series> series;
-
-    public SeriesList() {
-    }
-
-    public SeriesList(String name, ObservableArrayList<Series> series) {
-        this.name = name;
-        this.series = series;
-    }
+    private String apiRequest;
 
     public String getName() {
         return name;
@@ -29,11 +16,11 @@ public class SeriesList extends BaseObservable {
         this.name = name;
     }
 
-    public ObservableArrayList<Series> getSeries() {
-        return series;
+    public String getApiRequest() {
+        return apiRequest;
     }
 
-    public void setSeries(ObservableArrayList<Series> series) {
-        this.series = series;
+    public void setApiRequest(String apiRequest) {
+        this.apiRequest = apiRequest;
     }
 }

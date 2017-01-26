@@ -7,11 +7,12 @@ import android.view.View;
 
 import com.android.databinding.library.baseAdapters.BR;
 
-import nmct.jaspernielsmichielhein.watchfriends.api.SearchResult;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentSearchBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
-import nmct.jaspernielsmichielhein.watchfriends.helper.ApiMovieDbHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
+import nmct.jaspernielsmichielhein.watchfriends.helper.AuthHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
+import nmct.jaspernielsmichielhein.watchfriends.model.Page;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import rx.functions.Action1;
 
@@ -59,9 +60,9 @@ public class SearchFragmentViewModel extends BaseObservable {
 
     private void loadSearchResults() {
         setSearchResults(new ObservableArrayList<Series>());
-        ApiHelper.subscribe(ApiMovieDbHelper.getMoviedbServiceInstance().getSearchResults(query), new Action1<SearchResult>() {
+        ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().searchSeries(query, 1, AuthHelper.getAuthToken(this.context)), new Action1<Page<Series>>() {
             @Override
-            public void call(SearchResult searchResult) {
+            public void call(Page<Series> searchResult) {
                 ObservableArrayList<Series> series = new ObservableArrayList<Series>();
                 if (searchResult != null) {
                     series = searchResult.getResults();

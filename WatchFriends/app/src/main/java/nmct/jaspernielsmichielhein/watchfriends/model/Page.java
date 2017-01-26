@@ -1,17 +1,20 @@
 package nmct.jaspernielsmichielhein.watchfriends.model;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
 
 /**
  * Created by hein_ on 19-Nov-16.
  */
 
-public class Page<TObject> {
+public class Page<TObject> extends BaseObservable {
 
     private int page;
+    @Bindable
     private ObservableArrayList<TObject> results;
-    private int total_results;
-    private int total_pages;
+    private int totalResults;
+    private int totalPages;
 
     public int getPage() {
         return page;
@@ -27,17 +30,19 @@ public class Page<TObject> {
         this.results = results;
     }
 
-    public int getTotal_results() {
-        return total_results;
-    }
-    public void setTotal_results(int total_results) {
-        this.total_results = total_results;
+    public int getTotalResults() {
+        return totalResults;
     }
 
-    public int getTotal_pages() {
-        return total_pages;
+    public void setTotalResults(int totalResults) {
+        this.totalResults = totalResults;
     }
-    public void setTotal_pages(int total_pages) {
-        this.total_pages = total_pages;
+
+    public int getTotalPages() {
+        return totalPages;
+    }
+
+    public void setTotalPages(int totalPages) {
+        this.totalPages = totalPages;
     }
 }
