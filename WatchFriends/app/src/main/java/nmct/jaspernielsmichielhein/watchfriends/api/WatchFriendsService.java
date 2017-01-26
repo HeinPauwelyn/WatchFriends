@@ -40,7 +40,7 @@ public interface WatchFriendsService {
 
     //LISTS
     @GET("list")
-    Observable<ObservableArrayList<SeriesList>> getLists(@Query("access_token") String token);
+    Observable<ArrayList<SeriesList>> getLists(@Query("access_token") String token);
 
     //USERS
     @GET("users/search/{query}")
