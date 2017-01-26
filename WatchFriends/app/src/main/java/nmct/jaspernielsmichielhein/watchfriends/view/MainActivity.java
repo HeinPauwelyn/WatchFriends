@@ -90,10 +90,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
 
-        setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -126,14 +126,15 @@ public class MainActivity extends AppCompatActivity
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
 
         Stetho.initializeWithDefaults(this);
+        if(savedInstanceState == null){ //started the app
+            navigate(HomeFragment.newInstance(), "homeFragment");
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if (AuthHelper.isUserLoggedIn(this) && !AuthHelper.isTokenExpired(this)) {
-            navigate(HomeFragment.newInstance(), "homeFragment");
-        } else {
+        if (!AuthHelper.isUserLoggedIn(this) || AuthHelper.isTokenExpired(this)) {
             AuthHelper.logUserOff(this);
             LoginManager.getInstance().logOut();
             showLoginActivity();
