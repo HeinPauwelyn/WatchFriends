@@ -17,8 +17,7 @@ import android.widget.ListView;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.database.Contract;
-import nmct.jaspernielsmichielhein.watchfriends.database.tasks.DeleteWatchedEpisodeFromDBTask;
-import nmct.jaspernielsmichielhein.watchfriends.database.tasks.SaveWatchedEpisodeToDBTask;
+import nmct.jaspernielsmichielhein.watchfriends.database.tasks.WatchedEpisodeDBTask;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.RowEpisodeBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
@@ -27,20 +26,20 @@ public class EpisodesAdapter extends ArrayAdapter<Episode> implements View.OnCli
     private Interfaces.onEpisodeSelectedListener mListener;
 
     private Context context;
+    private Episode episode;
     private int mSeriesID;
 
-    public EpisodesAdapter(Context context, ListView listView) {
+    public EpisodesAdapter(Context context, ListView listView, final int seriesId) {
         super(context, R.layout.row_episode);
         this.context = context;
-        //todo get series id
-        mSeriesID = 0;
         mListener = (Interfaces.onEpisodeSelectedListener) context;
+        mSeriesID = seriesId;
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Episode selectedEpisode = getItem(position);
                 if (selectedEpisode != null) {
-                    mListener.onEpisodeSelected(selectedEpisode);
+                    mListener.onEpisodeSelected(selectedEpisode, seriesId);
                 }
             }
         });
@@ -70,51 +69,50 @@ public class EpisodesAdapter extends ArrayAdapter<Episode> implements View.OnCli
     public void onClick(View v) {
         ImageButton imgViewed = (ImageButton) v;
         int position = (int) imgViewed.getTag();
-        Episode e = getItem(position);
+        episode = getItem(position);
 
-        boolean watched = isWatched(e);
+        boolean watched = isWatched(episode);
 
         if (watched) {
             imgViewed.setImageResource(R.drawable.ic_visibility_white_24dp);
-            unWatch(e);
+            editWatched(false);
             Snackbar.make(v, "Marked episode as not watched", Snackbar.LENGTH_LONG).show();
         } else {
             imgViewed.setImageResource(R.drawable.ic_visibility_off_white_24dp);
-            watch(e);
+            editWatched(true);
             Snackbar.make(v, "Marked episode as watched", Snackbar.LENGTH_LONG).show();
         }
     }
 
-    private void watch(Episode e) {
+    private void editWatched(boolean watched) {
         ContentValues values = new ContentValues();
-        values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR, e.getId());
-        values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SEASON_NR, e.getSeason_number());
-        values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NR, e.getEpisode_number());
-        values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NAME, e.getName());
+        values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR, mSeriesID);
+        values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SEASON_NR, episode.getSeason_number());
+        values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NR, episode.getEpisode_number());
+        values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_WATCHED, watched);
 
-        executeAsyncTask(new SaveWatchedEpisodeToDBTask(context), values);
+        executeAsyncTask(new WatchedEpisodeDBTask(context), values);
     }
 
-    private void unWatch(Episode e) {
-        ContentValues values = new ContentValues();
-        values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR, e.getId());
-        values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SEASON_NR, e.getSeason_number());
-        values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NR, e.getEpisode_number());
-
-        executeAsyncTask(new DeleteWatchedEpisodeFromDBTask(context), values);
-    }
-
-    //todo backend should provide if user watched episode or not, now it just happens synchronously
     private boolean isWatched(Episode e) {
         Cursor c = context.getContentResolver().query(
-                nmct.jaspernielsmichielhein.watchfriends.provider.Contract.WATCHED_URI, null,
-                Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR + " = " + e.getId() + " AND " +
+                nmct.jaspernielsmichielhein.watchfriends.provider.Contract.WATCHED_URI,
+                new String[]{Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_WATCHED},
+                Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR + " = " + mSeriesID + " AND " +
                         Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SEASON_NR + " = " + e.getSeason_number() + " AND " +
                         Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NR + " = " + e.getEpisode_number(),
                 null,
                 null);
-        c.close();
-        return c.getCount() > 0;
+        if (c.getCount() > 0) {
+            int watched = 0;
+            if (c.moveToLast())
+                watched = c.getInt(c.getColumnIndex(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_WATCHED));
+            c.close();
+            return watched > 0;
+        } else {
+            c.close();
+            return false;
+        }
     }
 
     static private <T> void executeAsyncTask(AsyncTask<T, ?, ?> task, T... params) {

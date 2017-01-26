@@ -11,9 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
+import nmct.jaspernielsmichielhein.watchfriends.adapter.AchievementAdapter;
 import nmct.jaspernielsmichielhein.watchfriends.adapter.SeriesAdapter;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentProfileBinding;
-import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.viewmodel.ProfileFragmentViewModel;
 
 public class ProfileFragment extends Fragment {
@@ -21,7 +21,6 @@ public class ProfileFragment extends Fragment {
 
     private ProfileFragmentViewModel profileFragmentViewModel;
     private FragmentProfileBinding fragmentProfileBinding;
-    private Interfaces.headerChangedListener listener;
     private Context context;
 
     public ProfileFragment() {    }
@@ -41,6 +40,11 @@ public class ProfileFragment extends Fragment {
         fragmentProfileBinding.rvWatchlist.setAdapter(new SeriesAdapter(context, profileFragmentViewModel.getWatchlist()));
         fragmentProfileBinding.rvWatchlist.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false));
         fragmentProfileBinding.rvWatchlist.setItemAnimator(new DefaultItemAnimator());
+
+        fragmentProfileBinding.rvAchievements.setAdapter(new AchievementAdapter(context, profileFragmentViewModel.getAchievements()));
+        fragmentProfileBinding.rvAchievements.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+        fragmentProfileBinding.rvAchievements.setItemAnimator(new DefaultItemAnimator());
+
         return fragmentProfileBinding.getRoot();
     }
 
@@ -50,10 +54,5 @@ public class ProfileFragment extends Fragment {
 
         profileFragmentViewModel.getUser();
         profileFragmentViewModel.generateFakeDate();
-
-        if (listener != null) {
-            listener.collapseToolbar();
-            listener.getActionButton().setVisibility(View.GONE);
-        }
     }
 }

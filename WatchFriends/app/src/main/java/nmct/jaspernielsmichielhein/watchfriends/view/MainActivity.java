@@ -281,16 +281,6 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void collapseToolbar() {
-        appBarLayout.setExpanded(false, true);
-        //actionButton.setVisibility(View.GONE);
-    }
-
-    public void expandToolbar() {
-        //appBarLayout.setExpanded(true, true);
-        //actionButton.setVisibility(View.VISIBLE);
-    }
-
     public void enableAppBarScroll(Boolean enable) {
         AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) collapsingToolbarLayout.getLayoutParams();
         CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
@@ -355,8 +345,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onEpisodeSelected(Episode episode) {
-        navigate(EpisodeFragment.newInstance(episode), "episodeFragment");
+    public void onEpisodeSelected(Episode episode, int seriesId) {
+        navigate(EpisodeFragment.newInstance(episode, seriesId), "episodeFragment");
     }
 
     @Override

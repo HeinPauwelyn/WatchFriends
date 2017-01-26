@@ -341,7 +341,7 @@ public class Series implements Parcelable {
             return Contract.MOVIEDB_IMAGE_BASE_URL + backdrop_path;
         }
 
-        return "https://www.themoviedb.org/assets/e2dd052f141e33392eb749aab2414ec0/images/no-poster-w300_and_h450_bestv2-v2.png";
+        return "https://raw.githubusercontent.com/WatchFriends/Web/master/frontend/assets/Serie_Not_Found.png"; // → is a hack 😄 💀
     }
 
     public String getFullPoster_path() {
@@ -350,7 +350,7 @@ public class Series implements Parcelable {
             return Contract.MOVIEDB_IMAGE_BASE_URL + poster_path;
         }
 
-        return "https://www.themoviedb.org/assets/e2dd052f141e33392eb749aab2414ec0/images/no-poster-w300_and_h450_bestv2-v2.png";
+        return "https://raw.githubusercontent.com/WatchFriends/Web/master/frontend/assets/Poster_Not_Found.png"; // → is a hack 😄 💀
     }
 
     public void makeAll_creators() {
