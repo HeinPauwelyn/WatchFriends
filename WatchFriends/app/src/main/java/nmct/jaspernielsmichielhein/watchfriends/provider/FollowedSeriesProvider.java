@@ -39,6 +39,7 @@ public class FollowedSeriesProvider extends ContentProvider {
         FOLLOWEDSERIES_PROJECTION_MAP.put(nmct.jaspernielsmichielhein.watchfriends.database.Contract.FollowedSeriesColumns._ID, nmct.jaspernielsmichielhein.watchfriends.database.Contract.FollowedSeriesColumns._ID);
         FOLLOWEDSERIES_PROJECTION_MAP.put(nmct.jaspernielsmichielhein.watchfriends.database.Contract.FollowedSeriesColumns.COLUMN_FOLLOWEDSERIES_NR, nmct.jaspernielsmichielhein.watchfriends.database.Contract.FollowedSeriesColumns.COLUMN_FOLLOWEDSERIES_NR);
         FOLLOWEDSERIES_PROJECTION_MAP.put(nmct.jaspernielsmichielhein.watchfriends.database.Contract.FollowedSeriesColumns.COLUMN_FOLLOWEDSERIES_NAME, nmct.jaspernielsmichielhein.watchfriends.database.Contract.FollowedSeriesColumns.COLUMN_FOLLOWEDSERIES_NAME);
+        FOLLOWEDSERIES_PROJECTION_MAP.put(nmct.jaspernielsmichielhein.watchfriends.database.Contract.FollowedSeriesColumns.COLUMN_FOLLOWEDSERIES_FOLLOWING, nmct.jaspernielsmichielhein.watchfriends.database.Contract.FollowedSeriesColumns.COLUMN_FOLLOWEDSERIES_FOLLOWING);
         return true;
     }
 

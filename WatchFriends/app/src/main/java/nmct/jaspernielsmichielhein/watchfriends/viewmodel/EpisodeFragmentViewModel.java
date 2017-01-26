@@ -18,8 +18,7 @@ import com.squareup.picasso.Picasso;
 import nmct.jaspernielsmichielhein.watchfriends.BR;
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.database.Contract;
-import nmct.jaspernielsmichielhein.watchfriends.database.tasks.DeleteWatchedEpisodeFromDBTask;
-import nmct.jaspernielsmichielhein.watchfriends.database.tasks.SaveWatchedEpisodeToDBTask;
+import nmct.jaspernielsmichielhein.watchfriends.database.tasks.WatchedEpisodeDBTask;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentEpisodeBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
@@ -51,6 +50,8 @@ public class EpisodeFragmentViewModel extends BaseObservable {
         } else {
             throw new RuntimeException(context.toString() + " must implement headerChangedListener");
         }
+
+        watched = isWatched(episode);
     }
 
     public void loadEpisode() {
@@ -67,7 +68,6 @@ public class EpisodeFragmentViewModel extends BaseObservable {
     }
 
     private void initFloatingActionButton(final FloatingActionButton fab) {
-        watched = isWatched(episode);
         if (watched) {
             fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.themeBlack)));
             fab.setImageResource(R.drawable.ic_visibility_off_white_24dp);
@@ -84,50 +84,48 @@ public class EpisodeFragmentViewModel extends BaseObservable {
                     fab.setImageResource(R.drawable.ic_visibility_white_24dp);
                     fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.themeAccent)));
                     Snackbar.make(v, "Marked episode as not watched", Snackbar.LENGTH_LONG).show();
-
-                    unWatch();
+                    editWatched(false);
                 } else {
                     fab.setImageResource(R.drawable.ic_visibility_off_white_24dp);
                     fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.themeBlack)));
                     Snackbar.make(v, "Marked episode as watched", Snackbar.LENGTH_LONG).show();
 
-                    watch();
+                    editWatched(true);
                 }
             }
         });
     }
 
-    //todo backend should provide if user watched episode or not, now it just happens synchronously
-    private boolean isWatched(Episode e) {
-        Cursor c = context.getContentResolver().query(
-                nmct.jaspernielsmichielhein.watchfriends.provider.Contract.WATCHED_URI, null,
-                Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR + " = " + e.getId() + " AND " +
-                        Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SEASON_NR + " = " + e.getSeason_number() + " AND " +
-                        Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NR + " = " + e.getEpisode_number(),
-                null,
-                null);
-        c.close();
-        return c.getCount() > 0;
-    }
-
-    //todo duplicate code across files, centralise code
-    private void watch() {
+    private void editWatched(boolean watched) {
         ContentValues values = new ContentValues();
         values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR, episode.getId());
         values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SEASON_NR, episode.getSeason_number());
         values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NR, episode.getEpisode_number());
         values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NAME, episode.getName());
+        values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_WATCHED, watched);
 
-        executeAsyncTask(new SaveWatchedEpisodeToDBTask(context), values);
+        executeAsyncTask(new WatchedEpisodeDBTask(context), values);
     }
 
-    private void unWatch() {
-        ContentValues values = new ContentValues();
-        values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR, episode.getId());
-        values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SEASON_NR, episode.getSeason_number());
-        values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NR, episode.getEpisode_number());
-
-        executeAsyncTask(new DeleteWatchedEpisodeFromDBTask(context), values);
+    private boolean isWatched(Episode e) {
+        Cursor c = context.getContentResolver().query(
+                nmct.jaspernielsmichielhein.watchfriends.provider.Contract.WATCHED_URI,
+                new String[]{Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_WATCHED},
+                Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR + " = " + e.getId() + " AND " +
+                        Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SEASON_NR + " = " + e.getSeason_number() + " AND " +
+                        Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NR + " = " + e.getEpisode_number(),
+                null,
+                null);
+        if (c.getCount() > 0) {
+            int watched = 0;
+            if (c.moveToLast())
+                watched = c.getInt(c.getColumnIndex(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_WATCHED));
+            c.close();
+            return watched > 0;
+        } else {
+            c.close();
+            return false;
+        }
     }
 
     static private <T> void executeAsyncTask(AsyncTask<T, ?, ?> task, T... params) {

@@ -18,8 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
-import nmct.jaspernielsmichielhein.watchfriends.database.tasks.DeleteWatchedEpisodeFromDBTask;
-import nmct.jaspernielsmichielhein.watchfriends.database.tasks.SaveWatchedEpisodeToDBTask;
+import nmct.jaspernielsmichielhein.watchfriends.database.tasks.WatchedEpisodeDBTask;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.RowSeasonBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Season;
@@ -83,7 +82,7 @@ public class SeasonsAdapter extends ArrayAdapter<Season> implements View.OnClick
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             Snackbar.make(v, "Marked season as not watched", Snackbar.LENGTH_LONG).show();
-                            unWatchSeason(s);
+                            editWatchedSeason(s, false);
                             imgViewed.setImageResource(R.drawable.ic_visibility_white_24dp);
                         }
                     })
@@ -96,7 +95,7 @@ public class SeasonsAdapter extends ArrayAdapter<Season> implements View.OnClick
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             Snackbar.make(v, "Marked season as watched", Snackbar.LENGTH_LONG).show();
-                            watchSeason(s);
+                            editWatchedSeason(s, true);
                             imgViewed.setImageResource(R.drawable.ic_visibility_off_white_24dp);
                         }
                     })
@@ -104,37 +103,21 @@ public class SeasonsAdapter extends ArrayAdapter<Season> implements View.OnClick
         }
     }
 
-    //todo way to get episodes from season
-    //todo (un)watch complete season in backend
-    private void watchSeason(Season s) {
-        for(int i = 0; i < s.getEpisode_count(); i++){
-            addToDb(mSeriesID, s.getSeason_number(), i);
+    private void editWatchedSeason(Season s, boolean watched) {
+        for (int i = 0; i < s.getEpisode_count(); i++) {
+            editWatched(mSeriesID, s.getSeason_number(), i, watched);
         }
     }
 
-    private void unWatchSeason(Season s){
-        for(int i = 0; i < s.getEpisode_count(); i++){
-            removeFromDb(mSeriesID, s.getSeason_number(), i);
-        }
-    }
-
-    private void removeFromDb(int seriesId, int seasonNr, int episodeNr) {
-        ContentValues values = new ContentValues();
-        values.put(nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR, seriesId);
-        values.put(nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SEASON_NR, seasonNr);
-        values.put(nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NR, episodeNr);
-
-        executeAsyncTask(new DeleteWatchedEpisodeFromDBTask(context), values);
-    }
-
-    private void addToDb(int seriesId, int seasonNr, int episodeNr) {
+    private void editWatched(int seriesId, int seasonNr, int episodeNr, boolean watched) {
         ContentValues values = new ContentValues();
         values.put(nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR, seriesId);
         values.put(nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SEASON_NR, seasonNr);
         values.put(nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NR, episodeNr);
         values.put(nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NAME, "");
+        values.put(nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_WATCHED, watched);
 
-        executeAsyncTask(new SaveWatchedEpisodeToDBTask(context), values);
+        executeAsyncTask(new WatchedEpisodeDBTask(context), values);
     }
 
     static private <T> void executeAsyncTask(AsyncTask<T, ?, ?> task, T... params) {
