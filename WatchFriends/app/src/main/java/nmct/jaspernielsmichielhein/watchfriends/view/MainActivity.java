@@ -17,6 +17,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -27,6 +28,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +56,9 @@ public class MainActivity extends AppCompatActivity
         Interfaces.onEpisodeSelectedListener,
         Interfaces.onProfileSelectedListener {
 
+    private NestedScrollView scrollView;
+    private MenuItem searchItem = null;
+    private SearchView searchView = null;
     private ImageView headerImage;
     private FloatingActionButton actionButton;
     private AppBarLayout appBarLayout;
@@ -64,6 +69,9 @@ public class MainActivity extends AppCompatActivity
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private boolean isStartup = true;
     private TextView titleTextView;
+
+    public MainActivity() {
+    }
 
     public void setTitle(String title) {
         //title not showing when collapses --> bug in android
@@ -89,6 +97,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        scrollView = (NestedScrollView) findViewById(R.id.frame_scrollview);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         titleTextView = (TextView) findViewById(R.id.titleTextView);
 
@@ -162,17 +171,18 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_search, menu);
 
-        final MenuItem searchItem = menu.findItem(R.id.search);
+        searchItem = menu.findItem(R.id.search);
         searchItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                searchItem.getActionView().requestFocus();
                 return false;
             }
         });
 
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(this);
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -210,14 +220,12 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    //https://androidhub.intel.com/en/posts/nglauber/Android_Search.html
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             Toast.makeText(this, "Searching by: " + query, Toast.LENGTH_SHORT).show();
-
         } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             String uri = intent.getDataString();
             Toast.makeText(this, "Suggestion: " + uri, Toast.LENGTH_SHORT).show();
@@ -305,6 +313,14 @@ public class MainActivity extends AppCompatActivity
         collapsingToolbarLayout.setLayoutParams(params);
     }
 
+    public void closeSearchView() {
+        if (!searchView.isIconified()) {
+            MenuItemCompat.collapseActionView(searchItem);
+            searchView.setIconified(true);
+            searchView.clearFocus();
+        }
+    }
+
     private int calculateHeight(int dp) {
         float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
         return (int) pixels;
@@ -315,6 +331,7 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.fragment_frame, fragment, tag);
         fragmentTransaction.addToBackStack("navigation_to_" + tag);
         fragmentTransaction.commit();
+        scrollView.fullScroll(ScrollView.FOCUS_UP);
     }
 
     @Override

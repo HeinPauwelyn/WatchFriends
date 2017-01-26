@@ -24,6 +24,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.PUT;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -42,63 +43,64 @@ public interface WatchFriendsService {
     Call<JsonObject> login(@Field("email") String email, @Field("password") String password);
 
     @GET("auth/logout")
-    java.util.Observable logout(@Query("access_token") String token);
+    java.util.Observable logout(@Header("Authorization") String token);
 
     @GET("auth/logoffonall")
-    java.util.Observable logoutAll(@Query("access_token") String token);
+    java.util.Observable logoutAll(@Header("Authorization") String token);
 
     @GET("auth/login")
-    java.util.Observable loginToken(@Query("access_token") String token);
+    java.util.Observable loginToken(@Header("Authorization") String token);
 
     //LISTS
     @GET("list")
-    Observable<ArrayList<SeriesList>> getLists(@Query("access_token") String token);
+    Observable<ArrayList<SeriesList>> getLists(@Header("Authorization") String token);
 
     @GET("series/popular/{page}")
-    Observable<Page<Series>> getSeriesPopular(@Path("page") int page, @Query("access_token") String token);
+    Observable<Page<Series>> getSeriesPopular(@Path("page") int page, @Header("Authorization") String token);
 
     @GET("series/today/{page}")
-    Observable<Page<Series>> getSeriesToday(@Path("page") int page, @Query("access_token") String token);
+    Observable<Page<Series>> getSeriesToday(@Path("page") int page, @Header("Authorization") String token);
 
     @GET("series/popular")
-    Observable<Page<Series>> getSeriesRecommended(@Query("access_token") String token);
+    Observable<Page<Series>> getSeriesRecommended(@Header("Authorization") String token);
 
     //USERS
     @GET("users/search/{query}")
-    Observable<ArrayList<User>> searchUsers(@Path("query") String query, @Query("access_token") String authToken);
+    Observable<ArrayList<User>> searchUsers(@Path("query") String query, @Header("Authorization") String token);
 
     @GET("users/{id}")
-    Observable<UserData> getUser(@Path("id") String userId, @Query("access_token") String authToken);
+    Observable<UserData> getUser(@Path("id") String userId, @Header("Authorization") String authToken);
 
     @PUT("users/{id}")
-    Observable<UserData> updateUser(@Body User user, @Query("access_token") String authToken);
+    Observable<UserData> updateUser(@Body User user, @Header("Authorization") String authToken);
 
     @GET("users/{id}/achievements")
-    Observable<ArrayList<Achievement>> getUserAchievements(@Path("id") String userId, @Query("access_token") String authToken);
+    Observable<ArrayList<Achievement>> getUserAchievements(@Path("id") String userId, @Header("Authorization") String authToken);
 
     //FOLLOWERS
     @GET("users/{id}/followers")
-    Observable<ArrayList<Follower>> getUserFollowers(@Path("id") String userId, @Query("access_token") String authToken);
+    Observable<ArrayList<Follower>> getUserFollowers(@Path("id") String userId, @Header("Authorization") String token);
 
     @GET("users/{id}/follows")
-    Observable<ArrayList<Follower>> getUserFollows(@Path("id") String userId, @Query("access_token") String authToken);
+    Observable<ArrayList<Follower>> getUserFollows(@Path("id") String userId, @Header("Authorization") String token);
 
     @GET("users/{follower}/follows/{followed}")
-    Observable<Follower> getUserFollows(@Path("follower") String followerId, @Path("followed") String followedId, @Query("access_token") String authToken);
+    Observable<Follower> getUserFollows(@Path("follower") String followerId, @Path("followed") String followedId, @Header("Authorization") String token);
 
     @PUT("users/{follower}/follows/{followed}")
-    Observable updateUserFollows(@Path("follower") String followerId, @Path("followed") String followedId, @Field("following") Boolean following, @Query("access_token") String authToken);
+    Observable updateUserFollows(@Path("follower") String followerId, @Path("followed") String followedId, @Field("following") Boolean following, @Header("Authorization") String authToken);
+
 
     //SERIES
     @GET("series/{series}")
-    Observable<Series> getSeries(@Path("series") int seriesId, @Query("access_token") String token);
+    Observable<Series> getSeries(@Path("series") int seriesId, @Header("Authorization") String token);
 
     @GET("series/search/{query}/{page}")
-    Observable<Page<Series>> searchSeries(@Path("query") String query, @Path("page") int page, @Query("access_token") String authToken);
+    Observable<Page<Series>> searchSeries(@Path("query") String query, @Path("page") int page, @Header("Authorization") String token);
 
     //SEASON
     @GET("series/{series}/season/{season}")
-    Observable<Season> getSeason(@Path("series") int seriesId, @Path("season") int season);
+    Observable<Season> getSeason(@Path("series") int seriesId, @Path("season") int season, @Header("Authorization") String token);
 
     //EPISODE
     @GET("series/{series}/season/{season}/episode/{episode}")
@@ -106,18 +108,18 @@ public interface WatchFriendsService {
 
     //FOLLOWED SERIES
     @GET("followed")
-    Observable<ArrayList<Series>> getFollowedSeries(@Query("user") String userId, @Query("access_token") String token);
+    Observable<ArrayList<Series>> getFollowedSeries(@Query("user") String userId, @Header("Authorization") String token);
 
     @GET("followed/{series}")
-    Observable<Boolean> getFollowedSeries(@Query("user") String userId, @Path("series") int seriesId, @Query("access_token") String token);
+    Observable<Boolean> getFollowedSeries(@Query("user") String userId, @Path("series") int seriesId, @Header("Authorization") String token);
 
     @PUT("followed/{series}")
-    Observable UpdateFollowedSeries(@Query("user") String userId, @Path("series") int seriesId, @Field("following") Boolean following, @Query("access_token") String token);
+    Observable UpdateFollowedSeries(@Query("user") String userId, @Path("series") int seriesId, @Field("following") Boolean following, @Header("Authorization") String token);
 
     //EVENTS
     @PUT("event")
-    Observable AddEvent(@Body WFEvent event, @Query("access_token") String token);
+    Observable AddEvent(@Body WFEvent event, @Header("Authorization") String token);
 
     @GET("feed/{page}")
-    Observable<WFEventsPage> getFeedEvents(@Path("page") int page, @Query("access_token") String token);
+    Observable<WFEventsPage> getFeedEvents(@Path("page") int page, @Header("Authorization") String token);
 }

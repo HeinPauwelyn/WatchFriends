@@ -14,6 +14,7 @@ public class Interfaces {
         FloatingActionButton getActionButton();
         void setTitle(String title);
         void enableAppBarScroll(Boolean enable);
+        void closeSearchView();
     }
 
     public interface onSeriesSelectedListener {
