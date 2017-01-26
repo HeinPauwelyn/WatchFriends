@@ -1,5 +1,6 @@
 package nmct.jaspernielsmichielhein.watchfriends.view;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -338,6 +339,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onQueryTextSubmit(String query) {
         //search button press
         navigate(SearchFragment.newInstance(query), "searchFragment");
+        hideKeyboard();
         return false;
     }
 
@@ -369,6 +371,17 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onProfileSelected(String userId) {
         navigate(ProfileFragment.newInstance(), "profileFragment");
+    }
+
+    public void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = this.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(this);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
 }
