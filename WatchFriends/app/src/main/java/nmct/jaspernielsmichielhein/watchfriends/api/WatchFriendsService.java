@@ -119,5 +119,5 @@ public interface WatchFriendsService {
     Observable AddEvent(@Body WFEvent event, @Query("access_token") String token);
 
     @GET("feed/{page}")
-    Observable<WFEventsPage> getFeedEvents(@Path("page") int page, @Query("access_token") String token)
+    Observable<WFEventsPage> getFeedEvents(@Path("page") int page, @Query("access_token") String token);
 }
