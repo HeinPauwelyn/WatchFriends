@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.adapter.SeriesAdapter;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentProfileBinding;
-import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.viewmodel.ProfileFragmentViewModel;
 
 public class ProfileFragment extends Fragment {
@@ -21,7 +20,6 @@ public class ProfileFragment extends Fragment {
 
     private ProfileFragmentViewModel profileFragmentViewModel;
     private FragmentProfileBinding fragmentProfileBinding;
-    private Interfaces.headerChangedListener listener;
     private Context context;
 
     public ProfileFragment() {    }
@@ -50,10 +48,5 @@ public class ProfileFragment extends Fragment {
 
         profileFragmentViewModel.getUser();
         profileFragmentViewModel.generateFakeDate();
-
-        if (listener != null) {
-            listener.collapseToolbar();
-            listener.getActionButton().setVisibility(View.GONE);
-        }
     }
 }

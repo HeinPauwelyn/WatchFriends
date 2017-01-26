@@ -30,8 +30,7 @@ public class FollowedSeriesLoader extends AsyncTaskLoader<Cursor> {
     public Cursor loadInBackground() {
         String[] columns = new String[]{
                 Contract.FollowedSeriesColumns._ID,
-                Contract.FollowedSeriesColumns.COLUMN_FOLLOWEDSERIES_NR,
-                Contract.FollowedSeriesColumns.COLUMN_FOLLOWEDSERIES_NAME
+                Contract.FollowedSeriesColumns.COLUMN_FOLLOWEDSERIES_NR
         };
 
         mData = mContext.getContentResolver().query(nmct.jaspernielsmichielhein.watchfriends.provider.Contract.FOLLOWEDSERIES_URI, columns, null, null, null);

@@ -14,6 +14,7 @@ import nmct.jaspernielsmichielhein.watchfriends.viewmodel.EpisodeFragmentViewMod
 
 public class EpisodeFragment extends Fragment {
     private static final String ARG_episode = "nmct.jaspernielsmichielhein.watchfriends.episode";
+    private static final String ARG_seriesId = "nmct.jaspernielsmichielhein.watchfriends.seriesId";
 
     private EpisodeFragmentViewModel episodeFragmentViewModel;
 
@@ -21,9 +22,12 @@ public class EpisodeFragment extends Fragment {
 
     public EpisodeFragment() { }
 
-    public static EpisodeFragment newInstance(Episode episode) {
+    private int seriesId = 0;
+
+    public static EpisodeFragment newInstance(Episode episode, int seriesId) {
         Bundle args = new Bundle();
         args.putParcelable(ARG_episode, episode);
+        args.putInt(ARG_seriesId, seriesId);
 
         EpisodeFragment fragment = new EpisodeFragment();
         fragment.setArguments(args);
@@ -36,6 +40,7 @@ public class EpisodeFragment extends Fragment {
         Bundle arguments = getArguments();
         if (arguments != null) {
             episode = arguments.getParcelable(ARG_episode);
+            seriesId = arguments.getInt(ARG_seriesId);
             episode.initExtraFields();
         }
     }
@@ -43,7 +48,7 @@ public class EpisodeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragmentEpisodeBinding fragmentEpisodeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_episode, container, false);
-        episodeFragmentViewModel = new EpisodeFragmentViewModel(getActivity(), fragmentEpisodeBinding, episode);
+        episodeFragmentViewModel = new EpisodeFragmentViewModel(getActivity(), fragmentEpisodeBinding, episode, seriesId);
         return fragmentEpisodeBinding.getRoot();
     }
 

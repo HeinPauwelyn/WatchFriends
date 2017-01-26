@@ -90,10 +90,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
 
-        setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -126,14 +126,15 @@ public class MainActivity extends AppCompatActivity
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
 
         Stetho.initializeWithDefaults(this);
+        if(savedInstanceState == null){ //started the app
+            navigate(HomeFragment.newInstance(), "homeFragment");
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if (AuthHelper.isUserLoggedIn(this) && !AuthHelper.isTokenExpired(this)) {
-            navigate(HomeFragment.newInstance(), "homeFragment");
-        } else {
+        if (!AuthHelper.isUserLoggedIn(this) || AuthHelper.isTokenExpired(this)) {
             AuthHelper.logUserOff(this);
             LoginManager.getInstance().logOut();
             showLoginActivity();
@@ -287,16 +288,6 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void collapseToolbar() {
-        appBarLayout.setExpanded(false, true);
-        //actionButton.setVisibility(View.GONE);
-    }
-
-    public void expandToolbar() {
-        //appBarLayout.setExpanded(true, true);
-        //actionButton.setVisibility(View.VISIBLE);
-    }
-
     public void enableAppBarScroll(Boolean enable) {
         AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) collapsingToolbarLayout.getLayoutParams();
         CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
@@ -361,8 +352,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onEpisodeSelected(Episode episode) {
-        navigate(EpisodeFragment.newInstance(episode), "episodeFragment");
+    public void onEpisodeSelected(Episode episode, int seriesId) {
+        navigate(EpisodeFragment.newInstance(episode, seriesId), "episodeFragment");
     }
 
     @Override
