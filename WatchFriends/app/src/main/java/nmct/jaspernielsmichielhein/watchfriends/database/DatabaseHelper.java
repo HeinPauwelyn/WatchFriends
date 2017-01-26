@@ -23,7 +23,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        onUpgrade(db, 1, 2);
+        db.execSQL(Contract.FollowedSeriesDB.CREATE_TABLE);
+        db.execSQL(Contract.WatchedEpisodeDB.CREATE_TABLE);
     }
 
     @Override
@@ -46,12 +47,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void upgradeTo1(SQLiteDatabase db) {
-        db.execSQL(Contract.FollowedSeriesDB.CREATE_TABLE);
-        db.execSQL(Contract.WatchedEpisodeDB.CREATE_TABLE);
     }
 
     private void upgradeTo2(SQLiteDatabase db) {
-        db.execSQL("ALTER TABLE " + Contract.FollowedSeriesDB.TABLE_NAME + " ADD COLUMN " + Contract.FollowedSeriesDB.COLUMN_FOLLOWEDSERIES_FOLLOWING + " INTEGER DEFAULT 1");
-        db.execSQL("ALTER TABLE " + Contract.WatchedEpisodeDB.TABLE_NAME + " ADD COLUMN " + Contract.WatchedEpisodeDB.COLUMN_WATCHED_EPISODE_WATCHED + " INTEGER DEFAULT 1");
     }
 }

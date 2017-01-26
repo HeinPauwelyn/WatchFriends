@@ -121,7 +121,6 @@ public class SeriesFragmentViewModel extends BaseObservable {
     private void editFollow(boolean following) {
         ContentValues values = new ContentValues();
         values.put(Contract.FollowedSeriesColumns.COLUMN_FOLLOWEDSERIES_NR, series.getId());
-        values.put(Contract.FollowedSeriesColumns.COLUMN_FOLLOWEDSERIES_NAME, series.getName());
         values.put(Contract.FollowedSeriesColumns.COLUMN_FOLLOWEDSERIES_FOLLOWING, following);
 
         executeAsyncTask(new FollowedSeriesDBTask(context), values);

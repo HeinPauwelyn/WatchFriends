@@ -90,7 +90,6 @@ public class EpisodesAdapter extends ArrayAdapter<Episode> implements View.OnCli
         values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR, episode.getId());
         values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SEASON_NR, episode.getSeason_number());
         values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NR, episode.getEpisode_number());
-        values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NAME, episode.getName());
         values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_WATCHED, watched);
 
         executeAsyncTask(new WatchedEpisodeDBTask(context), values);

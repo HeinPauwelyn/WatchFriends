@@ -114,7 +114,6 @@ public class SeasonsAdapter extends ArrayAdapter<Season> implements View.OnClick
         values.put(nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR, seriesId);
         values.put(nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SEASON_NR, seasonNr);
         values.put(nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NR, episodeNr);
-        values.put(nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NAME, "");
         values.put(nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_WATCHED, watched);
 
         executeAsyncTask(new WatchedEpisodeDBTask(context), values);
