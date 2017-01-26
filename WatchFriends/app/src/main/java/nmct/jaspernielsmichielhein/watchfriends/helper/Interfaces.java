@@ -8,8 +8,6 @@ import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 
 public class Interfaces {
     public interface headerChangedListener {
-        void collapseToolbar();
-        void expandToolbar();
         ImageView getHeaderImage();
         FloatingActionButton getActionButton();
         void setTitle(String title);
@@ -26,7 +24,7 @@ public class Interfaces {
     }
 
     public interface onEpisodeSelectedListener {
-        void onEpisodeSelected(Episode episode);
+        void onEpisodeSelected(Episode episode, int SeriesId);
     }
 
     public interface onProfileSelectedListener {

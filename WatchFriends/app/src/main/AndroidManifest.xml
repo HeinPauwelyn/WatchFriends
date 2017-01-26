@@ -80,7 +80,7 @@
             android:value="@string/facebook_app_id" />
 
         <provider
-            android:name=".provider.WatchedProvider"
+            android:name=".provider.WatchedEpisodesProvider"
             android:authorities="nmct.jaspernielsmichielhein.watchfriends.watchedepisodes"
             android:exported="false" />
         <provider

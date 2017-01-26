@@ -10,24 +10,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static DatabaseHelper getInstance(Context context) {
         if (INSTANCE == null) {
-            //via keyword synchronized vermijden we dat meerdere threads Databasehelper-object proberen aan te maken
             synchronized (object) {
-                INSTANCE = new DatabaseHelper(context.getApplicationContext());     //opm: hier pas object aanmaken!
+                INSTANCE = new DatabaseHelper(context.getApplicationContext());
             }
         }
         return INSTANCE;
     }
 
     private DatabaseHelper(Context context) {
-        //opm: hier wordt database-versienummer doorgegeven
         super(context, Contract.DATABASE_NAME, null, Contract.DATABASE_VERSION);
     }
 
-
-    //zie ook onderaan voor versie bestemd tijdens de ontwikkeling van app
     @Override
     public void onCreate(SQLiteDatabase db) {
-        onUpgrade(db, 0, 1);
+        db.execSQL(Contract.FollowedSeriesDB.CREATE_TABLE);
+        db.execSQL(Contract.WatchedEpisodeDB.CREATE_TABLE);
     }
 
     @Override
@@ -39,10 +36,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     oldVersion++;
                     break;
                 case 1:
-                case 2:
-                    //upgrade logic from version 2 to 3
-                case 3:
-                    //upgrade logic from version 3 to 4
+                    upgradeTo2(db);
+                    oldVersion++;
                     break;
                 default:
                     throw new IllegalStateException(
@@ -52,22 +47,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void upgradeTo1(SQLiteDatabase db) {
-        db.execSQL(Contract.FollowedSeriesDB.CREATE_TABLE);
-        db.execSQL(Contract.WatchedEpisodeDB.CREATE_TABLE);
     }
 
-
-/*    @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL(Contract.ProductsDB.CREATE_TABLE);
+    private void upgradeTo2(SQLiteDatabase db) {
     }
-
-    //For development time schema upgrades where data loss is not an issue
-    //remove your existing tables and call onCreate() to recreate the database.
-    @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
-        sqLiteDatabase.execSQL(Contract.ProductsDB.DELETE_TABLE);
-        onCreate(sqLiteDatabase);
-    }*/
-
 }
