@@ -428,7 +428,7 @@ public class Series implements Parcelable {
     public void makeTime_period() {
         if (getStatus() != null && getFirst_air_date() != null && getLast_air_date() != null) {
             if (getStatus().equals("Ended")) {
-                setTime_period(getFirst_air_date().substring(0, 4) + " - " + getLast_air_date().substring(0, 3));
+                setTime_period(getFirst_air_date().substring(0, 4) + " - " + getLast_air_date().substring(0, 4));
             } else if (getStatus().equals("")) {
                 setTime_period(getFirst_air_date().substring(0, 4) + " - Unknown");
             } else {
