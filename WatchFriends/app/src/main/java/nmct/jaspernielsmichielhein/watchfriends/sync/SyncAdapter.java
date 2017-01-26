@@ -90,7 +90,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         if (operationList.size() > 0) {
             try {
                 contentResolver.applyBatch(Contract.AUTHORITY, operationList);
-                contentResolver.notifyChange(Contract.FOLLOWEDSERIES_URI, null);
+                contentResolver.notifyChange(Contract.FOLLOWEDSERIES_URI, null, false);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

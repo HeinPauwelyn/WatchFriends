@@ -78,7 +78,7 @@
         </service>
 
         <service
-            android:name=".sync.SyncService"
+            android:name="nmct.jaspernielsmichielhein.watchfriends.sync.SyncService"
             android:exported="true"
             android:process=":sync">
             <intent-filter>
