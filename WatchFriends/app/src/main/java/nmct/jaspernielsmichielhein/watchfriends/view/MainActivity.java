@@ -159,6 +159,7 @@ public class MainActivity extends AppCompatActivity
                 //search fragment
                 int index = fmgr.getBackStackEntryCount() - 1;
                 FragmentManager.BackStackEntry backEntry = fmgr.getBackStackEntryAt(index);
+                scrollView.fullScroll(ScrollView.FOCUS_UP);
                 //if("searchFragment" == backEntry.getName())
                 //fmgr.popBackStackImmediate();
             }
