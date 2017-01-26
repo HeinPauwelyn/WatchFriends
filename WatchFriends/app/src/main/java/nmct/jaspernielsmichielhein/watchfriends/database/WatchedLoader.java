@@ -32,8 +32,7 @@ public class WatchedLoader extends AsyncTaskLoader<Cursor> {
                 Contract.WatchedEpisodeColumns._ID,
                 Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR,
                 Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SEASON_NR,
-                Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NR,
-                Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NAME
+                Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NR
         };
 
         mData = mContext.getContentResolver().query(nmct.jaspernielsmichielhein.watchfriends.provider.Contract.WATCHED_URI, columns, null, null, null);

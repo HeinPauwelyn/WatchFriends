@@ -19,8 +19,7 @@ import com.squareup.picasso.Picasso;
 
 import nmct.jaspernielsmichielhein.watchfriends.R;
 import nmct.jaspernielsmichielhein.watchfriends.database.Contract;
-import nmct.jaspernielsmichielhein.watchfriends.database.tasks.DeleteFollowedSerieFromDBTask;
-import nmct.jaspernielsmichielhein.watchfriends.database.tasks.SaveFollowedSerieToDBTask;
+import nmct.jaspernielsmichielhein.watchfriends.database.tasks.FollowedSeriesDBTask;
 import nmct.jaspernielsmichielhein.watchfriends.databinding.FragmentSeriesBinding;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
@@ -30,7 +29,6 @@ public class SeriesFragmentViewModel extends BaseObservable {
 
     private Context context;
     private FragmentSeriesBinding fragmentSeriesBinding;
-
     private Series series = null;
 
     @Bindable
@@ -106,44 +104,45 @@ public class SeriesFragmentViewModel extends BaseObservable {
                     fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.themeAccent)));
                     Snackbar.make(v, "No longer following " + series.getName(), Snackbar.LENGTH_LONG).show();
 
-                    unfollow(series);
+                    editFollow(false);
 
                 } else {
                     fab.setImageResource(R.drawable.ic_clear_white_24dp);
                     fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.themeBlack)));
                     Snackbar.make(v, "Following " + series.getName(), Snackbar.LENGTH_LONG).show();
 
-                    follow(series);
+                    editFollow(true);
                 }
                 followed = !followed;
             }
         });
     }
 
-    private void follow(Series serie) {
+    private void editFollow(boolean following) {
         ContentValues values = new ContentValues();
-        values.put(Contract.FollowedSeriesColumns.COLUMN_FOLLOWEDSERIES_NR, serie.getId());
-        values.put(Contract.FollowedSeriesColumns.COLUMN_FOLLOWEDSERIES_NAME, series.getName());
+        values.put(Contract.FollowedSeriesColumns.COLUMN_FOLLOWEDSERIES_NR, series.getId());
+        values.put(Contract.FollowedSeriesColumns.COLUMN_FOLLOWEDSERIES_FOLLOWING, following);
 
-        executeAsyncTask(new SaveFollowedSerieToDBTask(context), values);
+        executeAsyncTask(new FollowedSeriesDBTask(context), values);
     }
 
-    private void unfollow(Series serie){
-        ContentValues values = new ContentValues();
-        values.put(Contract.FollowedSeriesColumns.COLUMN_FOLLOWEDSERIES_NR, serie.getId());
-
-        executeAsyncTask(new DeleteFollowedSerieFromDBTask(context), values);
-    }
-
-    //todo backend should provide if user follows the series or not, now it just happens synchronously
     private boolean isFollowed(Series s) {
         Cursor c = context.getContentResolver().query(
-                nmct.jaspernielsmichielhein.watchfriends.provider.Contract.FOLLOWEDSERIES_URI, null,
+                nmct.jaspernielsmichielhein.watchfriends.provider.Contract.FOLLOWEDSERIES_URI,
+                new String[]{Contract.FollowedSeriesColumns.COLUMN_FOLLOWEDSERIES_FOLLOWING},
                 Contract.FollowedSeriesColumns.COLUMN_FOLLOWEDSERIES_NR + " = " + s.getId(),
                 null,
                 null);
-        c.close();
-        return c.getCount() > 0;
+        if (c.getCount() > 0) {
+            int following = 0;
+            if (c.moveToLast())
+                following = c.getInt(c.getColumnIndex(Contract.FollowedSeriesColumns.COLUMN_FOLLOWEDSERIES_FOLLOWING));
+            c.close();
+            return following > 0;
+        } else {
+            c.close();
+            return false;
+        }
     }
 
     static private <T> void executeAsyncTask(AsyncTask<T, ?, ?> task, T... params) {

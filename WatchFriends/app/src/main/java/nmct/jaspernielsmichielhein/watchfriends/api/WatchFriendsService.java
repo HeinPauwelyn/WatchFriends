@@ -6,15 +6,14 @@ import com.android.annotations.Nullable;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import nmct.jaspernielsmichielhein.watchfriends.model.Achievement;
 import nmct.jaspernielsmichielhein.watchfriends.model.Episode;
 import nmct.jaspernielsmichielhein.watchfriends.model.Follower;
 import nmct.jaspernielsmichielhein.watchfriends.model.Page;
-import nmct.jaspernielsmichielhein.watchfriends.model.SeriesList;
 import nmct.jaspernielsmichielhein.watchfriends.model.Season;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
+import nmct.jaspernielsmichielhein.watchfriends.model.SeriesList;
 import nmct.jaspernielsmichielhein.watchfriends.model.User;
 import nmct.jaspernielsmichielhein.watchfriends.model.UserData;
 import nmct.jaspernielsmichielhein.watchfriends.model.WFEvent;
@@ -104,7 +103,7 @@ public interface WatchFriendsService {
 
     //EPISODE
     @GET("series/{series}/season/{season}/episode/{episode}")
-    Observable<Episode> getEpisode(@Path("series") int seriesId, @Path("season") int season, @Path("episode") int episode);
+    Observable<Episode> getEpisode(@Path("series") int seriesId, @Path("season") int season, @Path("episode") int episode, @Query("access_token") String authToken);
 
     //FOLLOWED SERIES
     @GET("followed")
