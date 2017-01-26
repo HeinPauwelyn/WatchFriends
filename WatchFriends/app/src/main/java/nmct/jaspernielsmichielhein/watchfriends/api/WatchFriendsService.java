@@ -1,5 +1,7 @@
 package nmct.jaspernielsmichielhein.watchfriends.api;
 
+import android.databinding.ObservableArrayList;
+
 import com.android.annotations.Nullable;
 import com.google.gson.JsonObject;
 
