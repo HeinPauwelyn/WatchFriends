@@ -13,6 +13,8 @@ import nmct.jaspernielsmichielhein.watchfriends.helper.ApiHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.ApiWatchFriendsHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.AuthHelper;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
+import nmct.jaspernielsmichielhein.watchfriends.model.Achievement;
+import nmct.jaspernielsmichielhein.watchfriends.model.Name;
 import nmct.jaspernielsmichielhein.watchfriends.model.Series;
 import nmct.jaspernielsmichielhein.watchfriends.model.SeriesList;
 import rx.functions.Action1;
@@ -24,6 +26,7 @@ public class ProfileFragmentViewModel extends BaseObservable {
     private FragmentProfileBinding fragmentProfileBinding;
     @Bindable
     private ObservableArrayList<Series> watchlist = null;
+    private final ObservableArrayList<Achievement> achievements = new ObservableArrayList<>();
 
     public ObservableArrayList<Series> getWatchlist() {
         return watchlist;
@@ -84,5 +87,18 @@ public class ProfileFragmentViewModel extends BaseObservable {
                 }
             }
         });
+
+        ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getUserAchievements("Token van gebruiker", AuthHelper.getAuthToken(this.context)), new Action1<ArrayList<Achievement>>() {
+            @Override
+            public void call(ArrayList<Achievement> a) {
+                if (a != null) {
+                    achievements.addAll(a);
+                }
+            }
+        });
+    }
+
+    public ObservableArrayList<Achievement> getAchievements() {
+        return achievements;
     }
 }
