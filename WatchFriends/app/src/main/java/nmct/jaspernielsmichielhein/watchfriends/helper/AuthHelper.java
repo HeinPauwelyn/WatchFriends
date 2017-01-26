@@ -64,7 +64,7 @@ public class AuthHelper {
             }
         }
 
-        return mToken;
+        return "Bearer " + mToken;
     }
 
     private static class TokenTask extends AsyncTask<Void, Void, String> {
