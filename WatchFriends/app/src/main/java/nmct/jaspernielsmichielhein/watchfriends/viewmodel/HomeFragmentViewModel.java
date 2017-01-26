@@ -68,7 +68,7 @@ public class HomeFragmentViewModel extends BaseObservable {
 
                     for (SeriesList list : seriesList) {
                         if (list.getName().toLowerCase().equals("popular")) {
-                            seriesAddedListener.updateCarousel(list.getResults());
+                            seriesAddedListener.updateCarousel(list.getSeries() != null ? list.getSeries() : list.getResults());
                         }
                     }
 
