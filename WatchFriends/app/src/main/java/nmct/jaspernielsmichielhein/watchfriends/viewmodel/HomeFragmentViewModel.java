@@ -61,14 +61,14 @@ public class HomeFragmentViewModel extends BaseObservable {
     }
 
     private void getData() {
-        /*ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getLists(AuthHelper.getAuthToken(this.context)), new Action1<ArrayList<SeriesList>>() {
+        ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getLists(AuthHelper.getAuthToken(this.context)), new Action1<ArrayList<SeriesList>>() {
             @Override
             public void call(ArrayList<SeriesList> seriesList) {
                 if (seriesList != null) {
 
                     for (SeriesList list : seriesList) {
-                        if (list.getName().equals("Popular")) {
-                            seriesAddedListener.updateCarousel(list.getResults());
+                        if (list.getName().toLowerCase().equals("popular")) {
+                            seriesAddedListener.updateCarousel(list.getSeries() != null ? list.getSeries() : list.getResults());
                         }
                     }
 
@@ -77,7 +77,7 @@ public class HomeFragmentViewModel extends BaseObservable {
                     seriesAddedListener.updateLists(obList);
                 }
             }
-        });*/
+        });
     }
 
     private void setHeader(){

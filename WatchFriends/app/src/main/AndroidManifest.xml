@@ -18,6 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:configChanges="orientation|screenSize"
             android:name=".view.MainActivity"
             android:label="@string/title_activity_main"
             android:launchMode="singleTop"
@@ -80,7 +81,7 @@
             android:value="@string/facebook_app_id" />
 
         <provider
-            android:name=".provider.WatchedProvider"
+            android:name=".provider.WatchedEpisodesProvider"
             android:authorities="nmct.jaspernielsmichielhein.watchfriends.watchedepisodes"
             android:exported="false" />
         <provider

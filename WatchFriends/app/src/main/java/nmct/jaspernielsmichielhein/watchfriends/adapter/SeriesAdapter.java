@@ -51,7 +51,10 @@ public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.SeriesView
 
     @Override
     public int getItemCount() {
-        return series.size();
+        if (series != null) {
+            return series.size();
+        }
+        return 0;
     }
 
     public class SeriesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

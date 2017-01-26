@@ -9,6 +9,7 @@ import android.os.Parcelable;
 import nmct.jaspernielsmichielhein.watchfriends.api.SearchResult;
 import nmct.jaspernielsmichielhein.watchfriends.helper.Contract;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Series implements Parcelable {
@@ -48,6 +49,7 @@ public class Series implements Parcelable {
     private String type = "";
     private double vote_average = 0;
     private int vote_count = 0;
+    private int[] genre_ids = new int[0];
 
     public String getAll_creators() {
         return all_creators;
@@ -95,24 +97,6 @@ public class Series implements Parcelable {
 
     public void setFirst_air_date(String first_air_date) {
         this.first_air_date = first_air_date;
-    }
-
-    public String getFullBackdrop_path() {
-
-        if (poster_path != null && poster_path != "") {
-            return Contract.MOVIEDB_IMAGE_BASE_URL + backdrop_path;
-        }
-
-        return "https://www.themoviedb.org/assets/e2dd052f141e33392eb749aab2414ec0/images/no-poster-w300_and_h450_bestv2-v2.png";
-    }
-
-    public String getFullPoster_path() {
-
-        if (poster_path != null && poster_path != "") {
-            return Contract.MOVIEDB_IMAGE_BASE_URL + poster_path;
-        }
-
-        return "https://www.themoviedb.org/assets/e2dd052f141e33392eb749aab2414ec0/images/no-poster-w300_and_h450_bestv2-v2.png";
     }
 
     public ObservableArrayList<Genre> getGenres() {
@@ -351,6 +335,24 @@ public class Series implements Parcelable {
         setRating((float) getVote_average() / 2);
     }
 
+    public String getFullBackdrop_path() {
+
+        if (poster_path != null && poster_path != "") {
+            return Contract.MOVIEDB_IMAGE_BASE_URL + backdrop_path;
+        }
+
+        return "https://raw.githubusercontent.com/WatchFriends/Web/master/frontend/assets/Serie_Not_Found.png"; // → is a hack 😄 💀
+    }
+
+    public String getFullPoster_path() {
+
+        if (poster_path != null && poster_path != "") {
+            return Contract.MOVIEDB_IMAGE_BASE_URL + poster_path;
+        }
+
+        return "https://raw.githubusercontent.com/WatchFriends/Web/master/frontend/assets/Poster_Not_Found.png"; // → is a hack 😄 💀
+    }
+
     public void makeAll_creators() {
         String all_creators = "";
         ObservableArrayList<nmct.jaspernielsmichielhein.watchfriends.model.Creator> creators = getCreated_by();
@@ -426,7 +428,7 @@ public class Series implements Parcelable {
     public void makeTime_period() {
         if (getStatus() != null && getFirst_air_date() != null && getLast_air_date() != null) {
             if (getStatus().equals("Ended")) {
-                setTime_period(getFirst_air_date().substring(0, 4) + " - " + getLast_air_date().substring(0, 3));
+                setTime_period(getFirst_air_date().substring(0, 4) + " - " + getLast_air_date().substring(0, 4));
             } else if (getStatus().equals("")) {
                 setTime_period(getFirst_air_date().substring(0, 4) + " - Unknown");
             } else {

@@ -1,11 +1,13 @@
 package nmct.jaspernielsmichielhein.watchfriends.model;
 
+import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
+
 public class Achievement {
     private String name;
     private String description;
-    private Object status;
+    private Status status;
     private int progress;
-    private int next;
+    private Integer next;
     private String image;
 
     public String getName() {
@@ -24,11 +26,11 @@ public class Achievement {
         this.description = description;
     }
 
-    public Object getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(Object status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -40,11 +42,11 @@ public class Achievement {
         this.progress = progress;
     }
 
-    public int getNext() {
+    public Integer getNext() {
         return next;
     }
 
-    public void setNext(int next) {
+    public void setNext(Integer next) {
         this.next = next;
     }
 
@@ -54,5 +56,23 @@ public class Achievement {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String progress() {
+
+        if (status == Status.GOLD) {
+            return "Progress completed!";
+        }
+        return "Progress: " + Integer.toString(progress) + "/" + Integer.toString(next);
+    }
+
+    @Override
+    public String toString() {
+        if (next != null) {
+            return description.replace("%d", Integer.toString(next));
+        }
+        else {
+            return description.replace("%d", Integer.toString(progress));
+        }
     }
 }

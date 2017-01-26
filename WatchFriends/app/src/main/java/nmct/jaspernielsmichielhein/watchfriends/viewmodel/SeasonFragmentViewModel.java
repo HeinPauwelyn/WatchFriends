@@ -32,6 +32,10 @@ public class SeasonFragmentViewModel extends BaseObservable {
         this.season = season;
     }
 
+    public int getSeriesId() {
+        return seriesId;
+    }
+
     private String seriesName = "";
     private int seriesId = 0;
     private int seasonNumber = 0;
@@ -52,19 +56,19 @@ public class SeasonFragmentViewModel extends BaseObservable {
     public void loadSeason() {
         final SeasonFragmentViewModel that = this;
         ApiHelper.subscribe(ApiWatchFriendsHelper.getWatchFriendsServiceInstance().getSeason(seriesId, seasonNumber, AuthHelper.getAuthToken(context)),
-            new Action1<Season>() {
-                @Override
-                public void call(Season returnedSeason) {
-                    setSeason(returnedSeason);
-                    season.initExtraFields();
-                    if (season.getEpisodes().size() == 0) {
-                        fragmentSeasonBinding.txtNoEpisodes.setVisibility(View.VISIBLE);
+                new Action1<Season>() {
+                    @Override
+                    public void call(Season returnedSeason) {
+                        setSeason(returnedSeason);
+                        season.initExtraFields();
+                        if (season.getEpisodes().size() == 0) {
+                            fragmentSeasonBinding.txtNoEpisodes.setVisibility(View.VISIBLE);
+                        }
+                        fragmentSeasonBinding.setViewmodel(that);
+                        notifyPropertyChanged(BR.viewmodel);
+                        setHeader();
                     }
-                    fragmentSeasonBinding.setViewmodel(that);
-                    notifyPropertyChanged(BR.viewmodel);
-                    setHeader();
-                }
-            });
+                });
     }
 
     private void setHeader() {
