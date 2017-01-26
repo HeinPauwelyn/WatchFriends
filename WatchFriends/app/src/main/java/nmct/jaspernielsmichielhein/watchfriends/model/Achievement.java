@@ -1,5 +1,7 @@
 package nmct.jaspernielsmichielhein.watchfriends.model;
 
+import nmct.jaspernielsmichielhein.watchfriends.helper.Interfaces;
+
 public class Achievement {
     private String name;
     private String description;
@@ -54,6 +56,14 @@ public class Achievement {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String progress() {
+
+        if (status == Status.GOLD) {
+            return "Progress completed!";
+        }
+        return "Progress: " + Integer.toString(progress) + "/" + Integer.toString(next);
     }
 
     @Override
