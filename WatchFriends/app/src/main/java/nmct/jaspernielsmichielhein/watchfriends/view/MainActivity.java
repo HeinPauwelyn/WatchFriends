@@ -352,8 +352,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onEpisodeSelected(Episode episode) {
-        navigate(EpisodeFragment.newInstance(episode), "episodeFragment");
+    public void onEpisodeSelected(Episode episode, int seriesId) {
+        navigate(EpisodeFragment.newInstance(episode, seriesId), "episodeFragment");
     }
 
     @Override

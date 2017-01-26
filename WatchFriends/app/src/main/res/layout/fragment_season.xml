@@ -126,7 +126,7 @@
             android:layout_height="0dp"
             android:layout_below="@id/txtNoEpisodes"
             android:layout_marginBottom="10dp"
-            app:items="@{viewmodel.getSeason().episodes}" >
+            app:items="@{viewmodel}" >
 
         </ListView>
 

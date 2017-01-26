@@ -28,7 +28,6 @@ public class SeasonsAdapter extends ArrayAdapter<Season> implements View.OnClick
     private Interfaces.onSeasonSelectedListener mListener;
 
     private Context context;
-
     private int mSeriesID;
 
     public SeasonsAdapter(Context context, ListView listView, final String seriesName, final int seriesId) {
@@ -49,7 +48,7 @@ public class SeasonsAdapter extends ArrayAdapter<Season> implements View.OnClick
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final RowSeasonBinding rowSeasonBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.row_season, parent, false);
+        final RowSeasonBinding rowSeasonBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.row_season, parent, false);
         Season season = getItem(position);
         rowSeasonBinding.setSeason(season);
 
@@ -104,7 +103,7 @@ public class SeasonsAdapter extends ArrayAdapter<Season> implements View.OnClick
     }
 
     private void editWatchedSeason(Season s, boolean watched) {
-        for (int i = 0; i < s.getEpisode_count(); i++) {
+        for (int i = 1; i < s.getEpisode_count() + 1; i++) {
             editWatched(mSeriesID, s.getSeason_number(), i, watched);
         }
     }
@@ -132,7 +131,8 @@ public class SeasonsAdapter extends ArrayAdapter<Season> implements View.OnClick
                 Contract.WATCHED_URI,
                 null,
                 nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR + " = " + mSeriesID + " AND " +
-                        nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SEASON_NR + " = " + s.getSeason_number(),
+                        nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SEASON_NR + " = " + s.getSeason_number() + " AND " +
+                        nmct.jaspernielsmichielhein.watchfriends.database.Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_WATCHED + " = " + 1,
                 null,
                 null
         );

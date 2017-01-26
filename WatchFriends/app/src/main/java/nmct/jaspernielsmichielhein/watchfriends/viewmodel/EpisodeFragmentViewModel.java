@@ -39,12 +39,15 @@ public class EpisodeFragmentViewModel extends BaseObservable {
         this.episode = episode;
     }
 
+
+    private int seriesId = 0;
     private boolean watched = false;
 
-    public EpisodeFragmentViewModel(Context context, FragmentEpisodeBinding fragmentEpisodeBinding, Episode episode) {
+    public EpisodeFragmentViewModel(Context context, FragmentEpisodeBinding fragmentEpisodeBinding, Episode episode, int seriesId) {
         this.context = context;
         this.fragmentEpisodeBinding = fragmentEpisodeBinding;
         this.episode = episode;
+        this.seriesId = seriesId;
         if (context instanceof Interfaces.headerChangedListener) {
             listener = (Interfaces.headerChangedListener) context;
         } else {
@@ -98,7 +101,7 @@ public class EpisodeFragmentViewModel extends BaseObservable {
 
     private void editWatched(boolean watched) {
         ContentValues values = new ContentValues();
-        values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR, episode.getId());
+        values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR, seriesId);
         values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SEASON_NR, episode.getSeason_number());
         values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NR, episode.getEpisode_number());
         values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_WATCHED, watched);
@@ -110,7 +113,7 @@ public class EpisodeFragmentViewModel extends BaseObservable {
         Cursor c = context.getContentResolver().query(
                 nmct.jaspernielsmichielhein.watchfriends.provider.Contract.WATCHED_URI,
                 new String[]{Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_WATCHED},
-                Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR + " = " + e.getId() + " AND " +
+                Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR + " = " + seriesId + " AND " +
                         Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SEASON_NR + " = " + e.getSeason_number() + " AND " +
                         Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NR + " = " + e.getEpisode_number(),
                 null,

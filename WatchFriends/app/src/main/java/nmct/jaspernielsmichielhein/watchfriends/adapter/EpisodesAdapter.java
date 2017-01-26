@@ -26,21 +26,20 @@ public class EpisodesAdapter extends ArrayAdapter<Episode> implements View.OnCli
     private Interfaces.onEpisodeSelectedListener mListener;
 
     private Context context;
-    private int mSeriesID;
     private Episode episode;
+    private int mSeriesID;
 
-    public EpisodesAdapter(Context context, ListView listView) {
+    public EpisodesAdapter(Context context, ListView listView, final int seriesId) {
         super(context, R.layout.row_episode);
         this.context = context;
-        //todo get series id
-        mSeriesID = 0;
         mListener = (Interfaces.onEpisodeSelectedListener) context;
+        mSeriesID = seriesId;
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Episode selectedEpisode = getItem(position);
                 if (selectedEpisode != null) {
-                    mListener.onEpisodeSelected(selectedEpisode);
+                    mListener.onEpisodeSelected(selectedEpisode, seriesId);
                 }
             }
         });
@@ -87,7 +86,7 @@ public class EpisodesAdapter extends ArrayAdapter<Episode> implements View.OnCli
 
     private void editWatched(boolean watched) {
         ContentValues values = new ContentValues();
-        values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR, episode.getId());
+        values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR, mSeriesID);
         values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SEASON_NR, episode.getSeason_number());
         values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NR, episode.getEpisode_number());
         values.put(Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_WATCHED, watched);
@@ -99,7 +98,7 @@ public class EpisodesAdapter extends ArrayAdapter<Episode> implements View.OnCli
         Cursor c = context.getContentResolver().query(
                 nmct.jaspernielsmichielhein.watchfriends.provider.Contract.WATCHED_URI,
                 new String[]{Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_WATCHED},
-                Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR + " = " + e.getId() + " AND " +
+                Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SERIES_NR + " = " + mSeriesID + " AND " +
                         Contract.WatchedEpisodeColumns.COLUMN_WATCHED_SEASON_NR + " = " + e.getSeason_number() + " AND " +
                         Contract.WatchedEpisodeColumns.COLUMN_WATCHED_EPISODE_NR + " = " + e.getEpisode_number(),
                 null,

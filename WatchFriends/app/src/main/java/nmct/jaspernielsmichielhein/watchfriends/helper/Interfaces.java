@@ -24,7 +24,7 @@ public class Interfaces {
     }
 
     public interface onEpisodeSelectedListener {
-        void onEpisodeSelected(Episode episode);
+        void onEpisodeSelected(Episode episode, int SeriesId);
     }
 
     public interface onProfileSelectedListener {
