@@ -27,7 +27,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //zie ook onderaan voor versie bestemd tijdens de ontwikkeling van app
     @Override
     public void onCreate(SQLiteDatabase db) {
-        onUpgrade(db, 0, 1);
+        onUpgrade(db, 1, 2);
     }
 
     @Override
@@ -39,6 +39,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     oldVersion++;
                     break;
                 case 1:
+                    upgradeTo2(db);
+                    oldVersion++;
                 case 2:
                     //upgrade logic from version 2 to 3
                 case 3:
@@ -49,6 +51,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                             "onUpgrade() with unknown oldVersion " + oldVersion);
             }
         }
+    }
+
+    private void upgradeTo2(SQLiteDatabase db) {
+        db.execSQL("ALTER TABLE " + Contract.FollowedSeriesDB.TABLE_NAME + " ADD COLUMN " + Contract.FollowedSeriesDB.COLUMN_FOLLOWEDSERIES_FOLLOWING + " INTEGER DEFAULT 1");
+        db.execSQL("ALTER TABLE " + Contract.WatchedEpisodeDB.TABLE_NAME + " ADD COLUMN " + Contract.WatchedEpisodeDB.COLUMN_WATCHED_EPISODE_WATCHED + " INTEGER DEFAULT 1");
     }
 
     private void upgradeTo1(SQLiteDatabase db) {
